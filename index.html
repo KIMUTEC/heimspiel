@@ -185,6 +185,7 @@ footer{font-size:.82rem;color:var(--muted);border-top:1px solid var(--line);padd
 <div id="toast"></div>
 
 <script>
+window.onerror=function(m,src,l,c){try{var b=document.getElementById('err-box');if(!b){b=document.createElement('div');b.id='err-box';b.style.cssText='position:fixed;left:12px;right:12px;bottom:12px;z-index:999;background:#C93A2E;color:#fff;padding:12px 14px;border-radius:12px;font:14px/1.4 -apple-system,sans-serif';document.body.appendChild(b)}b.textContent='Fehler: '+m+' (Zeile '+l+'). iOS: '+(navigator.userAgent.match(/OS ([0-9_]+)/)||['','?'])[1].replace(/_/g,'.')+'. Bitte Screenshot an Claude schicken.'}catch(e){}};
 /* =================== Übungen & Animationen =================== */
 // Pose: Kopf, Hals, Becken, Knie1, Fuß1, Knie2, Fuß2, Ellbogen1, Hand1, Ellbogen2, Hand2 (+ optional Ball x,y). Feld 0–100, Boden y=90.
 const shiftP=(p,dx,dy=0)=>p.map((v,i)=>i%2?v+dy:v+dx);
@@ -306,9 +307,9 @@ const CHEERS=['Stark!','Weiter so!','Du schaffst das!','Gib alles!','Fast gescha
 
 /* =================== Hilfsfunktionen =================== */
 const $=s=>document.querySelector(s);
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=n=>Number(n||0).toLocaleString('de-DE');
-const num=v=>{const x=parseFloat(String(v??'').replace(',','.'));return Number.isFinite(x)?x:NaN};
+const num=v=>{const x=parseFloat(String(v==null?'':v).replace(',','.'));return Number.isFinite(x)?x:NaN};
 const clone=o=>JSON.parse(JSON.stringify(o));
 const uid6=()=>Math.random().toString(36).slice(2,10);
 const z=n=>String(n).padStart(2,'0');
@@ -327,7 +328,7 @@ function hash(s){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.im
 /* =================== Animations-Engine =================== */
 const RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
 function poseAt(a,t){const n=a.seq.length;if(RM)return a.seq[Math.floor(t/1600)%n];
-  const ph=(t%a.ms)/a.ms*n,i=Math.floor(ph),f=ph-i,e=0.5-0.5*Math.cos(Math.PI*f);const A=a.seq[i],Bp=a.seq[(i+1)%n];return A.map((v,j)=>v+((Bp[j]??v)-v)*e)}
+  const ph=(t%a.ms)/a.ms*n,i=Math.floor(ph),f=ph-i,e=0.5-0.5*Math.cos(Math.PI*f);const A=a.seq[i],Bp=a.seq[(i+1)%n];return A.map((v,j)=>v+((Bp[j]==null?v:Bp[j])-v)*e)}
 function drawFig(c,ex,t){
   const a=EX[ex]&&EX[ex].a;if(!a)return;
   const r=c.getBoundingClientRect();if(!r.width||!r.height||r.bottom<0||r.top>innerHeight)return;
