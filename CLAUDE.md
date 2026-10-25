@@ -64,6 +64,6 @@ Nach jeder Änderung `node tools/check.mjs` laufen lassen. Bei sichtbaren Änder
 
 ## Eigene Befehle (`.claude/commands/`)
 
-`/plan`, `/diff-review`, `/fehler`, `/texte`, `/security-scan`, `/performance`, `/refactor-plan`, `/bug-repro`, `/blame`, `/recovery`, `/doku`, `/checkpoint`
+`/plan`, `/diff-review`, `/fehler`, `/texte`, `/design-umsetzen`, `/security-scan`, `/performance`, `/refactor-plan`, `/bug-repro`, `/blame`, `/recovery`, `/doku`, `/checkpoint`
 
 Skill: `llm-council` (`.claude/skills/llm-council/`) – 5 Berater + Peer-Review für wichtige Entscheidungen.
