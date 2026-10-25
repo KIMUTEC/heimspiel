@@ -1,6 +1,7 @@
 ---
 description: Bug reproduzieren, Test schreiben, dann fixen
 argument-hint: [Bug-Report]
+effort: xhigh
 ---
 Bug-Report: $ARGUMENTS
 

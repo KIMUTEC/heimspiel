@@ -1,6 +1,7 @@
 ---
 description: Entwurf aus Claude Design (Screenshot, HTML, Beschreibung) in die echte App übernehmen
 argument-hint: [Entwurf anhängen oder beschreiben, welcher Screen]
+effort: high
 ---
 <entwurf>
 $ARGUMENTS

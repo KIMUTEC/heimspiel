@@ -1,6 +1,7 @@
 ---
 description: App-Texte für Kinder schreiben oder prüfen – mit Ausschluss-Regeln und Selbstbewertung
 argument-hint: [was für Texte, z. B. „Anleitung für neue Übung Seilspringen“ oder „alle Texte im Profil prüfen“]
+effort: high
 ---
 <task>
 $ARGUMENTS

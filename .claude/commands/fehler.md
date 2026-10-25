@@ -1,6 +1,7 @@
 ---
 description: Fehler oder Problem lösen – Diagnose, Optionen, Abwägung, Empfehlung
 argument-hint: [kompletter Fehlertext oder Beschreibung, was passiert]
+effort: xhigh
 ---
 <problem>
 $ARGUMENTS

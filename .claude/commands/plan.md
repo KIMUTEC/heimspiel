@@ -1,6 +1,7 @@
 ---
 description: Erst denken, dann tippen – Plan ohne Code
 argument-hint: [Aufgabe]
+effort: xhigh
 ---
 Aufgabe: $ARGUMENTS
 

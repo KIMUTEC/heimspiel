@@ -1,6 +1,7 @@
 ---
 description: Aus einer Endlosschleife raus – neu ansetzen
 argument-hint: [Ziel in einem Satz]
+effort: xhigh
 ---
 Stop. Der bisherige Ansatz funktioniert nicht.
 Lies die letzte funktionierende Version der betroffenen Datei aus Git (`git log --oneline` und `git show <commit>:<datei>`). Mein Ziel: $ARGUMENTS

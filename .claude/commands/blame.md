@@ -1,6 +1,7 @@
 ---
 description: Welcher Commit hat es kaputt gemacht?
 argument-hint: [Funktion oder Verhalten]
+effort: medium
 ---
 Das hier funktioniert nicht mehr: $ARGUMENTS
 
