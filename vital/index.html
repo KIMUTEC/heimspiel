@@ -500,6 +500,7 @@ function viewSetup(){const isNew=!P();
  return `<div class="wrap"><header><div class="mark">Vi<i>tal</i></div></header>
   ${isNew?`<div><span class="eyebrow">Schritt 1 von 3 · Deine Daten</span><h1 class="d hello" style="margin-top:6px">Dein Plan für ein fittes Leben</h1><div class="muted" style="margin-top:10px;max-width:50ch">Vital berechnet deinen Ernährungs- und Trainingsplan. Danach kannst du deine Gen-Datei (Schritt 2) und Blutwerte (Schritt 3) hochladen. Der Plan passt sich dann an deinen Körper an.</div></div>`:'<h1 class="d hello">Daten bearbeiten</h1>'}
   <section class="card">${profForm(P(),isNew)}</section>
+  ${isNew?`<section class="card"><b>Schon Daten vorhanden?</b><div class="small muted">Eine Vital-Sicherung oder ein Datenpaket mit Gen-Markern und Blutwerten laden.${V.genes||V.blood?' <b>Geladen: '+[V.genes?'Gen-Marker':'',V.blood?'Blutwerte':''].filter(Boolean).join(' und ')+'.</b>':''}</div><div><label class="btn" for="imp">Datei laden<input id="imp" type="file" accept="application/json,.json" hidden></label></div></section>`:''}
   <footer>Alle Daten bleiben nur auf diesem Gerät. Es gibt kein Konto und keinen Server. Vital ersetzt keine ärztliche Beratung.</footer></div>`}
 function weekStrip(){const t=today(),mon=addDays(t,-wday(t));let h='',plan=0,done=0;
  for(let i=0;i<7;i++){const k=addDays(mon,i),wo=woFor(k),dn=day(k).tr;if(wo)plan++;if(dn)done++;
@@ -583,7 +584,7 @@ function viewIch(){
    <div style="display:flex;gap:8px;flex-wrap:wrap">${perm==='default'||perm==='denied'?`<button class="btn" data-act="notif">Mitteilungen erlauben</button>`:''}<button class="btn" data-act="ics">In Kalender übernehmen</button></div>
    <div class="small muted">Mitteilungen kommen, solange Vital geöffnet ist${perm==='denied'?' (im Moment in den Einstellungen blockiert)':''}. Damit du auch bei geschlossener App erinnert wirst: „In Kalender übernehmen“ tippen. Der Kalender erinnert dann jeden Tag. Nach einer Änderung der Uhrzeiten die alten Termine im Kalender löschen und neu übernehmen.</div></section>
   <section class="card"><h2 class="d" style="font-size:1.6rem">Sicherung</h2><div class="small muted">Alle Daten liegen nur auf diesem Gerät. Mit einer Sicherung nimmst du sie auf ein neues Handy mit.</div>
-   <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="export">Sicherung herunterladen</button><label class="btn" for="imp">Sicherung laden<input id="imp" type="file" accept="application/json,.json" hidden></label><button class="btn danger" data-act="wipe">Alles löschen</button></div></section>`;
+   <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="export">Sicherung herunterladen</button><label class="btn" for="imp">Sicherung oder Datenpaket laden<input id="imp" type="file" accept="application/json,.json" hidden></label><button class="btn danger" data-act="wipe">Alles löschen</button></div></section>`;
 }
 
 /* =================== Aktionen =================== */
@@ -631,7 +632,13 @@ document.addEventListener('submit',e=>{e.preventDefault();const id=e.target.id;
 document.addEventListener('change',e=>{const t=e.target;
  if(t.id==='gene'){const f=t.files&&t.files[0];if(f)readGene(f);t.value='';return}
  if(t.id==='imp'){const f=t.files&&t.files[0];if(!f)return;const rd=new FileReader();
-  rd.onload=()=>{try{const o=JSON.parse(rd.result);if(o.app!=='vital'||!o.data||!o.data.profile)throw 0;V=o.data;save();UI.tab='heute';render(true);toast('Sicherung geladen')}catch(x){toast('Das ist keine gültige Vital-Sicherung.')}};rd.readAsText(f);t.value=''}});
+  rd.onload=()=>{try{const o=JSON.parse(rd.result);if(o.app!=='vital'||!o.data||typeof o.data!=='object')throw 0;const d=o.data;
+   if(d.profile){V=d;save();UI.tab='heute';render(true);toast('Sicherung geladen');return}
+   // Datenpaket ohne Profil: Gen-Marker, Blutwerte und Watch-Daten zu den vorhandenen Daten hinzufügen
+   const got=[];if(d.genes&&d.genes.gt){V.genes=d.genes;got.push('Gen-Marker')}if(d.blood&&d.blood.v){V.blood=d.blood;got.push('Blutwerte')}
+   if(d.watch&&typeof d.watch==='object'){V.watch={...(V.watch||{}),...d.watch};got.push('Watch-Daten')}if(!got.length)throw 0;
+   save();UI.tab='fokus';render(true);toast(got.join(' und ')+' geladen.'+(P()?' Dein Plan ist angepasst.':' Jetzt noch deine Körperdaten eingeben.'))}
+  catch(x){toast('Das ist keine gültige Vital-Datei.')}};rd.readAsText(f);t.value=''}});
 render(true);setTimeout(remCheck,2000);
 if('serviceWorker' in navigator&&location.protocol!=='file:'){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').then(r=>{setInterval(()=>r.update().catch(()=>{}),60*60*1000)}).catch(()=>{})})}
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
