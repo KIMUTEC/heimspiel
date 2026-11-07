@@ -22,3 +22,7 @@ Zwei Offline-PWAs ohne Build-Schritt und ohne Abhängigkeiten, gehostet über Gi
 
 ## Reels (`reels/`)
 Animierte KIMUTEC-Erklär-Reels für Instagram, unabhängig von den Apps. Anleitung in `reels/README.md`, Skill: `/reel`.
+
+## Plugins (in `.claude/settings.json`)
+- **Context7:** Nutz immer Context7, wenn du Doku zu einer Bibliothek, API oder einem Werkzeug brauchst (z. B. Playwright, ffmpeg, Piper, Web-APIs wie Service Worker), ohne dass ich extra danach frage.
+- **Agent Skills:** Größere neue Funktionen mit `/spec` → `/plan` → `/build` → `/test` angehen. Code-Review: `/agent-skills:review`.
