@@ -130,6 +130,10 @@ details.card>*+*{margin-top:12px}
 .ex b{display:block}
 .ex .rep{font-family:var(--display);font-weight:800;font-size:1.2rem;color:var(--acc);text-align:right;white-space:nowrap}
 .ex p{grid-column:1/-1;margin:0;font-size:.86rem;color:var(--muted)}
+.track{height:8px;border-radius:99px;background:var(--sunk);overflow:hidden;margin-top:4px}
+.track i{display:block;height:100%;background:var(--acc);border-radius:99px}
+.code{font-family:ui-monospace,Menlo,monospace;font-size:.8rem;background:var(--sunk);border-radius:10px;padding:10px;margin-top:6px;overflow-wrap:anywhere;user-select:all;-webkit-user-select:all}
+.guide li{margin:6px 0}
 .loading{padding:80px 0;text-align:center;color:var(--muted)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -266,12 +270,13 @@ function flagsOf(){
 function nutrition(k){
  const b=P();if(!b||!(b.h>0&&b.w>0))return null;const fl=flagsOf().f,hm2=(b.h/100)**2;
  const bmr=10*b.w+6.25*b.h-5*b.age+(b.sex==='f'?-161:5),tdee=bmr*[1.35,1.55,1.75][(b.act||2)-1]+((b.tdays||[]).length*250/7);
- let kcal=tdee+({ab:-450,halten:0,aufbau:250,leistung:150}[b.goal]||0);kcal=Math.round(Math.max(kcal,b.sex==='f'?1300:1500,bmr*1.05)/50)*50;
+ const tr=!!woFor(k);let kcal=tdee+({ab:-450,halten:0,aufbau:250,leistung:150}[b.goal]||0);kcal=Math.round(Math.max(kcal,b.sex==='f'?1300:1500,bmr*1.05)/50)*50;
+ const bonus=watchBonus(k,b,tr);kcal+=bonus;
  const bmi=b.w/hm2,refW=bmi>27?25*hm2+(b.w-25*hm2)*.3:b.w;
  let pk={ab:1.6,halten:1.2,aufbau:1.8,leistung:1.5}[b.goal]||1.2;if(fl.appetit)pk=Math.max(pk,1.5);
  const prot=Math.round(refW*pk/5)*5,fat=Math.round(kcal*(fl.zucker?.35:.3)/9),carb=Math.max(0,Math.round((kcal-prot*4-fat*9)/4));
- const tr=!!woFor(k),water=Math.round(Math.min(3500,Math.max(1500,b.w*35))/250)*250+(tr?500:0);
- return{kcal,prot,fat,carb,sat:Math.round(kcal*((fl.herz||fl.fett)?.07:.1)/9),fib:(fl.appetit||fl.zucker||fl.herz)?35:30,sug:(fl.leber||fl.zucker)?25:50,water,bmi,tr,bmr:Math.round(bmr),tdee:Math.round(tdee)};
+ const water=Math.round(Math.min(3500,Math.max(1500,b.w*35))/250)*250+(tr?500:0);
+ return{kcal,prot,fat,carb,sat:Math.round(kcal*((fl.herz||fl.fett)?.07:.1)/9),fib:(fl.appetit||fl.zucker||fl.herz)?35:30,sug:(fl.leber||fl.zucker)?25:50,water,bmi,tr,bonus,bmr:Math.round(bmr),tdee:Math.round(tdee)};
 }
 const MEALS=[
  {s:'f',n:'Haferbrei mit Beeren und Walnüssen',k:520,p:20,t:['milch'],i:[[60,'g','Haferflocken'],[250,'ml','Milch'],[100,'g','Beeren'],[15,'g','Walnüsse'],[0,'','Zimt']]},
@@ -392,6 +397,80 @@ async function readGene(file){
  catch(err){show('');toast(err&&err.message==='nozip'?'Dieses Gerät kann ZIP nicht entpacken. Bitte die entpackte .txt-Datei wählen.':'Die Datei konnte nicht gelesen werden.')}
 }
 
+/* =================== Apple Watch / Health über iPhone-Kurzbefehl =================== */
+// Der Kurzbefehl „Vital Watch“ kopiert z. B. "VITAL|steps=8432|rhr=58|sleep=7,2" in die Zwischenablage; Vital liest das beim Tippen auf „Watch-Daten einfügen“.
+const WKEYS={steps:['steps','schritte'],kcal:['kcal','aktiv','energie'],ex:['ex','training','trainingsminuten'],rhr:['rhr','ruhepuls'],hrv:['hrv'],sleep:['sleep','schlaf'],weight:['weight','gewicht'],vo2:['vo2','cardio','cardiofitness']};
+const WRANGE={steps:[0,100000],kcal:[0,8000],ex:[0,1000],rhr:[25,150],hrv:[3,300],sleep:[.5,16],weight:[30,300],vo2:[10,90]};
+function pnum(s,big){s=String(s).replace(/[^\d.,]/g,'');if(!s)return NaN;
+ if(big&&/^\d{1,3}(\.\d{3})+(,\d+)?$/.test(s))s=s.replace(/\./g,'');else if(big&&/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(s))s=s.replace(/,/g,'');
+ const x=parseFloat(s.replace(',','.'));return Number.isFinite(x)?x:NaN}
+function parseWatch(txt){const o={};
+ String(txt||'').split(/[|;\n]+/).forEach(part=>{const m=part.match(/^\s*([A-Za-zÄÖÜäöü0-9]+)\s*[=:]\s*(.*)$/);if(!m)return;
+  const key=m[1].toLowerCase(),k=Object.keys(WKEYS).find(x=>WKEYS[x].includes(key));if(!k)return;
+  let v=pnum(m[2],k==='steps'||k==='kcal');if(!Number.isFinite(v))return;
+  if(k==='sleep')v=v>1440?v/3600:v>24?v/60:v; // Sekunden, Minuten oder Stunden
+  v=(k==='steps'||k==='kcal'||k==='ex'||k==='rhr')?Math.round(v):Math.round(v*10)/10;
+  if(v>=WRANGE[k][0]&&v<=WRANGE[k][1])o[k]=v});
+ return o}
+function applyWatch(o){const n=Object.keys(o).length;if(!n){toast('Keine Watch-Daten gefunden. Bitte zuerst den Kurzbefehl „Vital Watch“ ausführen.');return}
+ const t=today();V.watch=V.watch||{};V.watch[t]={...(V.watch[t]||{}),...o,at:Date.now()};
+ const ks=Object.keys(V.watch).sort();while(ks.length>120)delete V.watch[ks.shift()];
+ let extra='';if(o.weight&&P()&&Math.abs(P().w-o.weight)>=.2){P().w=o.weight;extra=' Gewicht auf '+fmtN(o.weight)+' kg aktualisiert.'}
+ UI.wmanual=false;save();render(true);toast(n+' Watch-Werte übernommen.'+extra)}
+const fmtN=n=>String(n).replace('.',',');
+function wstats(){const W=V.watch||{},t=today(),d7=[];for(let i=1;i<=7;i++){const x=W[addDays(t,-i)];if(x)d7.push(x)}
+ const avg=k=>{const a=d7.map(x=>x[k]).filter(Number.isFinite);return a.length?a.reduce((s,x)=>s+x,0)/a.length:null};
+ return{today:W[t]||null,avg:{steps:avg('steps'),rhr:avg('rhr'),hrv:avg('hrv'),sleep:avg('sleep'),kcal:avg('kcal'),ex:avg('ex')},n:d7.length}}
+const stepGoal=()=>P()&&P().goal==='ab'?10000:8000;
+function watchTips(){const s=wstats(),w=s.today,a=s.avg,out=[];if(!w)return out;
+ if(w.rhr&&a.rhr&&w.rhr>=a.rhr+7)out.push('Ruhepuls '+w.rhr+' liegt deutlich über deinem Schnitt ('+Math.round(a.rhr)+'). Das kann Stress, wenig Schlaf oder ein Infekt sein: heute locker trainieren oder pausieren.');
+ else if(w.rhr&&w.rhr>85)out.push('Ruhepuls '+w.rhr+' ist hoch. Wenn das öfter vorkommt, ärztlich prüfen lassen.');
+ if(w.hrv&&a.hrv&&w.hrv<a.hrv*.75)out.push('HRV deutlich niedriger als sonst: der Körper braucht Erholung.');
+ if(w.sleep&&w.sleep<6)out.push('Nur '+fmtN(w.sleep)+' h Schlaf: heute früher ins Bett und leichter trainieren. Nach wenig Schlaf ist der Hunger größer, also Eiweiß und Gemüse statt Süßem.');
+ if(Number.isFinite(w.steps)){const g=stepGoal();if(w.steps>=g)out.push('Schrittziel geschafft!');else if(w.steps<g*.6)out.push('Noch '+fmt(g-w.steps)+' Schritte bis zum Ziel. Ein Spaziergang nach dem Essen hilft auch dem Blutzucker.')}
+ return out}
+function watchBonus(k,b,tr){const w=V.watch&&V.watch[k];if(!w||!Number.isFinite(w.kcal)||k!==today())return 0;
+ const base=[250,400,600][(b.act||2)-1]+(tr?250:0);return Math.min(800,Math.max(0,Math.round((w.kcal-base)*(b.goal==='ab'?.4:.6)/50)*50))}
+const WGUIDE=[
+ ['Schritte','Startdatum ist heute','Statistik berechnen: Summe','Schritte'],
+ ['Aktive Energie','Startdatum ist heute','Statistik berechnen: Summe','Aktiv'],
+ ['Trainingsminuten','Startdatum ist heute','Statistik berechnen: Summe','Training'],
+ ['Ruheherzfrequenz','Sortieren nach Startdatum, Neueste zuerst, Begrenzen auf 1','–','Ruhepuls'],
+ ['Herzfrequenzvariabilität','Startdatum in den letzten 1 Tagen','Statistik berechnen: Durchschnitt','HRV'],
+ ['Schlafanalyse','Startdatum in den letzten 1 Tagen, Wert ist nicht „Im Bett“ und Wert ist nicht „Wach“','„Details von Health-Messwerten abrufen: Dauer“, dann Statistik berechnen: Summe','Schlaf'],
+ ['Gewicht','Sortieren nach Startdatum, Neueste zuerst, Begrenzen auf 1','–','Gewicht'],
+ ['Cardiofitness (VO2max)','Sortieren nach Startdatum, Neueste zuerst, Begrenzen auf 1','–','VO2'],
+];
+const WTEXT='VITAL|steps=[Schritte]|kcal=[Aktiv]|ex=[Training]|rhr=[Ruhepuls]|hrv=[HRV]|sleep=[Schlaf]|weight=[Gewicht]|vo2=[VO2]';
+function watchGuide(){return `<ol class="tips guide">
+ <li>App <b>Kurzbefehle</b> öffnen, oben rechts <b>+</b> tippen und den Kurzbefehl <b>„Vital Watch“</b> nennen.</li>
+ <li>Für jede Zeile der Tabelle nacheinander hinzufügen: <b>„Health-Messwerte suchen“</b> (bei manchen iOS-Versionen „Gesundheitsproben suchen“) mit Typ und Filter, dann den zweiten Schritt (falls angegeben), dann <b>„Variable festlegen“</b> mit dem Namen.</li></ol>
+ <table class="ftable"><tbody><tr><td class="small muted">Typ und Filter</td><td class="small muted">danach → Variable</td></tr>${WGUIDE.map(([t,f,s,v])=>`<tr><td><b>${esc(t)}</b><br><span class="small muted">${esc(f)}</span></td><td class="small">${esc(s)}<br>→ <b>${esc(v)}</b></td></tr>`).join('')}</tbody></table>
+ <ol class="tips guide" start="3">
+ <li>Aktion <b>„Text“</b> hinzufügen und genau so schreiben. Die Wörter in eckigen Klammern durch die Variablen ersetzen (über die Leiste über der Tastatur):<div class="code">${esc(WTEXT)}</div></li>
+ <li>Aktion <b>„In Zwischenablage kopieren“</b> hinzufügen.</li>
+ <li>Optional: <b>„Mitteilung anzeigen“</b> mit „Watch-Daten kopiert. Jetzt Vital öffnen.“</li>
+ <li>Den Kurzbefehl einmal antippen und den Zugriff auf Health erlauben.</li>
+ <li>In Vital auf <b>„Watch-Daten einfügen“</b> tippen und „Einsetzen“ bestätigen.</li></ol>
+ <div class="small"><b>Jeden Abend automatisch:</b> In Kurzbefehle auf <b>Automation → +</b> tippen, <b>Tageszeit</b> 21:00 und <b>Täglich</b> wählen, <b>„Sofort ausführen“</b> einstellen und den Kurzbefehl „Vital Watch“ auswählen. Danach musst du abends nur noch Vital öffnen und „Watch-Daten einfügen“ tippen.</div>
+ <div class="small muted">Werte, die du nicht hast (z. B. kein Gewicht oder keine Watch beim Schlafen), kannst du weglassen. Die Daten bleiben nur auf deinem Gerät.</div>`}
+function manualBox(){return UI.wmanual?`<div style="display:flex;gap:8px"><input id="wtext" type="text" placeholder="Hier einfügen: VITAL|steps=…" autocomplete="off"><button class="btn" data-act="wmanual">Übernehmen</button></div>`:''}
+function watchCard(){const s=wstats(),w=s.today,has=V.watch&&Object.keys(V.watch).length;
+ if(!w)return `<section class="card"><div class="section-h" style="margin:0"><h2 class="d" style="font-size:1.7rem">Apple Watch</h2><span class="eyebrow">${has?'heute noch keine Daten':'nicht verbunden'}</span></div>
+  <div class="small muted">${has?'Kurzbefehl „Vital Watch“ ausführen, dann hier einfügen.':'Schritte, Puls, Schlaf und Kalorien von der Watch per iPhone-Kurzbefehl übernehmen.'}</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="go" data-act="pasteWatch">Watch-Daten einfügen</button>${has?'':'<button class="btn" data-act="toWatch">Anleitung</button>'}</div>${manualBox()}</section>`;
+ const g=stepGoal(),tips=watchTips(),f=(v,l)=>Number.isFinite(v)?`<div><b>${typeof v==='number'&&v>=1000?fmt(v):fmtN(v)}</b><span>${l}</span></div>`:'';
+ return `<section class="card"><div class="section-h" style="margin:0"><h2 class="d" style="font-size:1.7rem">Apple Watch</h2><span class="eyebrow">heute</span></div>
+  ${Number.isFinite(w.steps)?`<div><div class="small" style="display:flex;justify-content:space-between"><b>${fmt(w.steps)} Schritte</b><span class="muted">Ziel ${fmt(g)}</span></div><div class="track"><i style="width:${Math.min(100,w.steps/g*100)}%"></i></div></div>`:''}
+  <div class="facts">${f(w.rhr,'Ruhepuls')}${f(w.hrv,'HRV (ms)')}${f(w.sleep,'h Schlaf')}${f(w.kcal,'aktive kcal')}${f(w.ex,'Trainings-Min.')}${f(w.vo2,'VO2max')}</div>
+  ${tips.length?`<ul class="tips">${tips.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}
+  <div><button class="btn sm" data-act="pasteWatch">Neu einfügen</button></div>${manualBox()}</section>`}
+function watchHistory(){const W=V.watch||{},t=today(),rows=[];for(let i=0;i<7;i++){const k=addDays(t,-i);if(W[k])rows.push([k,W[k]])}if(!rows.length)return '';
+ const a=wstats().avg,c=v=>Number.isFinite(v)?fmtN(v):'–';
+ return `<section><div class="section-h"><h2 class="d">Watch-Verlauf</h2><span class="eyebrow">letzte 7 Tage</span></div><table class="ftable"><tbody><tr><td class="small muted">Tag</td><td class="small muted">Schritte · Ruhepuls · Schlaf · aktiv</td></tr>
+  ${rows.map(([k,w])=>`<tr><td><b>${esc(parseKey(k).toLocaleDateString('de-DE',{weekday:'short',day:'numeric',month:'short'}))}</b></td><td>${Number.isFinite(w.steps)?fmt(w.steps):'–'} · ${c(w.rhr)} · ${c(w.sleep)} h · ${Number.isFinite(w.kcal)?fmt(w.kcal):'–'} kcal</td></tr>`).join('')}</tbody></table>
+  ${a.rhr||a.steps?`<div class="small muted" style="margin-top:8px">Schnitt der Vortage: ${a.steps?fmt(Math.round(a.steps))+' Schritte':''}${a.rhr?' · Ruhepuls '+Math.round(a.rhr):''}${a.sleep?' · '+fmtN(Math.round(a.sleep*10)/10)+' h Schlaf':''}. Ein sinkender Ruhepuls über Wochen zeigt, dass deine Fitness steigt.</div>`:''}</section>`}
+
 /* =================== Ansichten =================== */
 const GOALS=[['ab','Abnehmen'],['halten','Halten'],['aufbau','Muskeln'],['leistung','Leistung']];
 const MOVE={ab:'150–300 Minuten Bewegung pro Woche, davon 2× Kraft. An allen Tagen 8.000–10.000 Schritte.',halten:'150 Minuten Bewegung pro Woche und 2× Kraft.',aufbau:'3× Kraft pro Woche. Nach dem Training 25–30 g Eiweiß.',leistung:'Vor dem Training Kohlenhydrate, danach Eiweiß und Kohlenhydrate. An Trainingstagen 0,5 l mehr trinken.'};
@@ -450,9 +529,10 @@ function viewHeute(){
   <section class="card"><div class="section-h" style="margin:0"><h2 class="d" style="font-size:1.7rem">Trinken</h2><span class="eyebrow">${fmtL(wl)} von ${fmtL(wg)}</span></div>${glasses}
    <div style="display:flex;gap:8px"><button class="btn" data-act="water" data-v="-1" aria-label="Ein Glas weniger">−</button><button class="go" style="flex:1;min-height:46px" data-act="water" data-v="1">+ 1 Glas (250 ml)</button></div>
    <div class="small muted">${wl>=wg?'Tagesziel geschafft. Stark!':'Wasser, Tee ohne Zucker oder Schorle (1:3).'+(wo?' Heute ist Trainingstag: 0,5 l mehr.':'')}</div></section>
+  ${watchCard()}
   ${n?`<section><div class="section-h"><h2 class="d">Dein Tagesbedarf</h2><span class="eyebrow">${esc(GOALS.find(g=>g[0]===p.goal)[1])}</span></div>
    <div class="facts"><div><b>${fmt(n.kcal)}</b><span>kcal</span></div><div><b>${n.prot}</b><span>g Eiweiß</span></div><div><b>${n.carb}</b><span>g Kohlenhydrate</span></div><div><b>${n.fat}</b><span>g Fett</span></div><div><b>${n.fib}</b><span>g Ballaststoffe</span></div></div>
-   <div class="small muted" style="margin-top:8px">Höchstens ${n.sat} g gesättigte Fette, ${n.sug} g Zucker und 5 g Salz.</div></section>`:''}
+   <div class="small muted" style="margin-top:8px">${n.bonus?'Inklusive +'+n.bonus+' kcal für deine Bewegung laut Watch. ':''}Höchstens ${n.sat} g gesättigte Fette, ${n.sug} g Zucker und 5 g Salz.</div></section>`:''}
   <section><div class="section-h"><h2 class="d">Tagesplan</h2><span class="eyebrow">${wo?'Trainingstag':'Erholungstag'}</span></div><div class="tl">${rows}</div></section>
   <footer>Der Plan ist eine Orientierung und ersetzt keine ärztliche Beratung. Bei Krankheiten, Schwangerschaft oder Medikamenten vorher mit dem Arzt sprechen.</footer>`;
 }
@@ -477,6 +557,7 @@ function viewFokus(){
    :`<section class="card"><b>Noch kein Fokus</b><div class="small muted">Lade unter „Ich“ deine Gen-Datei hoch oder trage Blutwerte ein. Dann zeigt Vital hier, worauf du besonders achten solltest.</div><div><button class="go" data-act="tab" data-t="ich">Daten eintragen</button></div></section>`}
   ${FL.rows.length?`<section><div class="section-h"><h2 class="d">Gen-Ergebnisse</h2><span class="eyebrow">${esc(V.genes.name)}</span></div><table class="ftable"><tbody>${FL.rows.map(r=>`<tr><td><b>${esc(r.g.g)}</b><br><span class="small muted">${r.g.rs} · ${esc(r.v)}</span></td><td class="${r.hit?'hit':''}">${esc(r.txt)}</td></tr>`).join('')}</tbody></table></section>`:''}
   ${V.blood?`<section><div class="section-h"><h2 class="d">Blutwerte</h2><span class="eyebrow">vom ${esc(shortDate(V.blood.date))}</span></div><table class="ftable"><tbody>${BLOOD.filter(([k])=>Number.isFinite(b[k])).map(([k,l,u])=>`<tr><td><b>${esc(l)}</b></td><td>${String(b[k]).replace('.',',')} ${u}</td></tr>`).join('')}</tbody></table>${(Date.now()-parseKey(V.blood.date))>365*864e5?'<div class="small muted" style="margin-top:8px">Die Werte sind über ein Jahr alt. Lass sie bald neu messen.</div>':''}</section>`:''}
+  ${watchHistory()}
   <footer>Gen-Ergebnisse zeigen Tendenzen, keine Diagnosen. Lebensstil wirkt meist stärker als die Gene.</footer>`;
 }
 function viewIch(){
@@ -492,6 +573,7 @@ function viewIch(){
     <label class="f" for="hbl-date">Datum der Blutabnahme<input id="hbl-date" type="date" value="${bl?bl.date:''}"></label>
     <div class="grid2">${BLOOD.map(([k,l,u])=>`<label class="f" for="hbl-${k}">${esc(l)} (${u})<input id="hbl-${k}" type="text" inputmode="decimal" value="${Number.isFinite(bv[k])?String(bv[k]).replace('.',','):''}"></label>`).join('')}</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="go" style="flex:1" type="submit">Blutwerte speichern</button>${bl?'<button class="btn danger" type="button" data-act="delBlood">Löschen</button>':''}</div></form></details>
+  <details class="card" id="sec-watch" ${UI.watch?'open':''}><summary><b>Apple Watch verbinden</b><span class="pill ${V.watch?'acc':''}">${V.watch?'verbunden':'Anleitung'}</span></summary>${watchGuide()}<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="go" data-act="pasteWatch">Watch-Daten einfügen</button></div>${manualBox()}</details>
   <section class="card"><h2 class="d" style="font-size:1.6rem">Erinnerungen</h2>
    <form id="hr" style="display:flex;flex-direction:column;gap:12px">
     <label class="chk"><input id="hr-on" type="checkbox" ${r.on?'checked':''}> Erinnerungen an Trinken, Essen und Training</label>
@@ -506,7 +588,7 @@ function viewIch(){
 
 /* =================== Aktionen =================== */
 const ACT={
- tab:el=>{UI.tab=el.dataset.t;UI.blood=false;render(true);window.scrollTo(0,0)},
+ tab:el=>{UI.tab=el.dataset.t;UI.blood=false;UI.watch=false;render(true);window.scrollTo(0,0)},
  edit:()=>{UI.edit=true;render(true);window.scrollTo(0,0)},
  cancelEdit:()=>{UI.edit=false;render(true)},
  water:el=>{const v=Number(el.dataset.v);setDay(today(),d=>{d.w=Math.max(0,Math.min(24,(d.w||0)+v))});render(true)},
@@ -524,6 +606,9 @@ const ACT={
  ics:async()=>{if(await shareFile(icsFor(),'vital-erinnerungen.ics','text/calendar','Vital-Erinnerungen'))toast('Kalenderdatei erstellt. Öffnen und „Alle hinzufügen“ tippen.')},
  export:async()=>{const data=JSON.stringify({app:'vital',version:1,exported:new Date().toISOString(),data:V},null,1);if(await shareFile(data,'vital-sicherung-'+today()+'.json','application/json','Vital-Sicherung'))toast('Sicherung erstellt')},
  wipe:()=>{if(!confirm('Wirklich alle Daten auf diesem Gerät löschen?'))return;V={};save();UI.tab='heute';render(true)},
+ pasteWatch:async()=>{try{if(!navigator.clipboard||!navigator.clipboard.readText)throw 0;const t=await navigator.clipboard.readText();if(!/=/.test(t||''))throw 1;applyWatch(parseWatch(t))}catch(e){UI.wmanual=true;render(true);toast(e===1?'In der Zwischenablage sind keine Watch-Daten. Erst den Kurzbefehl ausführen.':'Einfügen ging nicht automatisch. Bitte ins Feld tippen und „Einsetzen“ wählen.')}},
+ wmanual:()=>{const el=$('#wtext');applyWatch(parseWatch(el?el.value:''))},
+ toWatch:()=>{UI.tab='ich';UI.watch=true;render(true);const e=$('#sec-watch');if(e)e.scrollIntoView()},
  hideInstall:()=>{try{localStorage.setItem('vital.hideInstall','1')}catch(e){}render(true)},
 };
 document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el)return;const f=ACT[el.dataset.act];if(!f)return;e.preventDefault();f(el,e)});
