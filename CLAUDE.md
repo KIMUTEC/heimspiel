@@ -19,3 +19,6 @@ Zwei Offline-PWAs ohne Build-Schritt und ohne Abhängigkeiten, gehostet über Gi
 2. Cache-Version erhöhen, sonst sehen Nutzer die Änderung nicht. Skill: `/release`.
    - Heimspiel: `const V='heimspiel-vN'` in `sw.js`
    - Vital: `const V='vital-vN'` in `vital/sw.js` **und** `const VERSION='JJJJ-MM-TT.N'` in `vital/index.html`
+
+## Reels (`reels/`)
+Animierte KIMUTEC-Erklär-Reels für Instagram, unabhängig von den Apps. Anleitung in `reels/README.md`, Skill: `/reel`.

@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Reel-Bühne</title>
+<!--
+  Bühne für 1080×1920-Reels. render.mjs lädt diese Seite, übergibt das Drehbuch mit
+  ladeReel(drehbuch, zeiten) und ruft für jedes Bild zeige(sekunde) auf.
+  Alles hängt nur von der Zeit ab, deshalb ist jedes Bild reproduzierbar.
+  Zum Anschauen im Browser: buehne.html?drehbuch=../projekte/<name>/drehbuch.json
+-->
+<style>
+@font-face{font-family:"Montserrat";font-weight:100 900;src:url(../fonts/montserrat-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Montserrat";font-weight:100 900;src:url(../fonts/montserrat-latinext.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+:root{
+  --bg:#111312; --ink:#EEEAE2; --muted:#A3A09A; --akzent:#D8B79C; --linie:#3A3E3C;
+  --wand:#1E2120; --schraffur:#2E3230;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg)}
+body{width:1080px;height:1920px;overflow:hidden;position:relative;font-family:"Montserrat",sans-serif;color:var(--ink);
+  background:radial-gradient(120% 70% at 50% 40%,#151817 0%,var(--bg) 70%)}
+#logo{position:absolute;left:80px;top:196px;height:92px}
+.szene{position:absolute;inset:0;padding:340px 80px 0}
+.label{font-size:31px;font-weight:600;letter-spacing:.09em;color:var(--akzent);text-transform:uppercase;margin:0 0 14px}
+.titel{font-size:96px;line-height:1.08;font-weight:700;letter-spacing:-.01em;margin:0}
+.titel span{display:block}
+.strich{display:block;margin:38px 0 0;width:246px;height:4px}
+.bild{display:block;width:920px;margin-top:70px;overflow:visible}
+.text{margin-top:44px;font-size:34px;line-height:1.45;font-weight:500;color:#D9D5CE}
+.text p{margin:0}
+.text .punkt{font-weight:600;color:var(--ink);padding-left:56px;position:relative;margin-top:12px}
+.text .punkt::before{content:"";position:absolute;left:0;top:.72em;width:30px;height:3px;background:var(--akzent)}
+.text .klein{font-size:30px;color:var(--muted);font-weight:500}
+/* Abschluss-Szene */
+.abschluss{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:560px}
+.abschluss .logo-gross{height:150px}
+.abschluss .label{margin-top:56px}
+.abschluss .titel{font-size:90px}
+.abschluss .unter{margin-top:30px;font-size:34px;line-height:1.4;color:var(--muted);font-weight:500}
+.kontakt{margin-top:64px;border:2px solid var(--linie);padding:30px 44px;text-align:left;font-size:33px;font-weight:600;width:820px}
+.kontakt div{display:flex;gap:34px;padding:9px 0;align-items:baseline}
+.kontakt b{font-size:20px;letter-spacing:.14em;color:var(--muted);font-weight:600;width:150px;flex:none}
+.motto{margin-top:58px;font-size:25px;letter-spacing:.3em;color:var(--muted);font-weight:600}
+.motto i{display:block;margin:16px auto 0;width:180px;height:3px;background:var(--akzent)}
+/* Bausteine für Zeichnungen (im Drehbuch nutzbar) */
+.wand{fill:url(#schraffur);stroke:none}
+.daemmung{fill:url(#daemmung);stroke:none}
+.offen{fill:#0B0C0C;stroke:var(--linie);stroke-width:2}
+.linie{fill:none;stroke:var(--ink);stroke-width:4}
+.duenn{fill:none;stroke:var(--ink);stroke-width:2}
+.akzent{fill:var(--akzent);stroke:none}
+.akzent-linie{fill:none;stroke:var(--akzent);stroke-width:4}
+.mass{fill:none;stroke:var(--muted);stroke-width:2}
+.schrift{fill:var(--ink);font-family:"Montserrat";font-weight:600;font-size:30px}
+.schrift-klein{fill:var(--muted);font-family:"Montserrat";font-weight:600;font-size:22px;letter-spacing:.12em}
+.schrift-akzent{fill:var(--akzent);font-family:"Montserrat";font-weight:700;font-size:24px;letter-spacing:.1em}
+.glas{fill:#151A1C;stroke:none}
+.schrift-text{fill:var(--muted);font-family:"Montserrat";font-weight:500;font-size:24px}
+.schrift-gross{fill:#D9D5CE;font-family:"Montserrat";font-weight:500;font-size:34px}
+.schrift-punkt{fill:var(--ink);font-family:"Montserrat";font-weight:600;font-size:34px}
+.rahmen{fill:#F2EFE8;stroke:none}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <pattern id="schraffur" width="22" height="22" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="22" height="22" fill="#1F2221"/><line x1="0" y1="0" x2="0" y2="22" stroke="#373C3A" stroke-width="2.5"/>
+    </pattern>
+    <pattern id="daemmung" width="40" height="14" patternUnits="userSpaceOnUse">
+      <rect width="40" height="14" fill="#2A241E"/><line x1="0" y1="7" x2="40" y2="7" stroke="#6E5A48" stroke-width="2"/>
+    </pattern>
+    <marker id="pfeil" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#A3A09A"/>
+    </marker>
+  </defs>
+</svg>
+<svg id="logo" viewBox="0 0 330 92" aria-label="KIMUTEC Fenstertechnik">
+  <g fill="none" stroke="#EEEAE2" stroke-width="3.4" stroke-linejoin="round">
+    <rect x="18" y="12" width="40" height="68"/>
+    <path d="M18 12 L4 20 L4 88 L18 80" stroke="#D8B79C"/>
+    <path d="M58 12 L66 8 L66 84 L58 80"/>
+  </g>
+  <text x="80" y="52" font-family="Montserrat" font-weight="800" font-size="44" letter-spacing="1" fill="none" stroke="#EEEAE2" stroke-width="1.6">KIMU<tspan stroke="#D8B79C">TEC</tspan></text>
+  <text x="82" y="76" font-family="Montserrat" font-weight="600" font-size="13.5" letter-spacing="5.2" fill="#A3A09A">FENSTERTECHNIK</text>
+</svg>
+<div id="szenen"></div>
+<script>
+const NS='http://www.w3.org/2000/svg';
+let REEL=null;          // {szenen:[{el, start, dauer, sprechStart, sprechDauer, teile:[...]}]}
+const klemm=x=>Math.max(0,Math.min(1,x));
+const sanft=x=>1-Math.pow(1-klemm(x),3);
+
+function zeitWert(v, sz, standard){
+  // Zahl = Sekunden ab Szenenbeginn, "60%" = Anteil der Sprechzeit (ab Sprechbeginn)
+  if(v==null||v==='')return standard;
+  const s=String(v).trim();
+  if(s.endsWith('%'))return sz.sprechStart+sz.sprechDauer*parseFloat(s)/100;
+  return parseFloat(s);
+}
+
+function teil(el, sz, art, tIn, dauer, tAus){
+  const t={el, art, tIn:zeitWert(el.dataset.t??tIn,sz,0), dauer:parseFloat(el.dataset.d??dauer??.6), tAus:zeitWert(el.dataset.aus??tAus,sz,null)};
+  if(el.classList.contains('zeichnen'))t.art='zeichnen';
+  if(el.dataset.bewegung){const [dx,dy,tb,db]=el.dataset.bewegung.split(',').map(s=>s.trim());t.bew={dx:+dx,dy:+dy,t:zeitWert(tb,sz,0),d:parseFloat(db||1)}}
+  if(t.art==='zeichnen'){
+    const formen=el.matches('path,line,rect,polyline,polygon,circle,ellipse')?[el]:[...el.querySelectorAll('path,line,rect,polyline,polygon,circle,ellipse')];
+    t.formen=formen.map(f=>{const l=f.getTotalLength?f.getTotalLength():0;f.style.strokeDasharray=l;return{f,l}});
+  }
+  sz.teile.push(t);
+}
+
+function baueSzene(s, i){
+  const d=document.createElement('section');
+  d.className='szene'+(s.art==='abschluss'?' abschluss':'');
+  if(s.art==='abschluss'){
+    const k=s.kontakt||{};
+    d.innerHTML=`<svg class="logo-gross" data-t="0.1" viewBox="0 0 330 92">${document.getElementById('logo').innerHTML}</svg>
+      <p class="label" data-t="0.4">${s.label||''}</p>
+      <h1 class="titel" data-t="0.6">${(s.titel||'').split('\n').map(z=>`<span>${z}</span>`).join('')}</h1>
+      ${s.unter?`<p class="unter" data-t="1.0">${s.unter.replace(/\n/g,'<br>')}</p>`:''}
+      <div class="kontakt" data-t="1.4">${(k.zeilen||[]).map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join('')}</div>
+      ${s.motto?`<p class="motto" data-t="1.9">${s.motto}<i></i></p>`:''}`;
+  }else{
+    d.innerHTML=`<p class="label">${s.label||''}</p>
+      <h1 class="titel">${(s.titel||'').split('\n').map(z=>`<span>${z}</span>`).join('')}</h1>
+      <svg class="strich" viewBox="0 0 246 4"><rect width="246" height="4" fill="#EEEAE2"/><rect x="82" width="82" height="4" fill="#D8B79C"/></svg>
+      ${s.bild?`<svg class="bild" viewBox="0 0 920 ${s.bildHoehe||560}" style="height:${(s.bildHoehe||560)}px">${s.bild}</svg>`:''}
+      <div class="text">${(s.text||[]).map(x=>{const o=typeof x==='string'?{s:x}:x;
+        return `<p class="${o.punkt?'punkt':''} ${o.klein?'klein':''}" ${o.t!=null?`data-t="${o.t}"`:''} ${o.aus!=null?`data-aus="${o.aus}"`:''}>${o.s}</p>`}).join('')}</div>`;
+  }
+  document.getElementById('szenen').appendChild(d);
+  return d;
+}
+
+window.ladeReel=function(drehbuch, zeiten){
+  document.getElementById('szenen').innerHTML='';
+  REEL={szenen:[], gesamt:zeiten.gesamt};
+  drehbuch.szenen.forEach((s,i)=>{
+    const el=baueSzene(s,i), z=zeiten.szenen[i];
+    const sz={el, start:z.start, dauer:z.dauer, sprechStart:z.sprechStart, sprechDauer:z.sprechDauer, teile:[], letzte:i===drehbuch.szenen.length-1};
+    if(s.art==='abschluss'){
+      el.querySelectorAll('[data-t]').forEach(e=>teil(e,sz,'auf'));
+    }else{
+      teil(el.querySelector('.label'),sz,'auf',0.05,.5);
+      el.querySelectorAll('.titel span').forEach((e,k)=>teil(e,sz,'auf',0.15+k*.12,.6));
+      teil(el.querySelector('.strich'),sz,'breit',0.55,.6);
+      // Bild-Elemente: nur direkte Kinder mit data-t werden animiert, Rest steht sofort
+      el.querySelectorAll('.bild [data-t], .bild .zeichnen').forEach(e=>teil(e,sz,'auf',0.5,.7));
+      const ps=[...el.querySelectorAll('.text p')];
+      ps.forEach((e,k)=>teil(e,sz,'auf',zeitWert(null,sz,1.2+k*.5),.55));
+    }
+    REEL.szenen.push(sz);
+  });
+};
+
+function wende(t, ts){
+  let p=sanft((ts-t.tIn)/t.dauer);
+  if(t.tAus!=null)p*=1-sanft((ts-t.tAus)/.4);
+  const el=t.el;
+  if(t.art==='zeichnen'){
+    for(const {f,l} of t.formen)f.style.strokeDashoffset=l*(1-p);
+    el.style.opacity=p>0?1:0;
+    if(t.tAus!=null)el.style.opacity=1-sanft((ts-t.tAus)/.4);
+  }else if(t.art==='breit'){
+    el.style.clipPath=`inset(0 ${100-p*100}% 0 0)`;
+  }else{
+    el.style.opacity=p;
+    if(!(el instanceof SVGElement))el.style.transform=`translateY(${(1-p)*26}px)`;
+  }
+  if(t.bew){const q=sanft((ts-t.bew.t)/t.bew.d);el.style.transform=`translate(${t.bew.dx*q}px,${t.bew.dy*q}px)`}
+}
+
+window.zeige=function(sek){
+  const logo=document.getElementById('logo');
+  let logoSicht=1;
+  for(const sz of REEL.szenen){
+    const ts=sek-sz.start;
+    const ein=sanft(ts/.35), aus=sz.letzte?1:1-sanft((ts-(sz.dauer-.3))/.3);
+    const sicht=ts<0||ts>sz.dauer+.01?0:Math.min(ein,aus);
+    sz.el.style.display=sicht>0?'block':'none';
+    if(sicht<=0)continue;
+    sz.el.style.opacity=sicht;
+    for(const t of sz.teile)wende(t,ts);
+    if(sz.el.classList.contains('abschluss'))logoSicht=Math.min(logoSicht,1-sicht);
+  }
+  logo.style.opacity=logoSicht;
+};
+
+// Vorschau im Browser: buehne.html?drehbuch=pfad – schätzt Zeiten ohne Sprecher und spielt ab
+const q=new URLSearchParams(location.search).get('drehbuch');
+if(q)fetch(q).then(r=>r.json()).then(db=>{
+  let t=0;const sz=db.szenen.map(s=>{const sp=(s.sprecher||'').split(/\s+/).length/2.6, d=s.dauer||Math.max(3,sp+1.2);const z={start:t,dauer:d,sprechStart:.3,sprechDauer:sp};t+=d;return z});
+  ladeReel(db,{szenen:sz,gesamt:t});const t0=performance.now();
+  (function lauf(){const s=((performance.now()-t0)/1000)%t;zeige(s);requestAnimationFrame(lauf)})();
+});
+</script>
+</body>
+</html>
