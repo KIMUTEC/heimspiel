@@ -1,0 +1,17 @@
+{
+  "name": "Vital – Ernährung, Training, Gesundheit",
+  "short_name": "Vital",
+  "description": "Ernährungs- und Trainingsplan aus Genen und Blutwerten, mit Trink- und Essens-Erinnerungen",
+  "lang": "de",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#F2F5F4",
+  "theme_color": "#0F766E",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
