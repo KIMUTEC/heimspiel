@@ -1,5 +1,5 @@
 // Heimspiel Offline-Speicher: alle Dateien werden beim ersten Öffnen gespeichert.
-const V='heimspiel-v3';
+const V='heimspiel-v4';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icons/icon-180.png','./icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png','./icons/favicon-32.png','./fonts/bsd-latin.woff2','./fonts/bsd-latinext.woff2','./fonts/figtree-latin.woff2','./fonts/figtree-latinext.woff2'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==V).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
@@ -11,3 +11,4 @@ self.addEventListener('fetch',e=>{
     return net.then(res=>res||(r.mode==='navigate'?caches.match('./index.html'):Response.error()));
   }));
 });
+self.addEventListener('notificationclick',e=>{e.notification.close();e.waitUntil(self.clients.matchAll({type:'window',includeUncontrolled:true}).then(cs=>{for(const c of cs){if('focus' in c)return c.focus()}return self.clients.openWindow('./')}))});

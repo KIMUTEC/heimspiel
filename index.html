@@ -122,7 +122,7 @@ header{display:flex;align-items:center;justify-content:space-between;gap:12px;bo
 .track i{display:block;height:100%;background:var(--acc);border-radius:99px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:14px}
 label.f{display:flex;flex-direction:column;gap:6px;font-size:.84rem;font-weight:600;color:var(--muted);min-width:0}
-input[type=text],input[type=number]{width:100%;background:var(--sunk);border:1px solid var(--line);border-radius:12px;padding:11px 12px;min-height:46px}
+input[type=text],input[type=number],input[type=time],input[type=date],select{width:100%;background:var(--sunk);border:1px solid var(--line);border-radius:12px;padding:11px 12px;min-height:46px}
 input:focus{outline:2px solid var(--acc);outline-offset:-1px}
 .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .err{color:var(--bad);font-weight:600;font-size:.9rem}
@@ -133,7 +133,7 @@ input:focus{outline:2px solid var(--acc);outline-offset:-1px}
 footer{font-size:.82rem;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
 /* Tabs */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.tabs nav{max-width:720px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr)}
+.tabs nav{max-width:720px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
 .tabs button{background:none;border:0;padding:10px 4px 9px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.74rem;font-weight:700;color:var(--muted);cursor:pointer;letter-spacing:.04em;text-transform:uppercase}
 .tabs svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .tabs button[aria-current="page"]{color:var(--acc)}
@@ -174,6 +174,41 @@ footer{font-size:.82rem;color:var(--muted);border-top:1px solid var(--line);padd
 .fb .sbtn{min-height:52px}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(86px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-weight:600;font-size:.9rem;z-index:95;max-width:calc(100% - 32px);text-align:center}
 .loading{padding:80px 0;text-align:center;color:var(--muted)}
+/* Fit */
+.chk{display:flex;gap:10px;align-items:center;font-weight:600}
+.chk input{width:22px;height:22px;accent-color:var(--acc);flex:none}
+.tl{display:flex;flex-direction:column}
+.tlr{display:grid;grid-template-columns:58px minmax(0,1fr);gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.tlr.mini{padding:7px 0;font-size:.9rem;color:var(--muted)}
+.tlr .tt{font-family:var(--display);font-weight:800;font-size:1.3rem;font-variant-numeric:tabular-nums;color:var(--muted);line-height:1.15}
+.tlr.mini .tt{font-size:1.05rem}
+.tlr.now .tt{color:var(--acc)}
+.tlr.now{box-shadow:inset 3px 0 0 var(--acc);padding-left:8px}
+.tlr.past{opacity:.55}
+.tlb{display:flex;flex-direction:column;gap:6px;min-width:0}
+.tla{display:flex;gap:8px;flex-wrap:wrap}
+.btn.sm{min-height:38px;padding:5px 12px;font-size:.88rem}
+.btn.on{background:var(--soft);color:var(--acc);border-color:var(--acc)}
+.acc{color:var(--acc);font-weight:700}
+details>summary{cursor:pointer;list-style:none}
+details>summary::-webkit-details-marker{display:none}
+details.card>summary{display:flex;justify-content:space-between;align-items:center;gap:10px}
+details.card{display:block;padding:16px 18px}
+details.card>*+*{margin-top:12px}
+.ing{margin:6px 0 0;padding-left:18px;font-size:.9rem;color:var(--muted)}
+.tips{margin:0;padding-left:18px;font-size:.92rem}
+.tips li{margin:2px 0}
+.glasses{display:flex;flex-wrap:wrap;gap:5px}
+.glasses i{width:18px;height:24px;border:2px solid var(--acc);border-radius:3px 3px 7px 7px}
+.glasses i.on{background:var(--acc)}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+.focus{gap:8px;padding:14px}
+.card.alert{border-color:var(--bad);border-width:2px}
+.card.setup{border-color:var(--acc);border-width:2px}
+.ftable{width:100%;border-collapse:collapse;font-size:.88rem}
+.ftable td{padding:8px 4px;border-top:1px solid var(--line);vertical-align:top}
+.ftable td.hit{color:var(--ink);font-weight:600}
+.ftable td:first-child{width:42%}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -430,7 +465,8 @@ async function boot(){
 
 
 /* =================== Profil & Coach =================== */
-const AGEG={mini:'6–9',kids:'10–13',teen:'14–17'};
+const AGEG={mini:'6–9 Jahre',kids:'10–13 Jahre',teen:'14–17 Jahre'};
+const ageLabel=p=>p.age>=18?'Erwachsene':AGEG[group(p.age)];
 const LVL=[['1','Einsteiger'],['2','Fortgeschritten'],['3','Könner']];
 const RANKS=[[0,'Rookie'],[5,'Talent'],[15,'Stammspieler'],[30,'Kapitän'],[60,'Star'],[100,'Legende']];
 const me=()=>S.app&&S.app.profiles.find(p=>p.id===S.app.active)||(S.app&&S.app.profiles[0])||null;
@@ -464,8 +500,8 @@ const FB={leicht:'Zu leicht',gut:'Genau richtig',schwer:'Zu schwer'};
 let toastT;function toast(m){$('#toast').innerHTML=`<div class="toast" role="status">${esc(m)}</div>`;clearTimeout(toastT);toastT=setTimeout(()=>$('#toast').innerHTML='',3000)}
 
 /* =================== Ansichten =================== */
-const TABI={coach:'<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',units:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5l3.5 2.6-1.3 4.1H9.8l-1.3-4.1z"/>',profil:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>'};
-const TABS=[['coach','Coach'],['units','Einheiten'],['profil','Profil']];
+const TABI={coach:'<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',units:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5l3.5 2.6-1.3 4.1H9.8l-1.3-4.1z"/>',profil:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>',fit:'<path d="M12 3s6 6.4 6 11a6 6 0 0 1-12 0c0-4.6 6-11 6-11z"/><path d="M9.5 14.5a2.5 2.5 0 0 0 2.5 2.5"/>'};
+const TABS=[['coach','Coach'],['units','Einheiten'],['fit','Fit'],['profil','Profil']];
 let deferred=false;
 const editing=()=>{const a=document.activeElement;return a&&/^(INPUT|SELECT)$/.test(a.tagName)&&a.closest('#app')};
 document.addEventListener('focusout',()=>setTimeout(()=>{if(deferred&&!editing()){deferred=false;render(true)}},0));
@@ -474,7 +510,7 @@ function render(force){
   applySport();const app=$('#app');
   if(!S.ready){app.innerHTML='<div class="wrap"><div class="loading">Heimspiel lädt …</div></div>';return}
   if(!S.app||!S.app.profiles.length||S.ui.add){app.innerHTML=viewOnboard();drawAnims();return}
-  const p=me(),v={coach:viewCoach,units:viewUnits,profil:viewProfil}[S.ui.tab]||viewCoach;
+  const p=me(),v={coach:viewCoach,units:viewUnits,fit:viewFit,profil:viewProfil}[S.ui.tab]||viewCoach;
   app.innerHTML=`<div class="wrap"><header><div class="mark">Heim<i>spiel</i></div><button class="who" data-act="tab" data-t="profil" aria-label="Profil öffnen"><span class="av">${esc(p.name.slice(0,1).toUpperCase())}</span></button></header>${v(p)}</div>
   <div class="tabs"><nav>${TABS.map(([id,l])=>`<button data-act="tab" data-t="${id}" ${S.ui.tab===id?'aria-current="page"':''}><svg viewBox="0 0 24 24">${TABI[id]}</svg>${l}</button>`).join('')}</nav></div>`;
   if(S.sheet)renderSheet();drawAnims();
@@ -509,7 +545,7 @@ function backupHint(p){let last=0;try{last=Number(localStorage.getItem('heimspie
   return `<div class="install"><div style="flex:1"><b>Zeit für eine Sicherung</b>${last?'Die letzte Sicherung ist über 30 Tage alt.':'Du hast noch keine Sicherung.'} Speichere deine Trainings, damit sie bei einem neuen Gerät nicht verloren gehen.</div><button class="btn" data-act="export">Sichern</button></div>`}
 function viewUnits(p){
   const progs=homeProgs(p);
-  return `<div><span class="eyebrow">${p.sport==='b'?'Basketball':'Fußball'} · ${AGEG[group(p.age)]} Jahre · ${LVL[(Number(p.level)||2)-1][1]}</span><h1 class="d hello">Einheiten</h1></div>
+  return `<div><span class="eyebrow">${p.sport==='b'?'Basketball':'Fußball'} · ${ageLabel(p)} · ${LVL[(Number(p.level)||2)-1][1]}</span><h1 class="d hello">Einheiten</h1></div>
    <section><div class="list">${progs.map(pr=>`<button class="item" data-act="open" data-p="${pr.id}">${animTag(mainEx(pr))}<div style="min-width:0"><div class="n">${esc(pr.n)}</div><div class="s">${pr.sport==='a'?'Athletik · ':''}${esc(pr.d)}</div></div><div class="min">${mins(pr.id,p)}′</div></button>`).join('')}</div></section>
    <footer>Vorher Platz schaffen und für drinnen einen weichen Ball nehmen. Bei Schmerzen sofort aufhören. Jede Einheit beginnt mit Aufwärmen und endet mit Dehnen.</footer>`;
 }
@@ -525,12 +561,12 @@ function viewProfil(p){
    <section class="card"><h2 class="d" style="font-size:1.6rem">Profil bearbeiten</h2>${profForm(p,false)}</section>
    <section class="card"><h2 class="d" style="font-size:1.6rem">Profile</h2><div class="profiles">${S.app.profiles.map(x=>`<button class="pbtn ${x.id===p.id?'on':''}" data-act="switch" data-id="${x.id}"><span class="av">${esc(x.name.slice(0,1).toUpperCase())}</span><span style="flex:1;min-width:0"><b>${esc(x.name)}</b><br><span class="small muted">${x.sport==='b'?'Basketball':'Fußball'} · ${x.age} Jahre</span></span></button>`).join('')}</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="add">+ Profil hinzufügen</button><button class="btn" data-act="export">Sicherung herunterladen</button><label class="btn" for="imp">Sicherung laden<input id="imp" type="file" accept="application/json,.json" hidden></label><button class="btn danger" data-act="askDel">Profil löschen</button></div>
-    <div class="small muted">Die Daten liegen nur auf diesem Gerät. Mit „Sicherung herunterladen“ nimmst du sie auf ein neues Gerät mit und lädst sie dort mit „Sicherung laden“. Gespeichert werden nur Vorname, Alter, Sportart und die Trainings.</div></section>`;
+    <div class="small muted">Die Daten liegen nur auf diesem Gerät. Mit „Sicherung herunterladen“ nimmst du sie auf ein neues Gerät mit und lädst sie dort mit „Sicherung laden“. Gesundheitsdaten (Körperdaten, Gen-Marker, Blutwerte) bleiben nur auf diesem Gerät und kommen nur in die Sicherungsdatei.</div></section>`;
 }
 function profForm(p,isNew){
   const radio=(name,val,opts)=>`<div class="seg">${opts.map(([v,l])=>`<label><input type="radio" name="${name}" value="${v}" ${String(val)===String(v)?'checked':''}><span>${l}</span></label>`).join('')}</div>`;
   return `<form id="pf" style="display:flex;flex-direction:column;gap:14px">
-   <div class="grid2"><label class="f" for="pf-n">Vorname<input id="pf-n" type="text" maxlength="20" value="${esc(p.name)}" autocomplete="off" required></label><label class="f" for="pf-a">Alter<input id="pf-a" type="number" min="6" max="17" value="${p.age}" required></label></div>
+   <div class="grid2"><label class="f" for="pf-n">Vorname<input id="pf-n" type="text" maxlength="20" value="${esc(p.name)}" autocomplete="off" required></label><label class="f" for="pf-a">Alter<input id="pf-a" type="number" inputmode="numeric" min="6" max="99" value="${p.age}" required></label></div>
    <div class="f">Sportart${radio('pf-s',p.sport,[['f','Fußball'],['b','Basketball']])}</div>
    <div class="f">Wie gut bist du schon?${radio('pf-l',p.level,LVL)}</div>
    <div class="f">Trainings pro Woche zu Hause${radio('pf-d',p.days,[[2,'2×'],[3,'3×'],[4,'4×']])}</div>
@@ -540,9 +576,9 @@ function profForm(p,isNew){
 function viewOnboard(){
   const first=!S.app||!S.app.profiles.length;
   return `<div class="wrap"><header><div class="mark">Heim<i>spiel</i></div></header>
-   ${first?`<div><span class="eyebrow">Fußball &amp; Basketball · 6 bis 17 Jahre</span><h1 class="d hello" style="margin-top:6px">Dein Coach für zu Hause</h1><div class="muted" style="margin-top:10px;max-width:46ch">Ein Wochenplan mit Ballübungen, die eine Figur vormacht. Nach jedem Training passt sich der Coach an dich an.</div></div>`:'<h1 class="d hello">Neues Profil</h1>'}
+   ${first?`<div><span class="eyebrow">Fußball &amp; Basketball · Kinder ab 6 und Erwachsene</span><h1 class="d hello" style="margin-top:6px">Dein Coach für zu Hause</h1><div class="muted" style="margin-top:10px;max-width:46ch">Ein Wochenplan mit Ballübungen, die eine Figur vormacht. Dazu ein Tagesplan für Essen und Trinken mit Erinnerungen. Erwachsene können Gen-Datei und Blutwerte hochladen und bekommen einen eigenen Ernährungsplan.</div></div>`:'<h1 class="d hello">Neues Profil</h1>'}
    <section class="card">${profForm({name:'',age:11,sport:'f',level:'1',days:3},true)}</section>
-   <footer>Für Eltern: Gespeichert werden nur Vorname, Alter, Sportart und die Trainings. Kein Wiegen, kein Kalorienzählen. Bei Schmerzen sofort aufhören.</footer></div>`;
+   <footer>Für Eltern: Bei Kindern speichert Heimspiel nur Vorname, Alter, Sportart, Trainings und getrunkene Gläser. Kein Wiegen, kein Kalorienzählen. Bei Schmerzen sofort aufhören.</footer></div>`;
 }
 function renderSheet(){
   const el=$('#sheet');if(!S.sheet){el.innerHTML='';return}
@@ -590,6 +626,294 @@ function draw(){
   drawAnims();
 }
 
+/* =================== Fit: Ernährung, Trinken, Erinnerungen =================== */
+// Gesundheitsdaten liegen nur in diesem Browser (eigener Speicher, keine Cloud). Rohdaten der Gen-Datei werden nie gespeichert, nur die ausgewerteten Marker.
+const HS_KEY='heimspiel.health';
+let H={};try{H=JSON.parse(localStorage.getItem(HS_KEY)||'{}')||{}}catch(e){H={}}
+function saveH(){Object.values(H).forEach(h=>{const ks=Object.keys(h.days||{}).sort();while(ks.length>60)delete h.days[ks.shift()]});try{localStorage.setItem(HS_KEY,JSON.stringify(H))}catch(e){toast('Speicher voll. Bitte eine Sicherung herunterladen.')}}
+const adult=p=>p.age>=18;
+const REM0={on:false,wake:'07:00',sleep:'22:30',every:2,train:'17:00'};
+function hp(p=me()){const h=H[p.id]||(H[p.id]={});h.rem={...REM0,...(h.rem||{})};h.days=h.days||{};return h}
+const hday=(k,p=me())=>hp(p).days[k]||{w:0,m:{},sw:{}};
+function setDay(k,fn,p=me()){const h=hp(p),d=clone(hday(k,p));fn(d);h.days[k]=d;saveH()}
+const tm=s=>{const [a,b]=String(s||'0:0').split(':').map(Number);return (a||0)*60+(b||0)};
+const hm=m=>{m=Math.round(m);return z(Math.floor(m/60)%24)+':'+z(m%60)};
+const fmtL=ml=>(ml/1000).toLocaleString('de-DE',{maximumFractionDigits:2})+' l';
+const seg=(name,val,opts)=>`<div class="seg">${opts.map(([v,l])=>`<label><input type="radio" name="${name}" value="${v}" ${String(val)===String(v)?'checked':''}><span>${l}</span></label>`).join('')}</div>`;
+
+/* Gen-Marker (Plus-Strang, wie in 23andMe/AncestryDNA/MyHeritage-Rohdaten) */
+const GENES=[
+ {rs:'rs9939609',g:'FTO',a:'A',f:'appetit',t:['Eine Kopie der Appetit-Variante: etwas weniger Sättigung.','Zwei Kopien der Appetit-Variante: schneller Hunger, weniger Sättigung.']},
+ {rs:'rs738409',g:'PNPLA3',a:'G',f:'leber',t:['Eine Kopie: die Leber lagert etwas leichter Fett ein.','Zwei Kopien: die Leber lagert deutlich leichter Fett ein.']},
+ {rs:'rs7903146',g:'TCF7L2',a:'T',f:'zucker',t:['Eine Kopie: der Blutzucker reagiert etwas empfindlicher.','Zwei Kopien: der Blutzucker reagiert deutlich empfindlicher.']},
+ {rs:'rs1333049',g:'9p21 (Herz)',a:'C',f:'herz',t:['Eine Kopie der häufigen Herz-Risikoregion.','Zwei Kopien der häufigen Herz-Risikoregion.']},
+ {rs:'rs429358',g:'APOE ε4',a:'C',f:'fett',t:['Eine Kopie APOE ε4: Cholesterin reagiert stärker auf gesättigte Fette. Bitte ärztlich besprechen.','Zwei Kopien APOE ε4: Cholesterin reagiert stark auf gesättigte Fette. Bitte ärztlich besprechen.']},
+ {rs:'rs699',g:'AGT',a:'G',min:2,f:'salz',t:['','Zwei Kopien: der Blutdruck reagiert stärker auf Salz.']},
+ {rs:'rs4988235',g:'LCT (Laktase)',eq:'GG',f:'laktose',t1:'Laktase wird im Erwachsenenalter wahrscheinlich abgeschaltet.'},
+ {rs:'rs1801133',g:'MTHFR',a:'A',f:'folat',t:['Eine Kopie: Folat wird etwas langsamer verarbeitet (häufig).','Zwei Kopien: Folat wird deutlich langsamer verarbeitet.']},
+ {rs:'rs12934922',g:'BCMO1',a:'T',f:'vita',t:['Eine Kopie: Beta-Carotin wird etwas schlechter zu Vitamin A.','Zwei Kopien: Beta-Carotin wird schlechter zu Vitamin A.']},
+ {rs:'rs174537',g:'FADS1',a:'T',f:'omega',t:['Eine Kopie: pflanzliches Omega-3 wird etwas schlechter umgewandelt.','Zwei Kopien: pflanzliches Omega-3 wird schlecht umgewandelt.']},
+ {rs:'rs2282679',g:'GC (Vitamin D)',a:'G',f:'vitd',t:['Eine Kopie: der Vitamin-D-Spiegel ist eher etwas niedriger.','Zwei Kopien: der Vitamin-D-Spiegel ist eher niedriger.']},
+ {rs:'rs1800562',g:'HFE C282Y',a:'A',f:'eisen',arzt:2,t:['Eine Kopie der Eisenspeicher-Variante.','Zwei Kopien der Eisenspeicher-Variante (Hämochromatose möglich).']},
+ {rs:'rs762551',g:'CYP1A2',a:'C',f:'koffein',t:['Koffein wird langsamer abgebaut.','Koffein wird langsam abgebaut.']},
+ {rs:'rs5751876',g:'ADORA2A',eq:'TT',f:'koffein',t1:'Koffein macht eher nervös und stört den Schlaf.'},
+ {rs:'rs671',g:'ALDH2',a:'A',f:'alkohol',t:['Alkohol wird schlecht abgebaut.','Alkohol wird sehr schlecht abgebaut.']},
+ {rs:'rs2187668',g:'HLA-DQ2.5',a:'T',f:'gluten',t:['Zöliakie-Risikotyp vorhanden (die meisten Träger bleiben gesund).','Zöliakie-Risikotyp doppelt vorhanden.']},
+ {rs:'rs6025',g:'Faktor V Leiden',a:'T',f:'gerinnung',arzt:1,t:['Die Datei zeigt eine Kopie Faktor V Leiden.','Die Datei zeigt zwei Kopien Faktor V Leiden.']},
+ {rs:'rs1061170',g:'CFH (Augen)',a:'C',min:2,f:'augen',t:['','Zwei Kopien: höheres Risiko für Makuladegeneration im Alter.']},
+ {rs:'rs16969968',g:'CHRNA5',a:'A',min:2,f:'rauchen',t:['','Zwei Kopien: hohes Risiko für Nikotinsucht.']},
+ {rs:'rs2231142',g:'ABCG2',a:'T',f:'harn',t:['Eine Kopie: Harnsäure wird schlechter ausgeschieden.','Zwei Kopien: Harnsäure wird schlecht ausgeschieden.']},
+ {rs:'rs1815739',g:'ACTN3',sport:1},
+];
+const ACTN3={CC:'Kraft- und Sprinttyp: kurze, schnelle Belastungen und Krafttraining liegen dir.',CT:'Mischtyp: Kraft und Ausdauer liegen dir gleich gut.',TT:'Ausdauertyp: längere Läufe, Rad und Schwimmen liegen dir.'};
+const FOCUS={
+ gerinnung:{n:'Blutgerinnung prüfen',tips:['Per Bluttest bestätigen lassen (Faktor-V-Leiden-PCR, Prothrombin).','Umgerechnete Dateien (hg38 → hg19) können hier falsch sein.','Viel trinken, langes Sitzen jede Stunde unterbrechen.']},
+ leber:{n:'Leber schützen',tips:['Kaum Zucker: keine Softdrinks und Säfte.','Alkohol nur selten.','2–3 Tassen Kaffee am Tag schützen die Leber.']},
+ appetit:{n:'Sättigung & Appetit',tips:['Zu jeder Mahlzeit Eiweiß (Eier, Quark, Fisch, Hülsenfrüchte).','Teller: ½ Gemüse, ¼ Eiweiß, ¼ Vollkorn.','Langsam essen, etwa 20 Minuten pro Mahlzeit.']},
+ zucker:{n:'Blutzucker stabil halten',tips:['Vollkorn statt Weißmehl.','Kohlenhydrate immer mit Eiweiß oder Gemüse essen.','Nach dem Essen 10–15 Minuten gehen.']},
+ herz:{n:'Herz & Cholesterin',tips:['Olivenöl, Nüsse und Hafer jeden Tag.','Fisch 2× pro Woche.','Wenig Wurst, Butter, fetter Käse und Frittiertes.']},
+ fett:{n:'Gesättigte Fette sparen',tips:['Butter, Sahne, Wurst und fettes Fleisch sparsam.','Lieber Olivenöl, Rapsöl und Nüsse.']},
+ salz:{n:'Salz & Blutdruck',tips:['Unter 5 g Salz pro Tag.','Brot, Käse, Wurst und Fertiggerichte enthalten viel Salz.','Viel Kalium: Gemüse, Bohnen, Bananen.']},
+ laktose:{n:'Milchzucker',tips:['Laktosefreie Milch oder Pflanzendrinks.','Hartkäse und Joghurt werden meist vertragen.','Kalzium aus Mineralwasser, Brokkoli und Mandeln.']},
+ omega:{n:'Omega-3',tips:['Fettiger Fisch 2× pro Woche (Lachs, Makrele, Sardinen).']},
+ folat:{n:'Folat (B-Vitamine)',tips:['Täglich grünes Gemüse und Hülsenfrüchte.','Homocystein einmal messen lassen.']},
+ vita:{n:'Vitamin A',tips:['Karotten allein reichen nicht: Eier, Fisch und Milchprodukte liefern fertiges Vitamin A.']},
+ vitd:{n:'Vitamin D',tips:['Spiegel im Winter messen lassen (Ziel 30–50 ng/ml).','Im Sommer mittags 15–20 Minuten Sonne.']},
+ eisen:{n:'Eisen',tips:['Keine Eisenpräparate ohne ärztlichen Rat.','Ferritin regelmäßig messen lassen.']},
+ eisenlow:{n:'Eisen auffüllen',tips:['Hülsenfrüchte, Fleisch und Haferflocken mit Vitamin C (Paprika, Zitrone).','Tee und Kaffee nicht direkt zum Essen.']},
+ koffein:{n:'Koffein',tips:['Höchstens 2–3 Tassen und nur bis mittags.']},
+ alkohol:{n:'Alkohol',tips:['Alkohol möglichst meiden.']},
+ gluten:{n:'Gluten',tips:['Nicht ohne Test glutenfrei essen.','Bei Bauchbeschwerden einen Zöliakie-Test machen lassen.']},
+ augen:{n:'Augen schützen',tips:['Grünes Blattgemüse und Eier (Lutein).','Nicht rauchen, Sonnenbrille tragen.','Ab 50 regelmäßig zum Augenarzt.']},
+ rauchen:{n:'Nicht rauchen',tips:['Hohes Risiko für Nikotinsucht: am besten gar nicht anfangen.']},
+ harn:{n:'Harnsäure',tips:['Wenig Fruchtzucker, Innereien und Alkohol.','Viel Wasser trinken.']},
+};
+const BLOOD=[['ldl','LDL-Cholesterin','mg/dl'],['hdl','HDL-Cholesterin','mg/dl'],['chol','Gesamtcholesterin','mg/dl'],['tg','Triglyceride','mg/dl'],['glu','Nüchternzucker','mg/dl'],['a1c','HbA1c','%'],['got','GOT (AST)','U/l'],['gpt','GPT (ALT)','U/l'],['ggt','Gamma-GT','U/l'],['hs','Harnsäure','mg/dl'],['vd','Vitamin D','ng/ml'],['fer','Ferritin','ng/ml'],['sys','Blutdruck oben','mmHg'],['dia','Blutdruck unten','mmHg']];
+
+function flagsOf(p){
+ const h=hp(p),f={},arzt=[],rows=[];
+ const add=(k,src,msg)=>{const x=f[k]||(f[k]={src:[],msgs:[]});if(!x.src.includes(src))x.src.push(src);if(msg)x.msgs.push(msg)};
+ const gt=h.genes&&h.genes.gt||{};
+ GENES.forEach(g=>{const v=gt[g.rs];if(!v)return;
+  if(g.sport){rows.push({g,v,txt:ACTN3[v]||ACTN3[v.split('').reverse().join('')]||'',hit:false});return}
+  const c=g.eq?(v===g.eq?2:0):[...v].filter(x=>x===g.a).length,hit=g.eq?v===g.eq:c>=(g.min||1);
+  const txt=hit?(g.eq?g.t1:g.t[c-1]):(c?'Eine Kopie, kein deutlicher Effekt.':'Unauffällig.');
+  rows.push({g,v,txt,hit});if(hit){add(g.f,'Gen',g.g+': '+txt);if(g.arzt&&c>=g.arzt)arzt.push(g.g+': '+txt+' Bitte ärztlich prüfen lassen.')}});
+ const b=h.blood&&h.blood.v||{},fem=(h.body||{}).sex==='f',has=k=>Number.isFinite(b[k]);
+ if(has('ldl')){if(b.ldl>=160){add('herz','Blut','LDL '+b.ldl+' mg/dl: deutlich erhöht.');arzt.push('LDL-Cholesterin '+b.ldl+' mg/dl')}else if(b.ldl>115)add('herz','Blut','LDL '+b.ldl+' mg/dl: leicht erhöht (Ziel unter 115).')}
+ if(has('hdl')&&b.hdl<(fem?50:40))add('herz','Blut','HDL '+b.hdl+' mg/dl: niedrig. Ausdauersport hebt es.');
+ if(has('tg')&&b.tg>150){add('zucker','Blut','Triglyceride '+b.tg+' mg/dl: erhöht.');add('leber','Blut');if(b.tg>=500)arzt.push('Triglyceride '+b.tg+' mg/dl')}
+ if(has('glu')){if(b.glu>=126){add('zucker','Blut','Nüchternzucker '+b.glu+' mg/dl: zu hoch.');arzt.push('Nüchternzucker '+b.glu+' mg/dl')}else if(b.glu>=100)add('zucker','Blut','Nüchternzucker '+b.glu+' mg/dl: leicht erhöht.')}
+ if(has('a1c')){if(b.a1c>=6.5){add('zucker','Blut','HbA1c '+b.a1c+' %: zu hoch.');arzt.push('HbA1c '+b.a1c+' %')}else if(b.a1c>=5.7)add('zucker','Blut','HbA1c '+b.a1c+' %: Vorstufe.')}
+ const lim={got:fem?32:38,gpt:fem?35:45,ggt:fem?39:66},hi=['got','gpt','ggt'].filter(k=>has(k)&&b[k]>lim[k]);
+ if(hi.length){add('leber','Blut','Leberwerte erhöht: '+hi.map(k=>k.toUpperCase()+' '+b[k]).join(', ')+'.');if(hi.some(k=>b[k]>2*lim[k]))arzt.push('Leberwerte deutlich erhöht')}
+ else if(has('ggt')&&b.ggt>lim.ggt*.6)add('leber','Blut','Gamma-GT '+b.ggt+' U/l: normal, aber in der oberen Hälfte.');
+ if(has('hs')&&b.hs>(fem?6:7))add('harn','Blut','Harnsäure '+b.hs+' mg/dl: erhöht.');
+ if(has('vd')){if(b.vd<20)add('vitd','Blut','Vitamin D '+b.vd+' ng/ml: Mangel. Ergänzung ärztlich besprechen.');else if(b.vd<30)add('vitd','Blut','Vitamin D '+b.vd+' ng/ml: eher niedrig.')}
+ if(has('fer')){if(b.fer<30)add('eisenlow','Blut','Ferritin '+b.fer+' ng/ml: Speicher niedrig.');else if(b.fer>(fem?200:300)){add('eisen','Blut','Ferritin '+b.fer+' ng/ml: hoch.');arzt.push('Ferritin '+b.fer+' ng/ml')}}
+ if(has('sys')||has('dia')){const s=b.sys||0,d=b.dia||0;if(s>=140||d>=90){add('salz','Blut','Blutdruck '+(s||'?')+'/'+(d||'?')+': zu hoch.');arzt.push('Blutdruck '+(s||'?')+'/'+(d||'?'))}else if(s>=130||d>=80)add('salz','Blut','Blutdruck '+(s||'?')+'/'+(d||'?')+': leicht erhöht.')}
+ return{f,arzt,rows};
+}
+
+function nutrition(p,k){
+ const b=hp(p).body;if(!b||!(b.h>0&&b.w>0))return null;const fl=flagsOf(p).f,hm2=(b.h/100)**2;
+ const bmr=10*b.w+6.25*b.h-5*p.age+(b.sex==='f'?-161:5),tdee=bmr*[1.35,1.55,1.75][(b.act||2)-1];
+ let kcal=tdee+({ab:-450,halten:0,aufbau:250,leistung:150}[b.goal]||0);kcal=Math.round(Math.max(kcal,b.sex==='f'?1300:1500,bmr*1.05)/50)*50;
+ const bmi=b.w/hm2,refW=bmi>27?25*hm2+(b.w-25*hm2)*.3:b.w;
+ let pk={ab:1.6,halten:1.2,aufbau:1.8,leistung:1.5}[b.goal]||1.2;if(fl.appetit)pk=Math.max(pk,1.5);
+ const prot=Math.round(refW*pk/5)*5,fat=Math.round(kcal*(fl.zucker?.35:.3)/9),carb=Math.max(0,Math.round((kcal-prot*4-fat*9)/4));
+ const tr=!!planFor(k,p),water=Math.round(Math.min(3500,Math.max(1500,b.w*35))/250)*250+(tr?500:0);
+ return{kcal,prot,fat,carb,sat:Math.round(kcal*((fl.herz||fl.fett)?.07:.1)/9),fib:(fl.appetit||fl.zucker||fl.herz)?35:30,sug:(fl.leber||fl.zucker)?25:50,water,bmi,tr,bmr:Math.round(bmr),tdee:Math.round(tdee)};
+}
+function waterGoal(p,k){if(adult(p)){const n=nutrition(p,k);return n?n.water:2000+(planFor(k,p)?500:0)}return ({mini:1000,kids:1250,teen:1500}[group(p.age)])+(planFor(k,p)?500:0)}
+
+/* Mahlzeiten: Mengen für eine Grundportion, werden auf den Tagesbedarf skaliert */
+const MEALS=[
+ {s:'f',n:'Haferbrei mit Beeren und Walnüssen',k:520,p:20,t:['milch'],i:[[60,'g','Haferflocken'],[250,'ml','Milch'],[100,'g','Beeren'],[15,'g','Walnüsse'],[0,'','Zimt']]},
+ {s:'f',n:'Overnight-Oats mit Apfel und Mandeln',k:480,p:19,t:[],i:[[60,'g','Haferflocken'],[250,'ml','Sojadrink'],[150,'g','Apfel'],[15,'g','Mandeln'],[0,'','Zimt']]},
+ {s:'f',n:'Rührei mit Vollkornbrot und Tomaten',k:480,p:27,t:[],i:[[3,'Stk','Ei|Eier'],[70,'g','Vollkornbrot'],[150,'g','Tomaten'],[5,'ml','Olivenöl']]},
+ {s:'f',n:'Quark mit Beeren und Leinsamen',k:380,p:37,t:['milch'],i:[[250,'g','Magerquark'],[125,'g','Beeren'],[15,'g','Leinsamen'],[20,'g','Haferflocken']]},
+ {s:'f',n:'Vollkornbrot mit Avocado und Ei',k:500,p:22,t:[],i:[[80,'g','Vollkornbrot'],[60,'g','Avocado'],[2,'Stk','Ei|Eier'],[100,'g','Tomaten']]},
+ {s:'f',n:'Müsli mit Naturjoghurt und Banane',k:520,p:18,t:['milch'],i:[[50,'g','Müsli ohne Zucker'],[200,'g','Naturjoghurt'],[1,'Stk','Banane|Bananen'],[10,'g','Nüsse']]},
+ {s:'f',n:'Balkan-Frühstück mit Schafskäse',k:500,p:22,t:['salzig'],i:[[80,'g','Vollkornbrot'],[50,'g','Schafskäse'],[200,'g','Tomaten und Gurke'],[1,'Stk','Ei|Eier'],[20,'g','Oliven']]},
+ {s:'m',n:'Linsensalat mit Feta und Paprika',k:560,p:30,t:['veg'],i:[[80,'g','Linsen (trocken)'],[200,'g','Paprika und Gurke'],[40,'g','Feta'],[10,'ml','Olivenöl'],[0,'','Zitrone, Petersilie']]},
+ {s:'m',n:'Lachs mit Ofenkartoffeln und Brokkoli',k:620,p:40,t:['fisch'],i:[[150,'g','Lachs'],[250,'g','Kartoffeln'],[200,'g','Brokkoli'],[5,'ml','Olivenöl']]},
+ {s:'m',n:'Hähnchen-Bowl mit Vollkornreis',k:620,p:45,t:['fleisch'],i:[[150,'g','Hähnchenbrust'],[70,'g','Vollkornreis (trocken)'],[200,'g','Gemüse'],[10,'ml','Olivenöl']]},
+ {s:'m',n:'Bohneneintopf mit Gemüse und Brot',k:580,p:25,t:['veg'],i:[[250,'g','weiße Bohnen (gekocht)'],[150,'g','Karotten und Paprika'],[80,'g','Zwiebel'],[10,'ml','Olivenöl'],[60,'g','Vollkornbrot']]},
+ {s:'m',n:'Vollkornnudeln mit Thunfisch und Tomaten',k:620,p:42,t:['fisch'],i:[[90,'g','Vollkornnudeln (trocken)'],[120,'g','Thunfisch (natur)'],[200,'g','Tomaten'],[10,'ml','Olivenöl']]},
+ {s:'m',n:'Putenpfanne mit Bulgur',k:590,p:44,t:['fleisch'],i:[[150,'g','Putenbrust'],[70,'g','Bulgur (trocken)'],[200,'g','Zucchini und Paprika'],[10,'ml','Olivenöl']]},
+ {s:'m',n:'Kichererbsen-Curry mit Spinat und Reis',k:560,p:22,t:['veg'],i:[[200,'g','Kichererbsen (gekocht)'],[150,'g','Spinat'],[200,'g','passierte Tomaten'],[60,'g','Vollkornreis (trocken)']]},
+ {s:'m',n:'Gefüllte Paprika mit magerem Rinderhack',k:560,p:34,t:['fleisch'],i:[[120,'g','mageres Rinderhack'],[50,'g','Reis (trocken)'],[300,'g','Paprika'],[150,'g','Tomatensoße']]},
+ {s:'a',n:'Apfel und Mandeln',k:230,p:5,t:[],i:[[1,'Stk','Apfel|Äpfel'],[20,'g','Mandeln']]},
+ {s:'a',n:'Naturjoghurt mit Walnüssen',k:190,p:9,t:['milch'],i:[[150,'g','Naturjoghurt'],[10,'g','Walnüsse']]},
+ {s:'a',n:'Gemüsesticks mit Hummus',k:200,p:6,t:[],i:[[150,'g','Karotten und Paprika'],[60,'g','Hummus']]},
+ {s:'a',n:'Banane mit Erdnussmus',k:240,p:6,t:['tr'],i:[[1,'Stk','Banane|Bananen'],[15,'g','Erdnussmus']]},
+ {s:'a',n:'Quark mit Beeren',k:180,p:19,t:['milch','tr'],i:[[150,'g','Magerquark'],[100,'g','Beeren']]},
+ {s:'a',n:'Hartgekochte Eier mit Gurke',k:170,p:13,t:[],i:[[2,'Stk','Ei|Eier'],[150,'g','Gurke']]},
+ {s:'a',n:'Vollkorn-Reiswaffeln mit Banane',k:200,p:4,t:['tr'],i:[[2,'Stk','Reiswaffel|Reiswaffeln'],[1,'Stk','Banane|Bananen']]},
+ {s:'d',n:'Gemüse-Omelett mit Salat',k:420,p:28,t:[],i:[[3,'Stk','Ei|Eier'],[150,'g','Gemüse'],[30,'g','Feta'],[100,'g','Salat'],[5,'ml','Olivenöl']]},
+ {s:'d',n:'Ofengemüse mit Kichererbsen und Joghurt-Dip',k:480,p:20,t:['milch','veg'],i:[[300,'g','Ofengemüse'],[150,'g','Kichererbsen (gekocht)'],[100,'g','Joghurt'],[10,'ml','Olivenöl']]},
+ {s:'d',n:'Makrele mit Salat und Vollkornbrot',k:520,p:30,t:['fisch'],i:[[120,'g','Makrele'],[150,'g','Salat'],[60,'g','Vollkornbrot'],[5,'ml','Olivenöl']]},
+ {s:'d',n:'Rote Linsensuppe mit Brot',k:430,p:24,t:['veg'],i:[[70,'g','rote Linsen (trocken)'],[150,'g','Karotten'],[80,'g','Zwiebel'],[50,'g','Vollkornbrot']]},
+ {s:'d',n:'Hähnchensalat mit Bohnen und Avocado',k:500,p:40,t:['fleisch'],i:[[120,'g','Hähnchenbrust'],[150,'g','Salat'],[100,'g','Kidneybohnen'],[50,'g','Avocado'],[10,'ml','Olivenöl']]},
+ {s:'d',n:'Tofu-Gemüse-Pfanne mit Quinoa',k:480,p:28,t:['veg'],i:[[150,'g','Tofu'],[200,'g','Gemüse'],[50,'g','Quinoa (trocken)'],[10,'ml','Rapsöl']]},
+ {s:'d',n:'Vollkornbrot mit Kräuterquark und Gemüse',k:380,p:27,t:['milch'],i:[[70,'g','Vollkornbrot'],[150,'g','Kräuterquark'],[150,'g','Gurke und Radieschen']]},
+ {s:'d',n:'Sardinen mit Tomatensalat und Brot',k:450,p:27,t:['fisch'],i:[[100,'g','Sardinen'],[200,'g','Tomaten'],[50,'g','Zwiebel'],[60,'g','Vollkornbrot']]},
+];
+const SLOTN={f:'Frühstück',m:'Mittagessen',a:'Snack',d:'Abendessen'},SPLIT={f:.25,m:.35,a:.1,d:.3};
+function pool(p,s,k){
+ const b=hp(p).body||{},fl=adult(p)?flagsOf(p).f:{};let a=MEALS.filter(m=>m.s===s);
+ const keep=fn=>{const x=a.filter(fn);if(x.length)a=x};
+ if(fl.laktose)keep(m=>!m.t.includes('milch'));
+ if(b.diet==='veg')keep(m=>!m.t.includes('fleisch')&&!m.t.includes('fisch'));
+ if(fl.salz||fl.herz)keep(m=>!m.t.includes('salzig'));
+ if(s==='a'&&planFor(k,p))keep(m=>m.t.includes('tr'));
+ return a;
+}
+function dayMeals(p,k){const d=hday(k,p),dn=Math.floor(parseKey(k).getTime()/864e5)+hash(p.id)%11,o={};
+ ['f','m','a','d'].forEach((s,i)=>{const a=pool(p,s,k);o[s]=a[(dn+i*3+(d.sw[s]||0))%a.length]});return o}
+function ing([a,u,nm],f){const [s1,pl]=nm.split('|');if(f==null)return pl||s1;
+ if(u==='g'||u==='ml')return Math.max(5,Math.round(a*f/5)*5)+' '+u+' '+s1;
+ if(u==='Stk'){const v=Math.max(1,Math.round(a*f));return v+' '+(v>1&&pl?pl:s1)}
+ return s1}
+function mealInfo(m,s,n){let f=null;if(n)f=Math.min(1.8,Math.max(.6,Math.round(n.kcal*SPLIT[s]/m.k*20)/20));
+ return{kc:f?Math.round(m.k*f/10)*10:0,pr:f?Math.round(m.p*f):0,list:`<ul class="ing">${m.i.map(x=>`<li>${esc(ing(x,f))}</li>`).join('')}</ul>`}}
+
+/* Tagesplan mit Uhrzeiten */
+function sched(p,k,noTrain){
+ const r=hp(p).rem,wk=tm(r.wake),sl=Math.max(tm(r.sleep),wk+10*60),tr=noTrain?null:planFor(k,p),ms=dayMeals(p,k),it=[];
+ const add=(m,id,type,title,body,x)=>it.push({m:Math.round(m),t:hm(m),id,type,title,body,...(x||{})});
+ add(wk,'wake','wake','Guten Morgen','Starte mit einem großen Glas Wasser.');
+ const mt={f:wk+30,m:Math.max(wk+4*60,12*60+30),a:15*60+30,d:Math.min(sl-3*60,18*60+30)};
+ if(tr){const tt=tm(r.train);mt.a=Math.max(mt.m+90,tt-90);add(tt,'train','train','Training',PMAP[tr].n+' wartet auf dich.',{prog:tr})}
+ ['f','m','a','d'].forEach(s=>add(mt[s],'meal-'+s,'meal',s==='a'&&tr?'Snack vor dem Training':SLOTN[s],'Heute: '+ms[s].n,{slot:s}));
+ const st=(Number(r.every)||2)*60;for(let m=wk+st;m<=sl-60;m+=st){if(!it.some(x=>Math.abs(x.m-m)<25))add(m,'w'+Math.round(m),'water','Trinken','Zeit für ein Glas Wasser.')}
+ add(sl,'sleep','sleep','Schlafenszeit',adult(p)?'Bildschirm aus. Guter Schlaf hilft bei Gewicht, Erholung und Laune.':'Ab ins Bett. Im Schlaf wirst du stärker.');
+ return it.sort((a,b)=>a.m-b.m);
+}
+
+/* Erinnerungen: Mitteilung, solange die App offen ist; dauerhaft über den Kalender */
+async function notify(title,body){toast(title+': '+body);
+ try{if('Notification' in window&&Notification.permission==='granted'){const reg=navigator.serviceWorker&&await navigator.serviceWorker.getRegistration();if(reg)await reg.showNotification(title,{body,icon:'icons/icon-192.png',tag:'heimspiel'});else new Notification(title,{body,icon:'icons/icon-192.png'})}}catch(e){}}
+function remCheck(){
+ const p=me();if(!p||!S.ready)return;const h=hp(p);if(!h.rem.on)return;
+ const t=today(),d=new Date(),nm=d.getHours()*60+d.getMinutes();let f={};try{f=JSON.parse(localStorage.getItem('heimspiel.fired')||'{}')}catch(e){}
+ if(f.d!==t)f={d:t,ids:[]};const due=sched(p,t).filter(x=>nm>=x.m&&nm<x.m+30&&!f.ids.includes(p.id+x.id));if(!due.length)return;
+ due.forEach(x=>f.ids.push(p.id+x.id));try{localStorage.setItem('heimspiel.fired',JSON.stringify(f))}catch(e){}
+ const x=due[due.length-1];if(x.type==='water'&&hday(t,p).w*250>=waterGoal(p,t))return;notify(x.title,x.body);
+}
+setInterval(remCheck,30000);document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')remCheck()});
+const icsEsc=s=>String(s).replace(/[\\;,]/g,c=>'\\'+c).replace(/\n/g,'\\n');
+function icsFor(p){
+ const r=hp(p).rem,k=today(),slots=SLOTS[p.days]||SLOTS[3],BD=['MO','TU','WE','TH','FR','SA','SU'],n=new Date();
+ const stamp=n.getUTCFullYear()+z(n.getUTCMonth()+1)+z(n.getUTCDate())+'T'+z(n.getUTCHours())+z(n.getUTCMinutes())+'00Z';
+ const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Heimspiel//DE','CALSCALE:GREGORIAN','X-WR-CALNAME:Heimspiel'];
+ const ev=(id,day,t,title,body,rr)=>L.push('BEGIN:VEVENT','UID:'+p.id+'-'+id+'@heimspiel','DTSTAMP:'+stamp,'DTSTART:'+day.replace(/-/g,'')+'T'+t.replace(':','')+'00','DURATION:PT10M','RRULE:'+rr,'SUMMARY:'+icsEsc(title),'DESCRIPTION:'+icsEsc(body),'BEGIN:VALARM','ACTION:DISPLAY','TRIGGER:PT0M','DESCRIPTION:'+icsEsc(title),'END:VALARM','END:VEVENT');
+ sched(p,k,true).filter(x=>x.type!=='sleep').forEach(x=>ev(x.id,k,x.t,x.type==='meal'?x.title:x.title,x.type==='meal'?'Dein Essen für heute steht in der Heimspiel-App.':x.body,'FREQ=DAILY'));
+ let td=k;for(let i=0;i<7;i++){const c=addDays(k,i);if(slots.includes(wday(c))){td=c;break}}
+ ev('train',td,r.train,'Training','Deine Heimspiel-Einheit wartet.','FREQ=WEEKLY;BYDAY='+slots.map(i=>BD[i]).join(','));
+ L.push('END:VCALENDAR');return L.join('\r\n');
+}
+async function shareFile(data,name,type,title){
+ try{const file=new File([data],name,{type});if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title});return true}}catch(e){if(e&&e.name==='AbortError')return false}
+ const url=URL.createObjectURL(new Blob([data],{type})),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);return true}
+
+/* Gen-Datei lesen: 23andMe, AncestryDNA, MyHeritage, FTDNA, YSEQ (.txt/.csv/.zip/.gz) */
+async function inflate(u,fmt){if(typeof DecompressionStream==='undefined')throw new Error('nozip');return new Uint8Array(await new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream(fmt))).arrayBuffer())}
+async function unzip(u){
+ const dv=new DataView(u.buffer,u.byteOffset,u.byteLength);let eo=-1;
+ for(let i=u.length-22;i>=Math.max(0,u.length-65558);i--){if(dv.getUint32(i,true)===0x06054b50){eo=i;break}}if(eo<0)throw new Error('zip');
+ const cnt=dv.getUint16(eo+10,true),td=new TextDecoder();let o=dv.getUint32(eo+16,true),best=null;
+ for(let k=0;k<cnt;k++){if(dv.getUint32(o,true)!==0x02014b50)break;
+  const meth=dv.getUint16(o+10,true),cs=dv.getUint32(o+20,true),us=dv.getUint32(o+24,true),nl=dv.getUint16(o+28,true),el=dv.getUint16(o+30,true),cl=dv.getUint16(o+32,true),lo=dv.getUint32(o+42,true),name=td.decode(u.subarray(o+46,o+46+nl));
+  if(!name.endsWith('/')&&!name.includes('__MACOSX')){const sc=(/\.(txt|csv|tsv)$/i.test(name)?1e12:0)+us;if(!best||sc>best.sc)best={meth,cs,lo,sc}}o+=46+nl+el+cl}
+ if(!best)throw new Error('zip');const st=best.lo+30+dv.getUint16(best.lo+26,true)+dv.getUint16(best.lo+28,true),data=u.subarray(st,st+best.cs);
+ if(best.meth===0)return data;if(best.meth===8)return inflate(data,'deflate-raw');throw new Error('zip');
+}
+function parseGenes(txt){
+ const want=new Set(GENES.map(g=>g.rs)),gt={},L=txt.length;let n=0,i=0;
+ while(i<L){let j=txt.indexOf('\n',i);if(j<0)j=L;let s=i;if(txt.charCodeAt(s)===34)s++;
+  if(txt.charCodeAt(s)===114&&txt.charCodeAt(s+1)===115){n++;let e=s;while(e<j){const c=txt.charCodeAt(e);if(c===9||c===44||c===34||c===32||c===13)break;e++}
+   const id=txt.slice(s,e);if(want.has(id)){const cols=txt.slice(i,j).split(/[\t,]+|\s{2,}| /).map(x=>x.replace(/["\r]/g,'').trim()).filter(Boolean);
+    let g=(cols.length>=5?cols[3]+cols[4]:cols[3]||'').toUpperCase();if(/^[ACGT]{1,2}$/.test(g)){if(g.length===1)g+=g;gt[id]=g}}}
+  i=j+1}
+ return{gt,n,found:Object.keys(gt).length};
+}
+async function readGene(file){
+ const st=$('#gene-st'),show=m=>{if(st)st.textContent=m};show('Datei wird gelesen …');
+ try{let u=new Uint8Array(await file.arrayBuffer());
+  if(u[0]===0x50&&u[1]===0x4b)u=await unzip(u);else if(u[0]===0x1f&&u[1]===0x8b)u=await inflate(u,'gzip');
+  const r=parseGenes(new TextDecoder().decode(u));
+  if(!r.found){show('');toast('In der Datei wurden keine bekannten Gen-Marker gefunden.');return}
+  hp().genes={gt:r.gt,n:r.n,found:r.found,name:file.name.slice(0,60),date:today()};saveH();render(true);toast(r.found+' Gen-Marker ausgewertet')}
+ catch(err){show('');toast(err&&err.message==='nozip'?'Dieses Gerät kann ZIP nicht entpacken. Bitte die entpackte .txt-Datei wählen.':'Die Datei konnte nicht gelesen werden.')}
+}
+
+/* Ansicht: Fit */
+const GOALS=[['ab','Abnehmen'],['halten','Halten'],['aufbau','Muskeln'],['leistung','Leistung']];
+const MOVE={ab:'150–300 Minuten zügige Bewegung pro Woche und 2× Krafttraining. Ziel: 8.000–10.000 Schritte am Tag.',halten:'150 Minuten Bewegung pro Woche und 2× Krafttraining.',aufbau:'3× pro Woche Krafttraining. Nach dem Training 25–30 g Eiweiß.',leistung:'Vor dem Training Kohlenhydrate, danach Eiweiß und Kohlenhydrate. An Trainingstagen 0,5 l mehr trinken.'};
+function bodyForm(b){b=b||{};return `<form id="hb" style="display:flex;flex-direction:column;gap:14px">
+  <div class="grid2"><label class="f" for="hb-h">Größe (cm)<input id="hb-h" type="number" inputmode="numeric" min="120" max="230" value="${b.h||''}" required></label><label class="f" for="hb-w">Gewicht (kg)<input id="hb-w" type="text" inputmode="decimal" value="${b.w?String(b.w).replace('.',','):''}" required></label></div>
+  <div class="f">Geschlecht${seg('hb-s',b.sex||'m',[['m','Mann'],['f','Frau']])}</div>
+  <div class="f">Wie aktiv bist du im Alltag?${seg('hb-a',b.act||2,[[1,'Wenig'],[2,'Mittel'],[3,'Viel']])}</div>
+  <div class="f">Dein Ziel${seg('hb-g',b.goal||'halten',GOALS)}</div>
+  <div class="f">Ernährung${seg('hb-d',b.diet||'alles',[['alles','Alles'],['veg','Vegetarisch']])}</div>
+  <div id="hb-e" class="err" hidden></div>
+  <button class="go" type="submit">${b.h?'Plan neu berechnen':'Plan berechnen'}</button></form>`}
+function viewFit(p){
+ const t=today(),h=hp(p),d=hday(t,p),ad=adult(p),n=ad?nutrition(p,t):null,wg=waterGoal(p,t),wl=(d.w||0)*250,sc=sched(p,t),ms=dayMeals(p,t),FL=ad?flagsOf(p):null,tr=planFor(t,p);
+ const dt=new Date(),nm=dt.getHours()*60+dt.getMinutes(),nextI=sc.findIndex(x=>x.m>=nm-15);
+ const gl=Math.ceil(wg/250),glasses=`<div class="glasses" aria-hidden="true">${Array.from({length:gl},(_,i)=>`<i class="${i<(d.w||0)?'on':''}"></i>`).join('')}</div>`;
+ let out=`<div><span class="eyebrow">${esc(longDate(t))}</span><h1 class="d hello">Fit &amp; Vital</h1></div>`;
+ if(ad&&!h.body)out+=`<section class="card setup"><span class="eyebrow">Schritt 1 von 3</span><h2 class="d" style="font-size:1.9rem">Starte mit deinen Daten</h2><div class="small muted">Aus Größe, Gewicht und Ziel berechnet Heimspiel deinen Ernährungsplan. Danach kannst du deine Gen-Datei und Blutwerte hochladen. Der Plan passt sich dann daran an.</div>${bodyForm()}</section>`;
+ out+=`<section class="card"><div class="section-h" style="margin:0"><h2 class="d" style="font-size:1.7rem">Trinken</h2><span class="eyebrow">${fmtL(wl)} von ${fmtL(wg)}</span></div>${glasses}
+  <div style="display:flex;gap:8px"><button class="btn" data-act="water" data-v="-1" aria-label="Ein Glas weniger">−</button><button class="go" style="flex:1;min-height:46px" data-act="water" data-v="1">+ 1 Glas (250 ml)</button></div>
+  <div class="small muted">${wl>=wg?'Tagesziel geschafft. Stark!':'Wasser, Tee ohne Zucker oder Schorle (1:3). '+(tr?'Heute ist Trainingstag: 0,5 l mehr.':'')}</div></section>`;
+ if(n)out+=`<section><div class="section-h"><h2 class="d">Dein Tagesbedarf</h2><span class="eyebrow">${esc(GOALS.find(g=>g[0]===h.body.goal)[1])}</span></div>
+  <div class="facts"><div><b>${fmt(n.kcal)}</b><span>kcal</span></div><div><b>${n.prot}</b><span>g Eiweiß</span></div><div><b>${n.carb}</b><span>g Kohlenhydrate</span></div><div><b>${n.fat}</b><span>g Fett</span></div><div><b>${n.fib}</b><span>g Ballaststoffe</span></div></div>
+  <div class="small muted" style="margin-top:8px">Grundumsatz ${fmt(n.bmr)} kcal · Verbrauch ca. ${fmt(n.tdee)} kcal · BMI ${n.bmi.toFixed(1).replace('.',',')} · höchstens ${n.sat} g gesättigte Fette, ${n.sug} g Zucker und 5 g Salz</div></section>`;
+ const rows=sc.map((x,i)=>{const cls=(i===nextI?'now':x.m<nm-15?'past':'');
+  if(x.type==='meal'){const m=ms[x.slot],mi=mealInfo(m,x.slot,n),ea=d.m&&d.m[x.slot];
+   return `<div class="tlr ${cls}"><span class="tt">${x.t}</span><div class="tlb"><span class="eyebrow">${esc(x.title)}</span><details><summary><b>${esc(m.n)}</b>${n?` <span class="small muted">· ${mi.kc} kcal · ${mi.pr} g Eiweiß</span>`:''} <span class="small acc">Zutaten</span></summary>${mi.list}</details>
+    <div class="tla"><button class="btn sm ${ea?'on':''}" data-act="eat" data-s="${x.slot}">${ea?'✓ Gegessen':'Gegessen'}</button><button class="btn sm" data-act="swap" data-s="${x.slot}">Tauschen</button></div></div></div>`}
+  if(x.type==='train')return `<div class="tlr ${cls}"><span class="tt">${x.t}</span><div class="tlb"><span class="eyebrow">Training</span><b>${esc(PMAP[x.prog].n)}</b><div class="tla"><button class="btn sm" data-act="start" data-p="${x.prog}">Starten</button></div></div></div>`;
+  return `<div class="tlr ${cls} mini"><span class="tt">${x.t}</span><div class="tlb"><span>${esc(x.type==='water'?'Glas Wasser':x.type==='wake'?'Aufstehen · Glas Wasser':x.title)}</span></div></div>`}).join('');
+ out+=`<section><div class="section-h"><h2 class="d">Tagesplan</h2><span class="eyebrow">${tr?'Trainingstag':'Ruhetag'}</span></div><div class="tl">${rows}</div>
+  ${ad&&!n?'<div class="small muted" style="margin-top:8px">Mengen und Kalorien erscheinen, sobald du oben deine Daten eingibst.</div>':''}</section>`;
+ if(ad&&FL){const keys=Object.keys(FOCUS).filter(k=>FL.f[k]);
+  if(FL.arzt.length)out+=`<section class="card alert"><h2 class="d" style="font-size:1.6rem;color:var(--bad)">Mit Arzt besprechen</h2><ul class="tips">${FL.arzt.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>`;
+  if(keys.length)out+=`<section><div class="section-h"><h2 class="d">Dein Fokus</h2><span class="eyebrow">aus Genen und Blutwerten</span></div><div class="fgrid">${keys.map(k=>`<div class="card focus"><div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline"><b>${esc(FOCUS[k].n)}</b><span>${FL.f[k].src.map(s=>`<span class="pill ${s==='Blut'?'acc':''}">${s}</span>`).join(' ')}</span></div>${FL.f[k].msgs.length?`<div class="small muted">${FL.f[k].msgs.map(esc).join('<br>')}</div>`:''}<ul class="tips">${FOCUS[k].tips.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')}</div></section>`}
+ const act3=FL&&FL.rows.find(r=>r.g.sport);
+ out+=`<section class="card"><h2 class="d" style="font-size:1.6rem">Bewegung</h2><div>${tr?`Heute: <b>${esc(PMAP[tr].n)}</b> (${mins(tr,p)} Minuten).`:'Heute ist Ruhetag: ein Spaziergang oder Radfahren tut trotzdem gut.'}</div>
+  <div class="small muted">${ad?esc(MOVE[(h.body||{}).goal]||MOVE.halten):'Mindestens 60 Minuten Bewegung am Tag: Training, Spielen, Radfahren, Schwimmen.'}${act3&&act3.txt?'<br>Gen ACTN3: '+esc(act3.txt):''}</div></section>`;
+ if(!ad)out+=`<section class="card"><h2 class="d" style="font-size:1.6rem">So isst ein Sportler</h2><ul class="tips"><li>Jeden Tag Obst und Gemüse in allen Farben.</li><li>Wasser statt Saft und Limo.</li><li>2 Stunden vor dem Training eine Mahlzeit, 30–60 Minuten vorher eine Banane.</li><li>Nach dem Training etwas mit Eiweiß: Joghurt, Käsebrot oder Eier.</li><li>Frühstück nicht auslassen.</li></ul></section>`;
+ if(ad){const g=h.genes,bl=h.blood,bv=bl&&bl.v||{};
+  out+=`<section><div class="section-h"><h2 class="d">Deine Daten</h2><span class="eyebrow">nur auf diesem Gerät</span></div><div style="display:flex;flex-direction:column;gap:10px">
+   ${h.body?`<details class="card"><summary><b>Körper &amp; Ziel</b><span class="pill acc">${h.body.h} cm · ${String(h.body.w).replace('.',',')} kg</span></summary>${bodyForm(h.body)}</details>`:''}
+   <details class="card" ${h.body&&!g?'open':''}><summary><b>Gen-Datei</b><span class="pill ${g?'acc':''}">${g?g.found+' Marker':'fehlt'}</span></summary>
+    <div class="small muted">Rohdaten von 23andMe, AncestryDNA, MyHeritage, FTDNA oder YSEQ (.txt, .csv, .zip). Die Datei wird nur auf diesem Gerät gelesen. Gespeichert werden nur die ${GENES.length} ausgewerteten Marker, nicht die ganze Datei.</div>
+    ${g?`<div class="small">Geladen: <b>${esc(g.name)}</b> am ${esc(shortDate(g.date))} · ${fmt(g.n)} Marker gelesen · ${g.found} ausgewertet</div>`:''}
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><label class="btn" for="gene">${g?'Neue Datei laden':'Gen-Datei hochladen'}<input id="gene" type="file" accept=".txt,.csv,.tsv,.zip,.gz,text/plain,text/csv,application/zip" hidden></label>${g?'<button class="btn danger" data-act="delGenes">Löschen</button>':''}</div><div id="gene-st" class="small muted" role="status"></div>
+    ${g&&FL.rows.length?`<table class="ftable"><tbody>${FL.rows.map(r=>`<tr><td><b>${esc(r.g.g)}</b><br><span class="small muted">${r.g.rs} · ${esc(r.v)}</span></td><td class="${r.hit?'hit':''}">${esc(r.txt)}</td></tr>`).join('')}</tbody></table>`:''}</details>
+   <details class="card" ${h.body&&g&&!bl?'open':''}><summary><b>Blutwerte</b><span class="pill ${bl?'acc':''}">${bl?'vom '+esc(shortDate(bl.date)):'fehlen'}</span></summary>
+    <form id="hbl" style="display:flex;flex-direction:column;gap:12px"><div class="small muted">Trage ein, was auf deinem Laborzettel steht. Leere Felder sind kein Problem. Vitamin D in nmol/l durch 2,5 teilen.</div>
+     <label class="f" for="hbl-date">Datum der Blutabnahme<input id="hbl-date" type="date" value="${bl?bl.date:''}"></label>
+     <div class="grid2">${BLOOD.map(([k,l,u])=>`<label class="f" for="hbl-${k}">${esc(l)} (${u})<input id="hbl-${k}" type="text" inputmode="decimal" value="${Number.isFinite(bv[k])?String(bv[k]).replace('.',','):''}"></label>`).join('')}</div>
+     <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="go" style="flex:1" type="submit">Blutwerte speichern</button>${bl?'<button class="btn danger" type="button" data-act="delBlood">Löschen</button>':''}</div></form></details>
+  </div></section>`}
+ const r=h.rem,perm=('Notification' in window)?Notification.permission:'na';
+ out+=`<section class="card"><h2 class="d" style="font-size:1.6rem">Erinnerungen</h2>
+  <form id="hr" style="display:flex;flex-direction:column;gap:12px">
+   <label class="chk"><input id="hr-on" type="checkbox" ${r.on?'checked':''}> Erinnerungen an Trinken, Essen und Training</label>
+   <div class="grid2"><label class="f" for="hr-wake">Aufstehen<input id="hr-wake" type="time" value="${r.wake}"></label><label class="f" for="hr-sleep">Schlafen<input id="hr-sleep" type="time" value="${r.sleep}"></label>
+   <label class="f" for="hr-train">Training um<input id="hr-train" type="time" value="${r.train}"></label><label class="f" for="hr-every">Trinken alle<select id="hr-every">${[[1,'1 Stunde'],[1.5,'1,5 Stunden'],[2,'2 Stunden'],[3,'3 Stunden']].map(([v,l])=>`<option value="${v}" ${Number(r.every)===v?'selected':''}>${l}</option>`).join('')}</select></label></div>
+   <button class="go" type="submit">Speichern</button></form>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">${perm==='default'||perm==='denied'?`<button class="btn" data-act="notif">Mitteilungen erlauben</button>`:''}<button class="btn" data-act="ics">In Kalender übernehmen</button></div>
+  <div class="small muted">Mitteilungen kommen, solange Heimspiel geöffnet ist${perm==='denied'?' (im Moment in den Einstellungen blockiert)':''}. Damit du auch bei geschlossener App erinnert wirst: „In Kalender übernehmen“ tippen. Der Kalender erinnert dann jeden Tag. Nach einer Änderung der Uhrzeiten die alten Kalendertermine löschen und neu übernehmen.</div></section>`;
+ out+=`<footer>${ad?'Der Plan ist eine Orientierung und ersetzt keine ärztliche Beratung. Bei Krankheiten, Schwangerschaft oder Medikamenten bitte vorher mit dem Arzt sprechen. Gen-Ergebnisse zeigen Tendenzen, keine Diagnosen.':'Für Eltern: Für Kinder gibt es kein Wiegen und kein Kalorienzählen, nur Trinken, regelmäßige Mahlzeiten und Bewegung.'}</footer>`;
+ return out;
+}
+
 /* =================== Aktionen =================== */
 const ACT={
  tab:el=>{S.ui.tab=el.dataset.t;render(true);window.scrollTo(0,0)},
@@ -613,25 +937,45 @@ const ACT={
  add:()=>{S.ui.add=true;render(true);window.scrollTo(0,0)},
  cancelAdd:()=>{S.ui.add=false;render(true)},
  askDel:()=>{S.sheet={del:true};renderSheet()},
- del:()=>{const p=me();S.sheet=null;renderSheet();Object.keys(S.days).filter(k=>S.days[k].pid===p.id).forEach(k=>{delete S.days[k];markDirty('day:'+k)});S.app.profiles=S.app.profiles.filter(x=>x.id!==p.id);S.app.active=S.app.profiles[0]?S.app.profiles[0].id:null;markDirty('app');S.ui.tab='coach';render(true);toast('Profil gelöscht')},
- export:async()=>{const data=JSON.stringify({app:'heimspiel',version:1,exported:new Date().toISOString(),data:S.app,days:S.days},null,1),name='heimspiel-sicherung-'+today()+'.json';
+ del:()=>{const p=me();S.sheet=null;renderSheet();Object.keys(S.days).filter(k=>S.days[k].pid===p.id).forEach(k=>{delete S.days[k];markDirty('day:'+k)});delete H[p.id];saveH();S.app.profiles=S.app.profiles.filter(x=>x.id!==p.id);S.app.active=S.app.profiles[0]?S.app.profiles[0].id:null;markDirty('app');S.ui.tab='coach';render(true);toast('Profil gelöscht')},
+ export:async()=>{const data=JSON.stringify({app:'heimspiel',version:1,exported:new Date().toISOString(),data:S.app,days:S.days,health:H},null,1),name='heimspiel-sicherung-'+today()+'.json';
    try{const file=new File([data],name,{type:'application/json'});if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'Heimspiel-Sicherung'});try{localStorage.setItem('heimspiel.lastBackup',String(Date.now()))}catch(e){}render(true);return}}catch(e){if(e&&e.name==='AbortError')return}
    const url=URL.createObjectURL(new Blob([data],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);try{localStorage.setItem('heimspiel.lastBackup',String(Date.now()))}catch(e){}render(true);toast('Sicherung gespeichert')},
+ water:el=>{const v=Number(el.dataset.v);setDay(today(),d=>{d.w=Math.max(0,Math.min(24,(d.w||0)+v))});render(true)},
+ eat:el=>{const s=el.dataset.s;setDay(today(),d=>{d.m=d.m||{};d.m[s]=!d.m[s]});render(true)},
+ swap:el=>{const s=el.dataset.s;setDay(today(),d=>{d.sw=d.sw||{};d.sw[s]=(d.sw[s]||0)+1;if(d.m)d.m[s]=false});render(true)},
+ delGenes:()=>{delete hp().genes;saveH();render(true);toast('Gen-Daten gelöscht')},
+ delBlood:()=>{delete hp().blood;saveH();render(true);toast('Blutwerte gelöscht')},
+ notif:async()=>{if(!('Notification' in window)){toast('Mitteilungen gehen hier nicht. Auf dem iPhone: App erst zum Home-Bildschirm hinzufügen. Oder den Kalender nutzen.');return}
+   if(Notification.permission==='denied'){toast('Mitteilungen sind blockiert. Bitte in den Einstellungen erlauben.');return}
+   const r=await Notification.requestPermission();if(r==='granted')notify('Erinnerungen an','So sehen deine Erinnerungen aus.');else toast('Mitteilungen wurden nicht erlaubt.');render(true)},
+ ics:async()=>{const p=me();if(await shareFile(icsFor(p),'heimspiel-erinnerungen.ics','text/calendar','Heimspiel-Erinnerungen'))toast('Kalenderdatei erstellt. Öffnen und „Alle hinzufügen“ tippen.')},
  hideInstall:()=>{try{localStorage.setItem('heimspiel.hideInstall','1')}catch(e){}render(true)},
 };
 document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el)return;const f=ACT[el.dataset.act];if(!f)return;if(el.dataset.act!=='backdrop')e.preventDefault();f(el,e)});
-document.addEventListener('submit',e=>{e.preventDefault();if(e.target.id!=='pf')return;
+document.addEventListener('submit',e=>{e.preventDefault();const fid=e.target.id;
+  const gv=n=>{const r=document.querySelector(`input[name="${n}"]:checked`);return r?r.value:null};
+  if(fid==='hb'){const hh=num($('#hb-h').value),ww=num($('#hb-w').value),er=$('#hb-e');
+    if(!(hh>=120&&hh<=230)||!(ww>=30&&ww<=300)){er.textContent='Bitte Größe (120–230 cm) und Gewicht (30–300 kg) eingeben.';er.hidden=false;return}
+    hp().body={h:Math.round(hh),w:Math.round(ww*10)/10,sex:gv('hb-s')||'m',act:Number(gv('hb-a')||2),goal:gv('hb-g')||'halten',diet:gv('hb-d')||'alles'};saveH();render(true);toast('Dein Ernährungsplan ist berechnet');return}
+  if(fid==='hbl'){const v={};BLOOD.forEach(([k])=>{const x=num($('#hbl-'+k).value);if(Number.isFinite(x)&&x>0)v[k]=x});
+    if(!Object.keys(v).length){toast('Bitte mindestens einen Wert eintragen.');return}
+    hp().blood={date:$('#hbl-date').value||today(),v};saveH();render(true);toast('Blutwerte gespeichert. Dein Plan ist angepasst.');return}
+  if(fid==='hr'){const h=hp(),on=$('#hr-on').checked;h.rem={...h.rem,on,wake:$('#hr-wake').value||'07:00',sleep:$('#hr-sleep').value||'22:30',train:$('#hr-train').value||'17:00',every:Number($('#hr-every').value)||2};saveH();
+    if(on&&'Notification' in window&&Notification.permission==='default')Notification.requestPermission().then(()=>render(true));
+    render(true);toast(on?'Erinnerungen sind an':'Erinnerungen sind aus');return}
+  if(fid!=='pf')return;
   const g=n=>{const r=document.querySelector(`input[name="${n}"]:checked`);return r?r.value:null};
   const name=$('#pf-n').value.trim().slice(0,20),age=Math.round(num($('#pf-a').value)),err=$('#pf-e');
   if(!name){err.textContent='Bitte gib einen Vornamen ein.';err.hidden=false;return}
-  if(!(age>=6&&age<=17)){err.textContent='Heimspiel ist für 6 bis 17 Jahre gemacht.';err.hidden=false;return}
+  if(!(age>=6&&age<=99)){err.textContent='Bitte ein Alter zwischen 6 und 99 eingeben.';err.hidden=false;return}
   const data={name,age,sport:g('pf-s')||'f',level:g('pf-l')||'1',days:Number(g('pf-d')||3)};
   const isNew=!S.app||!S.app.profiles.length||S.ui.add;
-  if(isNew){const p={id:'p'+uid6(),int:1,created:new Date().toISOString(),...data};S.app=S.app||{profiles:[],active:null};S.app.profiles.push(p);S.app.active=p.id;S.ui.add=false;S.ui.tab='coach';toast('Willkommen, '+name+'!')}
+  if(isNew){const p={id:'p'+uid6(),int:1,created:new Date().toISOString(),...data};S.app=S.app||{profiles:[],active:null};S.app.profiles.push(p);S.app.active=p.id;S.ui.add=false;S.ui.tab=age>=18?'fit':'coach';toast('Willkommen, '+name+'!')}
   else{Object.assign(me(),data);toast('Gespeichert')}
   markDirty('app');render(true);window.scrollTo(0,0)});
-document.addEventListener('change',e=>{if(e.target.id!=='imp')return;const file=e.target.files&&e.target.files[0];if(!file)return;const rd=new FileReader();
-  rd.onload=()=>{try{const o=JSON.parse(rd.result);if(o.app!=='heimspiel'||!o.data||!Array.isArray(o.data.profiles)||typeof o.days!=='object')throw 0;S.app=o.data;S.days=o.days;saveLocal();S.ui.tab='coach';render(true);toast('Sicherung geladen')}catch(x){toast('Das ist keine gültige Heimspiel-Sicherung.')}};rd.readAsText(file);e.target.value=''});
+document.addEventListener('change',e=>{if(e.target.id==='gene'){const f=e.target.files&&e.target.files[0];if(f)readGene(f);e.target.value='';return}if(e.target.id!=='imp')return;const file=e.target.files&&e.target.files[0];if(!file)return;const rd=new FileReader();
+  rd.onload=()=>{try{const o=JSON.parse(rd.result);if(o.app!=='heimspiel'||!o.data||!Array.isArray(o.data.profiles)||typeof o.days!=='object')throw 0;S.app=o.data;S.days=o.days;if(o.health&&typeof o.health==='object'){H=o.health;saveH()}saveLocal();S.ui.tab='coach';render(true);toast('Sicherung geladen')}catch(x){toast('Das ist keine gültige Heimspiel-Sicherung.')}};rd.readAsText(file);e.target.value=''});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&S.sheet){S.sheet=null;renderSheet()}});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&P&&P.phase!=='done')lock()});
 boot();
