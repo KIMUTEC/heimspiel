@@ -22,24 +22,34 @@ const stimmPfad = join(process.env.HOME, '.cache/piper', STIMME + '.onnx');
 const dauer = f => parseFloat(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', f]).toString());
 
 // 1. Sprecher pro Szene (Piper, lokal). "aussprache" ersetzt Wörter nur für die Stimme.
-if (!db.tonspur && !existsSync(stimmPfad)) {
+// "stimme": "edge:de-DE-ConradNeural" = Microsoft-Neural-Stimme (online, flüssiger), sonst Piper-Stimme (lokal).
+// Bei edge-Stimmen markiert "|" im Sprechertext Stellen, auf die sich Elemente mit data-t="m1", "m2" … beziehen.
+const EDGE = STIMME.startsWith('edge:');
+if (!db.tonspur && !EDGE && !existsSync(stimmPfad)) {
   console.error(`Stimme fehlt: ${stimmPfad}\nEinrichten: bash reels/einrichten.sh`); process.exit(1);
 }
 const zeiten = { szenen: [], gesamt: 0 };
 let t = 0;
 db.szenen.forEach((s, i) => {
-  let sp = 0;
+  let sp = 0, marken = [];
   const wav = join(tmp, `s${i}.wav`);
   if (s.sprecher && !db.tonspur) {
     let txt = s.sprecher;
     for (const [a, b] of Object.entries(db.aussprache || {})) txt = txt.replaceAll(a, b);
-    execFileSync('python3', ['-m', 'piper', '-m', stimmPfad, '-f', wav, '--length-scale', String(db.tempo || 1), '--sentence-silence', '0.25'],
-      { input: txt, stdio: ['pipe', 'ignore', 'ignore'] });
+    if (EDGE) {
+      const mp3 = join(tmp, `s${i}.mp3`);
+      const aus = execFileSync('python3', ['-I', join(import.meta.dirname, 'stimme.py'), STIMME.slice(5), db.tempo ?? '-5%', mp3], { input: txt }).toString();
+      marken = JSON.parse(aus).marken;
+      execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', mp3, '-ar', '48000', '-ac', '1', wav]);
+    } else {
+      execFileSync('python3', ['-m', 'piper', '-m', stimmPfad, '-f', wav, '--length-scale', String(db.tempo || 1), '--sentence-silence', '0.25'],
+        { input: txt.replaceAll('|', ''), stdio: ['pipe', 'ignore', 'ignore'] });
+    }
     sp = dauer(wav);
   }
   const sprechStart = s.sprechStart ?? 0.3;
   const d = s.dauer || Math.max(2.5, sprechStart + sp + (s.pause ?? 0.7));
-  zeiten.szenen.push({ start: t, dauer: d, sprechStart, sprechDauer: sp, wav: sp ? wav : null });
+  zeiten.szenen.push({ start: t, dauer: d, sprechStart, sprechDauer: sp, marken, wav: sp ? wav : null });
   console.log(`Szene ${i + 1}: ${d.toFixed(1)} s  ${s.titel?.replace(/\n/g, ' ') || ''}`);
   t += d;
 });
@@ -62,7 +72,7 @@ if (db.tonspur) {
 const zeit = s => { const ms = Math.round(s * 1000); const p = (n, l = 2) => String(n).padStart(l, '0');
   return `${p(Math.floor(ms / 3600000))}:${p(Math.floor(ms / 60000) % 60)}:${p(Math.floor(ms / 1000) % 60)},${p(ms % 1000, 3)}`; };
 writeFileSync(join(ordner, 'untertitel.srt'), zeiten.szenen.map((z, i) => db.szenen[i].sprecher && z.sprechDauer
-  ? `${i + 1}\n${zeit(z.start + z.sprechStart)} --> ${zeit(z.start + z.sprechStart + z.sprechDauer)}\n${db.szenen[i].sprecher}\n` : '').filter(Boolean).join('\n'));
+  ? `${i + 1}\n${zeit(z.start + z.sprechStart)} --> ${zeit(z.start + z.sprechStart + z.sprechDauer)}\n${db.szenen[i].sprecher.replaceAll('|', '')}\n` : '').filter(Boolean).join('\n'));
 
 // 4. Bilder rendern
 const req = createRequire(import.meta.url);

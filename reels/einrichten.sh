@@ -2,7 +2,7 @@
 # Richtet alles für Reels ein: deutsche Stimme (Piper) und Spracherkennung zum Prüfen.
 # Braucht: python3, ffmpeg, node, Playwright mit Chromium (in Claude-Cloud-Sessions vorhanden).
 set -euo pipefail
-pip install -q piper-tts faster-whisper
+pip install -q piper-tts faster-whisper edge-tts
 STIMME="${1:-de_DE-thorsten-high}"
 mkdir -p "$HOME/.cache/piper"
 cd "$HOME/.cache/piper"

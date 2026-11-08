@@ -20,7 +20,7 @@
 html,body{margin:0;background:var(--bg)}
 body{width:1080px;height:1920px;overflow:hidden;position:relative;font-family:"Montserrat",sans-serif;color:var(--ink);
   background:radial-gradient(120% 70% at 50% 40%,#151817 0%,var(--bg) 70%)}
-#logo{position:absolute;left:80px;top:196px;height:92px}
+#logo{position:absolute;left:80px;top:190px;height:96px}
 .szene{position:absolute;inset:0;padding:340px 80px 0}
 .label{font-size:31px;font-weight:600;letter-spacing:.09em;color:var(--akzent);text-transform:uppercase;margin:0 0 14px}
 .titel{font-size:96px;line-height:1.08;font-weight:700;letter-spacing:-.01em;margin:0}
@@ -32,9 +32,42 @@ body{width:1080px;height:1920px;overflow:hidden;position:relative;font-family:"M
 .text .punkt{font-weight:600;color:var(--ink);padding-left:56px;position:relative;margin-top:12px}
 .text .punkt::before{content:"";position:absolute;left:0;top:.72em;width:30px;height:3px;background:var(--akzent)}
 .text .klein{font-size:30px;color:var(--muted);font-weight:500}
+
+.titel em{font-style:normal;color:var(--akzent)}
+.html{margin-top:64px}
+.text .hinweis{margin-top:26px;padding:24px 30px;border-left:6px solid var(--akzent);background:#1A1D1C;font-size:31px;color:var(--ink);font-weight:500}
+.text .hinweis small{display:block;font-size:21px;letter-spacing:.16em;color:var(--akzent);font-weight:700;margin-bottom:8px}
+/* Tabelle: Zeilen mit Bezeichnung und zwei Werten, rechte Spalte hervorgehoben */
+.tabelle{position:relative;font-size:33px}
+.tabelle .kopf,.tabelle .zeile{display:grid;grid-template-columns:1fr 200px 220px;align-items:center}
+.tabelle .kopf{font-size:22px;letter-spacing:.14em;font-weight:700;color:var(--muted);padding-bottom:14px}
+.tabelle .kopf b,.tabelle .zeile b{text-align:center}
+.tabelle .kopf b:last-child{color:var(--akzent)}
+.tabelle .zeile{border-top:2px solid var(--linie);padding:20px 0;font-weight:600}
+.tabelle .zeile small{display:block;font-size:22px;color:var(--muted);font-weight:500;margin-top:4px}
+.tabelle .zeile b{font-weight:700}
+.tabelle .zeile b:last-child{color:var(--bg);background:var(--akzent);padding:10px 0;margin-left:20px}
+/* Karten */
+.karten{display:grid;gap:26px}
+.karten.zwei{grid-template-columns:1fr 1fr}
+.karte{border:2px solid var(--linie);padding:30px 34px;background:#161918}
+.karte.voll{background:#1E2120;border-color:var(--akzent)}
+.karte small{display:inline-block;font-size:20px;letter-spacing:.16em;font-weight:700;color:var(--akzent);margin-bottom:12px}
+.karte h3{margin:0 0 10px;font-size:42px;font-weight:700}
+.karte p{margin:8px 0 0;font-size:28px;line-height:1.35;color:#D9D5CE;font-weight:500;padding-left:40px;position:relative}
+.karte p::before{content:"";position:absolute;left:0;top:.62em;width:22px;height:3px;background:var(--akzent)}
+.karte p.plus::before{content:"+";background:none;top:-.05em;width:auto;height:auto;color:var(--akzent);font-weight:700}
+.karten.zwei .karte h3{font-size:34px}
+.karten.zwei .karte p{padding-left:0;font-size:26px;color:var(--muted)}
+.karten.zwei .karte p::before{display:none}
+/* Nummerierte Liste */
+.nummern div{display:grid;grid-template-columns:76px 1fr;border-top:2px solid var(--linie);padding:20px 0}
+.nummern i{font-style:normal;color:var(--akzent);font-weight:700;font-size:28px;padding-top:4px}
+.nummern b{font-size:36px;font-weight:700}
+.nummern small{display:block;font-size:25px;color:var(--muted);font-weight:500;margin-top:6px}
 /* Abschluss-Szene */
 .abschluss{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:560px}
-.abschluss .logo-gross{height:150px}
+.abschluss .logo-gross{height:180px}
 .abschluss .label{margin-top:56px}
 .abschluss .titel{font-size:90px}
 .abschluss .unter{margin-top:30px;font-size:34px;line-height:1.4;color:var(--muted);font-weight:500}
@@ -76,15 +109,7 @@ body{width:1080px;height:1920px;overflow:hidden;position:relative;font-family:"M
     </marker>
   </defs>
 </svg>
-<svg id="logo" viewBox="0 0 330 92" aria-label="KIMUTEC Fenstertechnik">
-  <g fill="none" stroke="#EEEAE2" stroke-width="3.4" stroke-linejoin="round">
-    <rect x="18" y="12" width="40" height="68"/>
-    <path d="M18 12 L4 20 L4 88 L18 80" stroke="#D8B79C"/>
-    <path d="M58 12 L66 8 L66 84 L58 80"/>
-  </g>
-  <text x="80" y="52" font-family="Montserrat" font-weight="800" font-size="44" letter-spacing="1" fill="none" stroke="#EEEAE2" stroke-width="1.6">KIMU<tspan stroke="#D8B79C">TEC</tspan></text>
-  <text x="82" y="76" font-family="Montserrat" font-weight="600" font-size="13.5" letter-spacing="5.2" fill="#A3A09A">FENSTERTECHNIK</text>
-</svg>
+<img id="logo" src="../marke/kimutec-logo.png" alt="KIMUTEC Fenstertechnik">
 <div id="szenen"></div>
 <script>
 const NS='http://www.w3.org/2000/svg';
@@ -93,9 +118,12 @@ const klemm=x=>Math.max(0,Math.min(1,x));
 const sanft=x=>1-Math.pow(1-klemm(x),3);
 
 function zeitWert(v, sz, standard){
-  // Zahl = Sekunden ab Szenenbeginn, "60%" = Anteil der Sprechzeit (ab Sprechbeginn)
+  // Zahl = Sekunden ab Szenenbeginn, "60%" = Anteil der Sprechzeit (ab Sprechbeginn),
+  // "m2" = wenn Marke 2 (das zweite | im Sprechertext) gesprochen wird, "m2+0.3" = 0,3 s danach
   if(v==null||v==='')return standard;
   const s=String(v).trim();
+  const m=s.match(/^m(\d+)([+-][\d.]+)?$/);
+  if(m){const z=(sz.marken||[])[+m[1]-1];return z==null?standard:sz.sprechStart+z+(m[2]?parseFloat(m[2]):0)}
   if(s.endsWith('%'))return sz.sprechStart+sz.sprechDauer*parseFloat(s)/100;
   return parseFloat(s);
 }
@@ -116,7 +144,7 @@ function baueSzene(s, i){
   d.className='szene'+(s.art==='abschluss'?' abschluss':'');
   if(s.art==='abschluss'){
     const k=s.kontakt||{};
-    d.innerHTML=`<svg class="logo-gross" data-t="0.1" viewBox="0 0 330 92">${document.getElementById('logo').innerHTML}</svg>
+    d.innerHTML=`<img class="logo-gross" data-t="0.1" src="../marke/kimutec-logo.png" alt="KIMUTEC">
       <p class="label" data-t="0.4">${s.label||''}</p>
       <h1 class="titel" data-t="0.6">${(s.titel||'').split('\n').map(z=>`<span>${z}</span>`).join('')}</h1>
       ${s.unter?`<p class="unter" data-t="1.0">${s.unter.replace(/\n/g,'<br>')}</p>`:''}
@@ -127,7 +155,9 @@ function baueSzene(s, i){
       <h1 class="titel">${(s.titel||'').split('\n').map(z=>`<span>${z}</span>`).join('')}</h1>
       <svg class="strich" viewBox="0 0 246 4"><rect width="246" height="4" fill="#EEEAE2"/><rect x="82" width="82" height="4" fill="#D8B79C"/></svg>
       ${s.bild?`<svg class="bild" viewBox="0 0 920 ${s.bildHoehe||560}" style="height:${(s.bildHoehe||560)}px">${s.bild}</svg>`:''}
+      ${s.html?`<div class="html">${s.html}</div>`:''}
       <div class="text">${(s.text||[]).map(x=>{const o=typeof x==='string'?{s:x}:x;
+        if(o.hinweis)return `<p class="hinweis" ${o.t!=null?`data-t="${o.t}"`:''}><small>${o.hinweis}</small>${o.s}</p>`;
         return `<p class="${o.punkt?'punkt':''} ${o.klein?'klein':''}" ${o.t!=null?`data-t="${o.t}"`:''} ${o.aus!=null?`data-aus="${o.aus}"`:''}>${o.s}</p>`}).join('')}</div>`;
   }
   document.getElementById('szenen').appendChild(d);
@@ -139,7 +169,7 @@ window.ladeReel=function(drehbuch, zeiten){
   REEL={szenen:[], gesamt:zeiten.gesamt};
   drehbuch.szenen.forEach((s,i)=>{
     const el=baueSzene(s,i), z=zeiten.szenen[i];
-    const sz={el, start:z.start, dauer:z.dauer, sprechStart:z.sprechStart, sprechDauer:z.sprechDauer, teile:[], letzte:i===drehbuch.szenen.length-1};
+    const sz={el, start:z.start, dauer:z.dauer, sprechStart:z.sprechStart, sprechDauer:z.sprechDauer, marken:z.marken||[], teile:[], letzte:i===drehbuch.szenen.length-1};
     if(s.art==='abschluss'){
       el.querySelectorAll('[data-t]').forEach(e=>teil(e,sz,'auf'));
     }else{
@@ -147,7 +177,7 @@ window.ladeReel=function(drehbuch, zeiten){
       el.querySelectorAll('.titel span').forEach((e,k)=>teil(e,sz,'auf',0.15+k*.12,.6));
       teil(el.querySelector('.strich'),sz,'breit',0.55,.6);
       // Bild-Elemente: nur direkte Kinder mit data-t werden animiert, Rest steht sofort
-      el.querySelectorAll('.bild [data-t], .bild .zeichnen').forEach(e=>teil(e,sz,'auf',0.5,.7));
+      el.querySelectorAll('.bild [data-t], .bild .zeichnen, .html [data-t]').forEach(e=>teil(e,sz,'auf',0.5,.7));
       const ps=[...el.querySelectorAll('.text p')];
       ps.forEach((e,k)=>teil(e,sz,'auf',zeitWert(null,sz,1.2+k*.5),.55));
     }

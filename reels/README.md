@@ -50,3 +50,14 @@ Für Videos, die schon fertig animiert sind (z. B. aus Canva), aber noch keinen 
    - Tempo: `"tempo": 1.08` (größer = langsamer). Reels unter 3 Minuten halten, sonst Text kürzen.
    - Ohne `anhalten` bleibt die Videolänge gleich; zu lange Ansagen werden bis 15 % schneller gesprochen.
 4. Mit `pruefe-ton.py` gegenlesen und falsch ausgesprochene Wörter in `aussprache` umschreiben.
+
+## Stimme und Zeitmarken (empfohlen)
+- `"stimme": "edge:de-DE-ConradNeural"` nutzt eine Microsoft-Neural-Stimme: flüssig und natürlich, braucht Internet. `"tempo": "+0%"` (z. B. `"-6%"` = langsamer).
+  Ohne `edge:` wird die lokale Piper-Stimme genutzt (weniger natürlich).
+- Im `sprecher`-Text markiert `|` eine Stelle. Elemente mit `data-t="m1"`, `"m2"` … (oder `"t": "m3+0.5"` bei Texten) erscheinen genau, wenn das Wort nach dem 1., 2. … `|` gesprochen wird.
+  So bleibt die Stimme durchgehend flüssig und Schrift und Bild kommen trotzdem passend.
+- Bausteine für `html`: `tabelle` (Zeilen mit zwei Werten), `karten` / `karten zwei` mit `karte` bzw. `karte voll`, `nummern` (nummerierte Liste).
+  Text: `{"s": "…", "hinweis": "GUT ZU WISSEN"}` ergibt eine Hinweisbox. Im Titel hebt `<em>…</em>` ein Wort beige hervor.
+- Logo: `marke/kimutec-logo.png` (aus dem Original-Reel ausgeschnitten, transparent).
+- Hinweis: Die edge-Stimmen kommen vom Vorlesedienst des Edge-Browsers. Für bezahlte Werbung ist der Azure-Sprachdienst mit denselben Stimmen die lizenzrechtlich saubere Variante.
+- Instagram-Reels dürfen höchstens 3 Minuten lang sein.

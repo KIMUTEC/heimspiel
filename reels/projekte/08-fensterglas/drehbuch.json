@@ -1,0 +1,300 @@
+{
+ "titel": "KIMUTEC erklärt: Fensterglas",
+ "fps": 30,
+ "stimme": "edge:de-DE-ConradNeural",
+ "tempo": "+4%",
+ "aussprache": {
+  "kimutec.com": "Kimutek Punkt com",
+  "KIMUTEC": "Kimutek",
+  "Ug-Wert": "U-G-Wert",
+  "Uw-Wert": "U-W-Wert",
+  "ESG-HF": "E-S-G-H-F",
+  "P4A": "P 4 A",
+  "RC2": "R-C-2"
+ },
+ "szenen": [
+  {
+   "label": "KIMUTEC erklärt | Fensterglas",
+   "titel": "Welches Glas\ngehört in Ihr\nFenster?",
+   "bildHoehe": 500,
+   "bild": "<rect class='wand' x='0' y='0' width='920' height='500'/><rect class='offen' x='290' y='40' width='340' height='420'/><g data-t='0.6' data-d='0.9'><rect class='rahmen' x='290' y='40' width='340' height='420' rx='4'/><rect class='glas' x='318' y='68' width='284' height='364'/><line x1='370' y1='200' x2='450' y2='140' stroke='#3A4246' stroke-width='3'/><line x1='385' y1='220' x2='440' y2='180' stroke='#3A4246' stroke-width='3'/><rect x='608' y='240' width='10' height='46' rx='3' fill='#2A2D2C'/></g><g data-t='m1'><text class='schrift-akzent' x='460' y='-14' text-anchor='middle' style='font-size:22px'>WÄRME · LICHT · RUHE · SICHERHEIT</text></g>",
+   "sprecher": "Welches Glas gehört in Ihr Fenster? |Wärme, Licht, Ruhe, Sicherheit: Das Glas entscheidet.",
+   "pause": 0.6
+  },
+  {
+   "label": "01 | Aufbau",
+   "titel": "So ist\nIsolierglas\naufgebaut.",
+   "bildHoehe": 510,
+   "bild": "<text class='schrift-klein' x='40' y='0'>AUSSEN</text><text class='schrift-klein' x='240' y='0'>INNEN</text><g data-t='m1'><rect x='60' y='30' width='22' height='470' fill='#1F2A30' stroke='#9FB3BC' stroke-width='3'/><rect x='170' y='30' width='22' height='470' fill='#1F2A30' stroke='#9FB3BC' stroke-width='3'/><rect x='280' y='30' width='22' height='470' fill='#1F2A30' stroke='#9FB3BC' stroke-width='3'/></g><g data-t='m1'><line class='mass' x1='302' y1='80' x2='520' y2='92'/><circle cx='302' cy='80' r='6' fill='#D8B79C'/><text class='schrift-akzent' x='540' y='66'>1</text><text class='schrift' x='540' y='100' style='font-size:34px;font-weight:700'>Glasscheiben</text><text class='schrift-text' x='540' y='134'>meist je 4 mm Floatglas</text></g><g data-t='m2'><rect x='276' y='30' width='5' height='470' fill='#D8B79C'/></g><g data-t='m2'><line class='mass' x1='278' y1='200' x2='520' y2='207'/><circle cx='278' cy='200' r='6' fill='#D8B79C'/><text class='schrift-akzent' x='540' y='181'>2</text><text class='schrift' x='540' y='215' style='font-size:34px;font-weight:700'>Beschichtung</text><text class='schrift-text' x='540' y='249'>hauchdünn, hält die Wärme im Raum</text></g><g data-t='m3'><circle cx='92' cy='70' r='3' fill='#4B5F6A'/><circle cx='92' cy='96' r='3' fill='#4B5F6A'/><circle cx='92' cy='122' r='3' fill='#4B5F6A'/><circle cx='92' cy='148' r='3' fill='#4B5F6A'/><circle cx='92' cy='174' r='3' fill='#4B5F6A'/><circle cx='92' cy='200' r='3' fill='#4B5F6A'/><circle cx='92' cy='226' r='3' fill='#4B5F6A'/><circle cx='92' cy='252' r='3' fill='#4B5F6A'/><circle cx='92' cy='278' r='3' fill='#4B5F6A'/><circle cx='92' cy='304' r='3' fill='#4B5F6A'/><circle cx='92' cy='330' r='3' fill='#4B5F6A'/><circle cx='92' cy='356' r='3' fill='#4B5F6A'/><circle cx='92' cy='382' r='3' fill='#4B5F6A'/><circle cx='92' cy='408' r='3' fill='#4B5F6A'/><circle cx='92' cy='434' r='3' fill='#4B5F6A'/><circle cx='112' cy='70' r='3' fill='#4B5F6A'/><circle cx='112' cy='96' r='3' fill='#4B5F6A'/><circle cx='112' cy='122' r='3' fill='#4B5F6A'/><circle cx='112' cy='148' r='3' fill='#4B5F6A'/><circle cx='112' cy='174' r='3' fill='#4B5F6A'/><circle cx='112' cy='200' r='3' fill='#4B5F6A'/><circle cx='112' cy='226' r='3' fill='#4B5F6A'/><circle cx='112' cy='252' r='3' fill='#4B5F6A'/><circle cx='112' cy='278' r='3' fill='#4B5F6A'/><circle cx='112' cy='304' r='3' fill='#4B5F6A'/><circle cx='112' cy='330' r='3' fill='#4B5F6A'/><circle cx='112' cy='356' r='3' fill='#4B5F6A'/><circle cx='112' cy='382' r='3' fill='#4B5F6A'/><circle cx='112' cy='408' r='3' fill='#4B5F6A'/><circle cx='112' cy='434' r='3' fill='#4B5F6A'/><circle cx='132' cy='70' r='3' fill='#4B5F6A'/><circle cx='132' cy='96' r='3' fill='#4B5F6A'/><circle cx='132' cy='122' r='3' fill='#4B5F6A'/><circle cx='132' cy='148' r='3' fill='#4B5F6A'/><circle cx='132' cy='174' r='3' fill='#4B5F6A'/><circle cx='132' cy='200' r='3' fill='#4B5F6A'/><circle cx='132' cy='226' r='3' fill='#4B5F6A'/><circle cx='132' cy='252' r='3' fill='#4B5F6A'/><circle cx='132' cy='278' r='3' fill='#4B5F6A'/><circle cx='132' cy='304' r='3' fill='#4B5F6A'/><circle cx='132' cy='330' r='3' fill='#4B5F6A'/><circle cx='132' cy='356' r='3' fill='#4B5F6A'/><circle cx='132' cy='382' r='3' fill='#4B5F6A'/><circle cx='132' cy='408' r='3' fill='#4B5F6A'/><circle cx='132' cy='434' r='3' fill='#4B5F6A'/><circle cx='152' cy='70' r='3' fill='#4B5F6A'/><circle cx='152' cy='96' r='3' fill='#4B5F6A'/><circle cx='152' cy='122' r='3' fill='#4B5F6A'/><circle cx='152' cy='148' r='3' fill='#4B5F6A'/><circle cx='152' cy='174' r='3' fill='#4B5F6A'/><circle cx='152' cy='200' r='3' fill='#4B5F6A'/><circle cx='152' cy='226' r='3' fill='#4B5F6A'/><circle cx='152' cy='252' r='3' fill='#4B5F6A'/><circle cx='152' cy='278' r='3' fill='#4B5F6A'/><circle cx='152' cy='304' r='3' fill='#4B5F6A'/><circle cx='152' cy='330' r='3' fill='#4B5F6A'/><circle cx='152' cy='356' r='3' fill='#4B5F6A'/><circle cx='152' cy='382' r='3' fill='#4B5F6A'/><circle cx='152' cy='408' r='3' fill='#4B5F6A'/><circle cx='152' cy='434' r='3' fill='#4B5F6A'/><circle cx='202' cy='70' r='3' fill='#4B5F6A'/><circle cx='202' cy='96' r='3' fill='#4B5F6A'/><circle cx='202' cy='122' r='3' fill='#4B5F6A'/><circle cx='202' cy='148' r='3' fill='#4B5F6A'/><circle cx='202' cy='174' r='3' fill='#4B5F6A'/><circle cx='202' cy='200' r='3' fill='#4B5F6A'/><circle cx='202' cy='226' r='3' fill='#4B5F6A'/><circle cx='202' cy='252' r='3' fill='#4B5F6A'/><circle cx='202' cy='278' r='3' fill='#4B5F6A'/><circle cx='202' cy='304' r='3' fill='#4B5F6A'/><circle cx='202' cy='330' r='3' fill='#4B5F6A'/><circle cx='202' cy='356' r='3' fill='#4B5F6A'/><circle cx='202' cy='382' r='3' fill='#4B5F6A'/><circle cx='202' cy='408' r='3' fill='#4B5F6A'/><circle cx='202' cy='434' r='3' fill='#4B5F6A'/><circle cx='222' cy='70' r='3' fill='#4B5F6A'/><circle cx='222' cy='96' r='3' fill='#4B5F6A'/><circle cx='222' cy='122' r='3' fill='#4B5F6A'/><circle cx='222' cy='148' r='3' fill='#4B5F6A'/><circle cx='222' cy='174' r='3' fill='#4B5F6A'/><circle cx='222' cy='200' r='3' fill='#4B5F6A'/><circle cx='222' cy='226' r='3' fill='#4B5F6A'/><circle cx='222' cy='252' r='3' fill='#4B5F6A'/><circle cx='222' cy='278' r='3' fill='#4B5F6A'/><circle cx='222' cy='304' r='3' fill='#4B5F6A'/><circle cx='222' cy='330' r='3' fill='#4B5F6A'/><circle cx='222' cy='356' r='3' fill='#4B5F6A'/><circle cx='222' cy='382' r='3' fill='#4B5F6A'/><circle cx='222' cy='408' r='3' fill='#4B5F6A'/><circle cx='222' cy='434' r='3' fill='#4B5F6A'/><circle cx='242' cy='70' r='3' fill='#4B5F6A'/><circle cx='242' cy='96' r='3' fill='#4B5F6A'/><circle cx='242' cy='122' r='3' fill='#4B5F6A'/><circle cx='242' cy='148' r='3' fill='#4B5F6A'/><circle cx='242' cy='174' r='3' fill='#4B5F6A'/><circle cx='242' cy='200' r='3' fill='#4B5F6A'/><circle cx='242' cy='226' r='3' fill='#4B5F6A'/><circle cx='242' cy='252' r='3' fill='#4B5F6A'/><circle cx='242' cy='278' r='3' fill='#4B5F6A'/><circle cx='242' cy='304' r='3' fill='#4B5F6A'/><circle cx='242' cy='330' r='3' fill='#4B5F6A'/><circle cx='242' cy='356' r='3' fill='#4B5F6A'/><circle cx='242' cy='382' r='3' fill='#4B5F6A'/><circle cx='242' cy='408' r='3' fill='#4B5F6A'/><circle cx='242' cy='434' r='3' fill='#4B5F6A'/><circle cx='262' cy='70' r='3' fill='#4B5F6A'/><circle cx='262' cy='96' r='3' fill='#4B5F6A'/><circle cx='262' cy='122' r='3' fill='#4B5F6A'/><circle cx='262' cy='148' r='3' fill='#4B5F6A'/><circle cx='262' cy='174' r='3' fill='#4B5F6A'/><circle cx='262' cy='200' r='3' fill='#4B5F6A'/><circle cx='262' cy='226' r='3' fill='#4B5F6A'/><circle cx='262' cy='252' r='3' fill='#4B5F6A'/><circle cx='262' cy='278' r='3' fill='#4B5F6A'/><circle cx='262' cy='304' r='3' fill='#4B5F6A'/><circle cx='262' cy='330' r='3' fill='#4B5F6A'/><circle cx='262' cy='356' r='3' fill='#4B5F6A'/><circle cx='262' cy='382' r='3' fill='#4B5F6A'/><circle cx='262' cy='408' r='3' fill='#4B5F6A'/><circle cx='262' cy='434' r='3' fill='#4B5F6A'/></g><g data-t='m3'><line class='mass' x1='232' y1='320' x2='520' y2='322'/><circle cx='232' cy='320' r='6' fill='#D8B79C'/><text class='schrift-akzent' x='540' y='296'>3</text><text class='schrift' x='540' y='330' style='font-size:34px;font-weight:700'>Argon-Füllung</text><text class='schrift-text' x='540' y='364'>dämmt besser als Luft</text></g><g data-t='m4'><rect x='82' y='30' width='88' height='34' fill='#D8B79C'/><rect x='192' y='30' width='88' height='34' fill='#D8B79C'/><rect x='82' y='466' width='88' height='34' fill='#D8B79C'/><rect x='192' y='466' width='88' height='34' fill='#D8B79C'/></g><g data-t='m4'><line class='mass' x1='236' y1='483' x2='520' y2='437'/><circle cx='236' cy='483' r='6' fill='#D8B79C'/><text class='schrift-akzent' x='540' y='411'>4</text><text class='schrift' x='540' y='445' style='font-size:34px;font-weight:700'>Abstandhalter</text><text class='schrift-text' x='540' y='479'>ideal: „warme Kante“</text></g>",
+   "sprecher": "So ist Isolierglas aufgebaut: |Glasscheiben, |eine hauchdünne Beschichtung, |Argon im Zwischenraum |und der Abstandhalter.",
+   "pause": 0.5
+  },
+  {
+   "label": "02 | Zweifach oder dreifach?",
+   "titel": "Die Werte\nim Vergleich.",
+   "html": "<div class='tabelle'><div class='kopf' data-t='0.7'><span></span><b>2-FACH</b><b>3-FACH</b></div><div class='zeile' data-t='m1'><span>Ug-Wert Glas<small>W/(m²K), kleiner = besser</small></span><b>1,1</b><b>0,5–0,6</b></div><div class='zeile' data-t='m2'><span>Glas innen<small>bei −10 °C außen</small></span><b>15–16 °C</b><b>17–18 °C</b></div><div class='zeile' data-t='m3'><span>Lichtdurchlässigkeit<small>Tageslicht im Raum</small></span><b>80 %</b><b>72–74 %</b></div><div class='zeile' data-t='m4'><span>Sonnenwärme<small>g-Wert</small></span><b>0,6</b><b>0,5</b></div><div class='zeile' data-t='m5'><span>Gewicht<small>pro m² Glas</small></span><b>20 kg</b><b>30 kg</b></div></div>",
+   "text": [
+    {
+     "s": "3-fach: rund halb so viel Wärmeverlust übers Glas",
+     "punkt": true,
+     "t": "m6"
+    }
+   ],
+   "sprecher": "Zweifach gegen dreifach: |Der Ug-Wert halbiert sich, |innen ist die Scheibe wärmer, |es kommt etwas weniger Licht |und Sonnenwärme herein, |aber das Glas ist schwerer. |Ergebnis: halb so viel Wärmeverlust.",
+   "pause": 0.5
+  },
+  {
+   "label": "Vorteile 3-fach",
+   "titel": "Warum\n<em>3-fach</em>-Glas?",
+   "text": [
+    {
+     "s": "Rund halb so viel Wärmeverlust",
+     "punkt": true,
+     "t": "m1"
+    },
+    {
+     "s": "Wärmere Scheibe innen, angenehm auch direkt am Fenster",
+     "punkt": true,
+     "t": "m2"
+    },
+    {
+     "s": "Weniger Kondenswasser auf der Raumseite",
+     "punkt": true,
+     "t": "m3"
+    },
+    {
+     "s": "Für Fördermittel in der Regel Voraussetzung",
+     "punkt": true,
+     "t": "m4"
+    },
+    {
+     "s": "Dafür schwerer, etwas weniger Licht, höherer Preis",
+     "klein": true,
+     "t": "m5"
+    },
+    {
+     "s": "Außen beschlagen? Bei 3-fach-Glas normal: Die Wärme bleibt drinnen.",
+     "hinweis": "GUT ZU WISSEN",
+     "t": "m6"
+    }
+   ],
+   "sprecher": "Warum Dreifachglas? |Halb so viel Wärmeverlust, |eine wärmere Scheibe innen, |weniger Kondenswasser, |und wichtig für Fördermittel. |Dafür schwerer und teurer. |Außen beschlagen? Normal.",
+   "pause": 0.5
+  },
+  {
+   "label": "Einsatz",
+   "titel": "Wo passt was?",
+   "html": "<div class='karten'><div class='karte voll' data-t='m1'><small>DIE REGEL</small><h3>3-fach-Glas</h3><p data-t='m1+1.0'>Wohn- und Schlafräume</p><p data-t='m1+2.4'>Neubau und energetische Sanierung</p><p data-t='m1+3.2'>Wenn Fördermittel genutzt werden</p></div><div class='karte' data-t='m2'><small>DIE AUSNAHME</small><h3>2-fach-Glas</h3><p data-t='m3'>Unbeheizte Räume wie Garage oder Keller</p><p data-t='m4'>Denkmal und schlanke Holzprofile</p><p data-t='m5'>Wenn das Budget knapp ist</p></div></div>",
+   "sprecher": "Wo passt was? |Dreifachglas für Wohn- und Schlafräume, Neubau und Sanierung. |Zweifachglas für |Garage und Keller, |Denkmal |oder ein knappes Budget.",
+   "pause": 0.5
+  },
+  {
+   "label": "03 | Warme Kante",
+   "titel": "Kleiner Rand,\n<em>große</em> Wirkung.",
+   "bildHoehe": 360,
+   "bild": "<g data-t='m1'><rect x='0' y='0' width='400' height='300' fill='#161918' stroke='#3A3E3C' stroke-width='2'/><text class='schrift-klein' x='24' y='40'>ALUMINIUM</text><rect x='110' y='60' width='18' height='200' fill='#1F2A30' stroke='#9FB3BC' stroke-width='3'/><rect x='262' y='60' width='18' height='200' fill='#1F2A30' stroke='#9FB3BC' stroke-width='3'/><rect x='128' y='200' width='134' height='36' fill='#7E8E96'/><rect x='128' y='236' width='134' height='24' fill='#0B0C0C'/><rect x='90' y='260' width='210' height='24' class='wand'/></g><g data-t='m1+1.2'><circle cx='304' cy='170' r='6' fill='#9FB3BC'/><circle cx='314' cy='196' r='7' fill='#9FB3BC'/><circle cx='302' cy='222' r='5' fill='#9FB3BC'/><circle cx='312' cy='246' r='6' fill='#9FB3BC'/></g><g data-t='m1+1.2'><rect x='0' y='318' width='6' height='34' fill='#9FB3BC'/><text class='schrift' x='22' y='346' style='font-size:30px'>kalt · Kondenswasser</text></g><g data-t='m2'><rect x='520' y='0' width='400' height='300' fill='#161918' stroke='#3A3E3C' stroke-width='2'/><text class='schrift-klein' x='544' y='40'>WARME KANTE</text><rect x='630' y='60' width='18' height='200' fill='#1F2A30' stroke='#9FB3BC' stroke-width='3'/><rect x='782' y='60' width='18' height='200' fill='#1F2A30' stroke='#9FB3BC' stroke-width='3'/><rect x='648' y='200' width='134' height='36' fill='#D8B79C'/><rect x='648' y='236' width='134' height='24' fill='#0B0C0C'/><rect x='610' y='260' width='210' height='24' class='wand'/><rect x='648' y='150' width='134' height='50' fill='#D8B79C' opacity='.18'/></g><g data-t='m2'><rect x='520' y='318' width='6' height='34' fill='#D8B79C'/><text class='schrift' x='542' y='346' style='font-size:30px'>wärmer · trocken</text></g>",
+   "text": [
+    {
+     "s": "Abstandhalter aus Kunststoff oder Edelstahl statt Aluminium",
+     "punkt": true,
+     "t": "m2+0.8"
+    },
+    {
+     "s": "Uw-Wert ca. 0,1 besser",
+     "punkt": true,
+     "t": "m3"
+    },
+    {
+     "s": "Weniger Schimmelgefahr am Rand",
+     "punkt": true,
+     "t": "m4"
+    }
+   ],
+   "sprecher": "Kleiner Rand, große Wirkung. |Aluminium ist kalt, es bildet sich Kondenswasser. |Die warme Kante bleibt wärmer und trocken. |Das verbessert den Uw-Wert |und senkt die Schimmelgefahr.",
+   "pause": 0.5
+  },
+  {
+   "label": "04 | Sicherheitsglas",
+   "titel": "ESG",
+   "bildHoehe": 390,
+   "bild": "<rect x='260' y='0' width='400' height='330' fill='#1C262B' stroke='#EEEAE2' stroke-width='5'/><line x1='320' y1='70' x2='400' y2='20' stroke='#3A4A52' stroke-width='4'/><line x1='330' y1='100' x2='430' y2='34' stroke='#3A4A52' stroke-width='4'/><g data-t='m3'><rect x='262' y='2' width='396' height='326' fill='#22313A'/><path d='M262 2 L262 29 L262 55 L262 94 L262 113 L262 151 L262 177 L262 202 L262 239 L262 261 L262 297 L262 328M295 2 L295 30 L315 55 L299 93 L318 122 L303 159 L294 186 L300 203 L296 236 L314 263 L308 301 L303 328M351 2 L338 24 L342 64 L348 88 L352 120 L345 155 L355 175 L352 210 L360 243 L344 277 L340 297 L357 328M385 2 L394 23 L398 66 L396 98 L389 124 L396 152 L393 186 L406 209 L398 231 L399 271 L407 304 L388 328M435 2 L442 23 L437 55 L428 83 L445 114 L431 148 L448 172 L437 210 L448 245 L448 265 L436 296 L448 328M494 2 L473 26 L475 57 L482 92 L476 112 L480 148 L484 188 L487 210 L485 242 L470 276 L489 305 L490 328M523 2 L523 25 L530 53 L515 86 L517 118 L514 141 L517 173 L522 201 L536 241 L517 264 L522 296 L516 328M579 2 L583 31 L570 54 L559 88 L564 126 L561 142 L582 180 L561 210 L558 240 L583 275 L575 294 L566 328M605 2 L621 32 L621 58 L607 96 L627 127 L622 156 L620 175 L614 207 L602 231 L608 264 L619 306 L613 328M658 2 L658 39 L658 70 L658 99 L658 118 L658 145 L658 175 L658 204 L658 234 L658 271 L658 305 L658 328M262 2 L295 2 L351 2 L385 2 L435 2 L494 2 L523 2 L579 2 L605 2 L658 2M262 29 L295 30 L338 24 L394 23 L442 23 L473 26 L523 25 L583 31 L621 32 L658 39M262 55 L315 55 L342 64 L398 66 L437 55 L475 57 L530 53 L570 54 L621 58 L658 70M262 94 L299 93 L348 88 L396 98 L428 83 L482 92 L515 86 L559 88 L607 96 L658 99M262 113 L318 122 L352 120 L389 124 L445 114 L476 112 L517 118 L564 126 L627 127 L658 118M262 151 L303 159 L345 155 L396 152 L431 148 L480 148 L514 141 L561 142 L622 156 L658 145M262 177 L294 186 L355 175 L393 186 L448 172 L484 188 L517 173 L582 180 L620 175 L658 175M262 202 L300 203 L352 210 L406 209 L437 210 L487 210 L522 201 L561 210 L614 207 L658 204M262 239 L296 236 L360 243 L398 231 L448 245 L485 242 L536 241 L558 240 L602 231 L658 234M262 261 L314 263 L344 277 L399 271 L448 265 L470 276 L517 264 L583 275 L608 264 L658 271M262 297 L308 301 L340 297 L407 304 L436 296 L489 305 L522 296 L575 294 L619 306 L658 305M262 328 L303 328 L357 328 L388 328 L448 328 L490 328 L516 328 L566 328 L613 328 L658 328' fill='none' stroke='#8FA6AF' stroke-width='2'/><circle cx='380' cy='170' r='12' fill='#0B0C0C'/><text class='schrift-text' x='460' y='370' text-anchor='middle'>Typisches Bruchbild von ESG</text></g>",
+   "text": [
+    {
+     "s": "Einscheiben-Sicherheitsglas",
+     "klein": true,
+     "t": "0.6"
+    },
+    {
+     "s": "Auf über 600 °C erhitzt und schlagartig abgekühlt",
+     "punkt": true,
+     "t": "m1"
+    },
+    {
+     "s": "Rund 2,5-mal so biegefest wie normales Glas",
+     "punkt": true,
+     "t": "m2"
+    },
+    {
+     "s": "Zerfällt bei Bruch in kleine, stumpfe Krümel",
+     "punkt": true,
+     "t": "m3"
+    },
+    {
+     "s": "Nachträglich nicht zu schneiden oder zu bohren",
+     "klein": true,
+     "t": "m4"
+    },
+    {
+     "s": "Typisch: Glastüren, Duschen, bodentiefe Verglasung",
+     "punkt": true,
+     "t": "m5"
+    }
+   ],
+   "sprecher": "ESG, Einscheiben-Sicherheitsglas: |erhitzt und schlagartig abgekühlt, |zweieinhalbmal so biegefest. |Bei Bruch zerfällt es in stumpfe Krümel. |Nachträglich bohren geht nicht. |Typisch für Glastüren und Duschen.",
+   "pause": 0.5
+  },
+  {
+   "label": "Gut zu wissen",
+   "titel": "Spontanbruch\nbei ESG?",
+   "bildHoehe": 330,
+   "bild": "<rect x='0' y='20' width='920' height='280' fill='#1C262B' stroke='#EEEAE2' stroke-width='5'/><clipPath id='spclip'><rect x='3' y='23' width='914' height='274'/></clipPath><path clip-path='url(#spclip)' class='zeichnen' data-t='m1+0.4' data-d='1.2' d='M460 160 L975 231M460 160 L912 416M460 160 L692 625M460 160 L398 676M460 160 L278 647M460 160 L-6 391M460 160 L-53 75M460 160 L42 -149M460 160 L246 -314M460 160 L455 -360M460 160 L660 -320M460 160 L937 -46M648 190 L659 255 L547 363 L434 339 L398 328 L259 257 L284 124 L276 36 L381 -25 L458 -11 L548 -33 L645 70 L654 190M895 210 L782 345 L625 527 L416 547 L336 581 L117 335 L55 87 L146 -108 L296 -208 L456 -182 L611 -174 L773 -13 L817 214' fill='none' stroke='#8FA6AF' stroke-width='2.5'/><g data-t='m2'><ellipse cx='395' cy='160' rx='65' ry='42' fill='none' stroke='#D8B79C' stroke-width='5'/><ellipse cx='525' cy='160' rx='65' ry='42' fill='none' stroke='#D8B79C' stroke-width='5'/></g><g data-t='m1'><circle cx='460' cy='160' r='9' fill='#EEEAE2'/><line class='mass' x1='466' y1='152' x2='640' y2='-6'/><text class='schrift-akzent' x='650' y='0' style='font-size:22px'>NICKELSULFID-EINSCHLUSS</text></g>",
+   "text": [
+    {
+     "s": "Winzige Nickelsulfid-Einschlüsse können ESG noch Jahre später zerspringen lassen",
+     "punkt": true,
+     "t": "m1"
+    },
+    {
+     "s": "Typisch: ein Bruchbild wie ein „Schmetterling“",
+     "punkt": true,
+     "t": "m2"
+    },
+    {
+     "s": "Heißlagerung: erneut auf ca. 260 °C erhitzt, kritische Scheiben brechen schon im Werk",
+     "punkt": true,
+     "t": "m3"
+    },
+    {
+     "s": "Außenscheibe höher als 4 m? Dann nur als ESG-HF",
+     "punkt": true,
+     "t": "m4"
+    }
+   ],
+   "sprecher": "Spontanbruch bei ESG? |Winzige Einschlüsse können es Jahre später zerspringen lassen, |typisch ist ein Bruchbild wie ein Schmetterling. |Die Heißlagerung sortiert kritische Scheiben aus. |Außen über vier Meter nur als ESG-HF.",
+   "pause": 0.5
+  },
+  {
+   "label": "05 | Sicherheitsglas",
+   "titel": "VSG",
+   "bildHoehe": 340,
+   "bild": "<g data-t='m1'><rect x='0' y='60' width='300' height='22' fill='#1F2A30' stroke='#9FB3BC' stroke-width='3'/><rect x='0' y='88' width='300' height='10' fill='#D8B79C'/><rect x='0' y='104' width='300' height='22' fill='#1F2A30' stroke='#9FB3BC' stroke-width='3'/><text class='schrift-text' x='0' y='170'>Glas · Folie (PVB) · Glas</text></g><rect x='520' y='0' width='400' height='330' fill='#1C262B' stroke='#EEEAE2' stroke-width='5'/><g data-t='m2'><path d='M690 190 L949 213M690 190 L905 335M690 190 L814 418M690 190 L651 447M690 190 L515 383M690 190 L434 234M690 190 L432 157M690 190 L525 -11M690 190 L627 -62M690 190 L777 -55M690 190 L923 74M762 197 L755 235 L724 256 L679 262 L639 243 L618 202 L609 180 L639 127 L674 119 L717 115 L748 161 L761 196M823 201 L816 278 L767 304 L667 340 L603 309 L528 213 L527 172 L598 62 L652 64 L737 53 L813 131 L826 204M875 210 L866 294 L788 387 L657 376 L523 364 L446 223 L490 166 L541 34 L644 -15 L771 -34 L870 104 L933 210' fill='none' stroke='#8FA6AF' stroke-width='2.5' clip-path='url(#vsgclip)'/><circle cx='690' cy='190' r='10' fill='#0B0C0C'/></g><clipPath id='vsgclip'><rect x='522' y='2' width='396' height='326'/></clipPath>",
+   "text": [
+    {
+     "s": "Verbund-Sicherheitsglas",
+     "klein": true,
+     "t": "0.6"
+    },
+    {
+     "s": "Zwei Scheiben, fest verbunden durch reißfeste Folie",
+     "punkt": true,
+     "t": "m1"
+    },
+    {
+     "s": "Bei Bruch haften die Splitter, die Scheibe bleibt im Rahmen",
+     "punkt": true,
+     "t": "m2"
+    },
+    {
+     "s": "Pflicht bei Überkopfverglasung, üblich bei Absturzsicherung",
+     "punkt": true,
+     "t": "m3"
+    },
+    {
+     "s": "Einbruchschutz: VSG der Klasse P4A gehört ins RC2-Fenster",
+     "punkt": true,
+     "t": "m4"
+    },
+    {
+     "s": "Mit Schallschutzfolie zusätzlich leiser",
+     "punkt": true,
+     "t": "m5"
+    }
+   ],
+   "sprecher": "VSG, Verbund-Sicherheitsglas: |zwei Scheiben mit reißfester Folie. |Bei Bruch haften die Splitter. |Pflicht über Kopf. |Als P4A auch Einbruchschutz. |Mit Schallschutzfolie leiser.",
+   "pause": 0.5
+  },
+  {
+   "label": "06 | Sonnenschutzglas",
+   "titel": "Hell, aber\n<em>weniger</em> Hitze.",
+   "bildHoehe": 560,
+   "bild": "<g data-t='0.6'><circle cx='90' cy='90' r='46' fill='#D8B79C'/><line x1='152' y1='90' x2='170' y2='90' stroke='#D8B79C' stroke-width='5'/><line x1='134' y1='134' x2='147' y2='147' stroke='#D8B79C' stroke-width='5'/><line x1='90' y1='152' x2='90' y2='170' stroke='#D8B79C' stroke-width='5'/><line x1='46' y1='134' x2='33' y2='147' stroke='#D8B79C' stroke-width='5'/><line x1='28' y1='90' x2='10' y2='90' stroke='#D8B79C' stroke-width='5'/><line x1='46' y1='46' x2='33' y2='33' stroke='#D8B79C' stroke-width='5'/><line x1='90' y1='28' x2='90' y2='10' stroke='#D8B79C' stroke-width='5'/><line x1='134' y1='46' x2='147' y2='33' stroke='#D8B79C' stroke-width='5'/><rect x='440' y='20' width='16' height='300' fill='#1F2A30' stroke='#9FB3BC' stroke-width='3'/></g><line class='zeichnen' data-t='m1' data-d='0.8' x1='160' y1='130' x2='436' y2='220' stroke='#D8B79C' stroke-width='7'/><line class='zeichnen' data-t='m1+0.7' data-d='0.7' x1='436' y1='220' x2='220' y2='300' stroke='#D8B79C' stroke-width='7' marker-end='url(#pfeil)'/><text class='schrift-akzent' x='100' y='350' data-t='m1+1'>VIEL WÄRME BLEIBT DRAUSSEN</text><line class='zeichnen' data-t='m2' data-d='0.8' x1='460' y1='200' x2='820' y2='250' stroke='#9FB3BC' stroke-width='4' marker-end='url(#pfeil)'/><text class='schrift-klein' x='600' y='160' data-t='m2+0.4'>TAGESLICHT KOMMT REIN</text><g data-t='m3'><text class='schrift' x='0' y='430' style='font-size:28px'>Wärmeschutzglas 3-fach</text><text class='schrift' x='920' y='430' text-anchor='end' style='font-size:28px'>g ca. 0,5</text><rect x='0' y='446' width='920' height='14' fill='#252928'/><rect x='0' y='446' width='460' height='14' fill='#9FB3BC'/><text class='schrift' x='0' y='510' style='font-size:28px'>Sonnenschutzglas</text><text class='schrift' x='920' y='510' text-anchor='end' style='font-size:28px;fill:#D8B79C'>g ca. 0,2–0,4</text><rect x='0' y='526' width='920' height='14' fill='#252928'/><rect x='0' y='526' width='276' height='14' fill='#D8B79C'/></g>",
+   "text": [
+    {
+     "s": "Sinnvoll für große Süd- und Westfenster, Dachgeschoss, Wintergarten",
+     "punkt": true,
+     "t": "m4"
+    },
+    {
+     "s": "Im Winter weniger Gratis-Wärme",
+     "klein": true,
+     "t": "m5"
+    }
+   ],
+   "sprecher": "Sonnenschutzglas: hell, aber weniger Hitze. |Viel Wärme bleibt draußen, |das Licht kommt rein. |Der g-Wert sinkt deutlich. |Ideal für große Süd- und Westfenster. |Im Winter weniger Gratis-Wärme.",
+   "pause": 0.5
+  },
+  {
+   "label": "07 | Spezialgläser",
+   "titel": "Glas mit\n<em>Extras.</em>",
+   "html": "<div class='karten zwei'><div class='karte' data-t='m1'><h3>Schallschutzglas</h3><p>Ungleich dicke Scheiben, Spezialfolie: bis über 45 dB</p></div><div class='karte' data-t='m2'><h3>Sichtschutzglas</h3><p>Ornament- oder Satinatoglas für Bad, WC und Haustür</p></div><div class='karte' data-t='m3'><h3>Solarglas</h3><p>Solarzellen im Glas erzeugen Strom, z. B. im Terrassendach</p></div><div class='karte' data-t='m4'><h3>Selbstreinigend</h3><p>Spezialbeschichtung: Regen spült Schmutz leichter ab</p></div></div>",
+   "sprecher": "Glas mit Extras: |Schallschutzglas, |Sichtschutzglas, |Solarglas, das Strom erzeugt, |und selbstreinigendes Glas.",
+   "pause": 0.5
+  },
+  {
+   "label": "08 | Standard oder Extra?",
+   "titel": "Was ist\nStandard?",
+   "html": "<div class='karten'><div class='karte voll' data-t='m1'><small>STANDARD</small><p data-t='m1+0.3'>Wärmeschutzglas mit Argon-Füllung</p><p data-t='m1+1.4'>2-fach (Ug 1,1) oder 3-fach (Ug 0,5–0,6)</p><p data-t='m1+2.4'>Warme Kante und klares Floatglas</p></div><div class='karte' data-t='m2'><small>SONDERAUSSTATTUNG</small><p class='plus' data-t='m3'>Sicherheitsglas: ESG, VSG, P4A</p><p class='plus' data-t='m4'>Schallschutz- und Sonnenschutzglas</p><p class='plus' data-t='m5'>Ornament-, Satinato- und Solarglas</p><p class='plus' data-t='m6'>Sprossen, Sonderformen, Übergrößen</p></div></div>",
+   "text": [
+    {
+     "s": "Wo Sicherheitsglas Pflicht ist, klären wir bei der Planung.",
+     "klein": true,
+     "t": "m7"
+    }
+   ],
+   "sprecher": "Was ist Standard? |Wärmeschutzglas mit Argon, warmer Kante und Floatglas. |Extra gibt es |Sicherheitsglas, |Schallschutz- und Sonnenschutzglas, |Ornament- und Solarglas, |Sprossen und Sonderformen. |Pflicht-Fälle klären wir bei der Planung.",
+   "pause": 0.5
+  },
+  {
+   "label": "09 | Checkliste",
+   "titel": "Darauf sollten\nSie achten.",
+   "html": "<div class='nummern'><div data-t='m1'><i>01</i><span><b>Uw-Wert vergleichen, nicht nur Ug</b><small>Fenstertausch: max. 1,3 · Förderung: max. 0,95</small></span></div><div data-t='m2'><i>02</i><span><b>Warme Kante ins Angebot schreiben lassen</b></span></div><div data-t='m3'><i>03</i><span><b>Sicherheitsglas, wo es nötig ist</b><small>bodentief, Absturzgefahr, Überkopf, Türen</small></span></div><div data-t='m4'><i>04</i><span><b>Sonne und Lärm einplanen</b><small>g-Wert für Süd/West, Rw-Wert (dB) an lauten Straßen</small></span></div><div data-t='m5'><i>05</i><span><b>Gewicht bedenken</b><small>3-fach-Glas braucht passende Profile und Beschläge</small></span></div><div data-t='m6'><i>06</i><span><b>Fachgerecht montieren lassen</b><small>sonst verpufft das beste Glas</small></span></div></div>",
+   "sprecher": "Darauf sollten Sie achten: |Uw-Wert vergleichen, |warme Kante ins Angebot, |Sicherheitsglas, wo nötig, |Sonne und Lärm einplanen, |Gewicht bedenken, |fachgerecht montieren lassen.",
+   "pause": 0.5
+  },
+  {
+   "art": "abschluss",
+   "label": "Fensterglas",
+   "titel": "Wir beraten\nSie gern.",
+   "unter": "Kostenlose Erstberatung vor Ort\nin Pforzheim und Umgebung.",
+   "kontakt": {
+    "zeilen": [
+     [
+      "NACHRICHT",
+      "Direkt hier auf Instagram"
+     ],
+     [
+      "E-MAIL",
+      "sales@kimutec.com"
+     ],
+     [
+      "WEB",
+      "www.kimutec.com"
+     ]
+    ]
+   },
+   "motto": "QUALITÄT. WERTE. ZUHAUSE.",
+   "sprecher": "Wir beraten Sie gern, kostenlos vor Ort. Schreiben Sie uns direkt hier oder auf kimutec.com.",
+   "pause": 1.0
+  }
+ ]
+}

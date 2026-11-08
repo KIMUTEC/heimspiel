@@ -3,7 +3,8 @@ name: reel
 description: Erstellt oder vertont ein animiertes KIMUTEC-Erklär-Reel (Instagram, 1080×1920, mit Sprecher) zu einem Thema rund um Fenster, Türen, Tore und Sonnenschutz. Nutzen, wenn der Nutzer ein Reel, Video, Instagram-Clip oder "so ein Video wie Reel 6" möchte, ein Reel-Video zum Nachbauen schickt oder ein fertiges Video ohne Ton vertont haben will.
 ---
 
-Anleitung und Bausteine: `reels/README.md`. Vorlage: `reels/projekte/06-aufmass-montage/drehbuch.json`.
+Anleitung und Bausteine: `reels/README.md`. Vorlagen: `reels/projekte/08-fensterglas/drehbuch.json` (aktueller Stand: Neural-Stimme Conrad, Zeitmarken, Logo) und `06-aufmass-montage`.
+Standard: Stimme `edge:de-DE-ConradNeural`, flüssiger Sprechertext pro Szene mit `|`-Marken, Elemente per `data-t="mN"` an die Wörter koppeln. Immer KIMUTEC-Stil und -Logo (`reels/marke/kimutec-logo.png`), max. 3 Minuten.
 
 1. Einrichten, falls `~/.cache/piper/de_DE-thorsten-high.onnx` fehlt: `bash reels/einrichten.sh`.
 2. Thema klären. Schickt der Nutzer ein Video: Bilder mit ffmpeg als Kontaktbogen ansehen und den Ton mit `python3 reels/pruefe-ton.py <video>` mitschreiben.
