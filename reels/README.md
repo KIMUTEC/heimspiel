@@ -45,5 +45,8 @@ Für Videos, die schon fertig animiert sind (z. B. aus Canva), aber noch keinen 
 1. Abschnittswechsel finden (Kontaktbogen mit ffmpeg, Titelbereich vergleichen) und pro Abschnitt einen Sprechertext schreiben.
 2. `vertonung.json` anlegen (Vorlage: `projekte/07-fensterglas/vertonung.json`): `teile` mit `start` (Sekunde) und `text`, dazu `aussprache` für Abkürzungen und Fremdwörter.
 3. `node reels/vertonen.mjs <vertonung.json> <video.mp4>` → `vertont.mp4` und `untertitel.srt`.
-   Die Ausgabe zeigt pro Abschnitt Sprechdauer/Platz. Zu lange Ansagen werden bis 15 % schneller gesprochen, sonst Text kürzen.
+   - Synchron zu Schrift und Bild (empfohlen): `"anhalten": true, "kuerzen": true`. Pro Element, das im Video erscheint, ein Teil mit dessen Startzeit und genau dem Text aus dem Bild (fette Zeilen). Das Bild hält an, bis die Ansage fertig ist; langes Stehen danach wird gekürzt. Teile ohne `text` markieren Szenenwechsel.
+   - Startzeiten der Elemente: Bildunterschiede pro Zeile messen (Elemente erscheinen von oben nach unten) und mit Einzelbildern kontrollieren. Ansage nie vor dem Element starten.
+   - Tempo: `"tempo": 1.08` (größer = langsamer). Reels unter 3 Minuten halten, sonst Text kürzen.
+   - Ohne `anhalten` bleibt die Videolänge gleich; zu lange Ansagen werden bis 15 % schneller gesprochen.
 4. Mit `pruefe-ton.py` gegenlesen und falsch ausgesprochene Wörter in `aussprache` umschreiben.
