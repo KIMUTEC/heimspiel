@@ -39,3 +39,11 @@ SVG-Inhalt mit Breite 920. Attribute in einfachen Anführungszeichen schreiben.
 Vorschau im Browser ohne Ton: `engine/buehne.html?drehbuch=../projekte/<name>/drehbuch.json` über einen lokalen Server öffnen.
 
 Das Logo in `engine/buehne.html` ist nachgezeichnet. Für das Original-Logo die SVG-Datei dort einsetzen.
+
+## Fertiges Video vertonen
+Für Videos, die schon fertig animiert sind (z. B. aus Canva), aber noch keinen Ton haben:
+1. Abschnittswechsel finden (Kontaktbogen mit ffmpeg, Titelbereich vergleichen) und pro Abschnitt einen Sprechertext schreiben.
+2. `vertonung.json` anlegen (Vorlage: `projekte/07-fensterglas/vertonung.json`): `teile` mit `start` (Sekunde) und `text`, dazu `aussprache` für Abkürzungen und Fremdwörter.
+3. `node reels/vertonen.mjs <vertonung.json> <video.mp4>` → `vertont.mp4` und `untertitel.srt`.
+   Die Ausgabe zeigt pro Abschnitt Sprechdauer/Platz. Zu lange Ansagen werden bis 15 % schneller gesprochen, sonst Text kürzen.
+4. Mit `pruefe-ton.py` gegenlesen und falsch ausgesprochene Wörter in `aussprache` umschreiben.

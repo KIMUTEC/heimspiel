@@ -1,6 +1,6 @@
 ---
 name: reel
-description: Erstellt ein animiertes KIMUTEC-Erklär-Reel (Instagram, 1080×1920, mit Sprecher) zu einem Thema rund um Fenster, Türen, Tore und Sonnenschutz. Nutzen, wenn der Nutzer ein Reel, Video, Instagram-Clip oder "so ein Video wie Reel 6" möchte, oder ein Reel-Video zum Nachbauen schickt.
+description: Erstellt oder vertont ein animiertes KIMUTEC-Erklär-Reel (Instagram, 1080×1920, mit Sprecher) zu einem Thema rund um Fenster, Türen, Tore und Sonnenschutz. Nutzen, wenn der Nutzer ein Reel, Video, Instagram-Clip oder "so ein Video wie Reel 6" möchte, ein Reel-Video zum Nachbauen schickt oder ein fertiges Video ohne Ton vertont haben will.
 ---
 
 Anleitung und Bausteine: `reels/README.md`. Vorlage: `reels/projekte/06-aufmass-montage/drehbuch.json`.
@@ -16,3 +16,5 @@ Anleitung und Bausteine: `reels/README.md`. Vorlage: `reels/projekte/06-aufmass-
 4. `node reels/render.mjs <drehbuch> --schnell`, `vorschau.jpg` ansehen, Layout korrigieren (nichts darf überlappen oder abgeschnitten sein).
 5. Vollständig rendern, einige Bilder mitten in Szenen prüfen und den Ton mit `pruefe-ton.py` gegenlesen.
 6. `reel.mp4` und `vorschau.jpg` mit SendUserFile schicken, Drehbuch committen und pushen (Videos sind per .gitignore ausgeschlossen).
+
+Fertiges Video ohne Ton: Abschnitt „Fertiges Video vertonen“ in `reels/README.md` (Werkzeug `reels/vertonen.mjs`). Sprechertext nur aus dem ableiten, was im Video steht, keine neuen Fakten erfinden.
