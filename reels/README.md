@@ -6,9 +6,13 @@ Montserrat, beige Akzente, Linien-Zeichnungen, die passend zum Sprecher erschein
 ## So entsteht ein Reel
 1. Einmal einrichten: `bash reels/einrichten.sh`
 2. Ordner `reels/projekte/<nr>-<thema>/` mit einer `drehbuch.json` anlegen (Vorlage: `projekte/06-aufmass-montage`).
-3. Rendern: `node reels/render.mjs reels/projekte/<nr>-<thema>/drehbuch.json`
-   - `--schnell` erzeugt nur `vorschau.jpg` und den Ton (ca. 20 s statt 2 min).
-4. Prüfen: `vorschau.jpg` ansehen, `python3 reels/pruefe-ton.py …/reel.mp4` liest den Sprecher mit.
+3. Rendern: `node reels/render.mjs reels/projekte/<nr>-<thema>/drehbuch.json` (lange Läufe mit `setsid nohup … &`)
+   - `--schnell` erzeugt nur `vorschau.jpg` und den Ton.
+   - `--schaetzen` rechnet ohne Stimme mit geschätzten Sprechzeiten (stille Vorschau zum Bauen).
+   - `--szene=N` erzeugt nur einen Kontaktbogen der Szene N (`vorschau-szeneN.jpg`, alle `--raster=0.5` s, mit Zeitstempel);
+     `--szene=N --video` ein kurzes Video nur dieser Szene; `--bild=12.5,30` Einzelbilder in voller Größe.
+4. Prüfen: `vorschau.jpg` ansehen, `python3 reels/pruefe-ton.py …/reel.mp4` liest den Sprecher mit
+   (faster-whisper, sonst Parakeet über sherpa-onnx – das Modell kommt von GitHub).
 
 Ergebnis im Projektordner: `reel.mp4`, `vorschau.jpg`, `untertitel.srt` (für Instagram-Untertitel), `sprecher.wav`.
 Videos und Ton werden nicht ins Repo eingecheckt.
@@ -70,3 +74,31 @@ Für Videos, die schon fertig animiert sind (z. B. aus Canva), aber noch keinen 
 - `data-ursprung="left bottom"`: Drehpunkt für pop/drehen.
 - Szene mit `"schritt": 3` (und optional `"schrittVon": 8`) zeigt oben rechts „SCHRITT 3 / 8“ mit Punkten.
 - Größere Reels mit eigenem Generator bauen: Vorlage `projekte/09-ablauf/bauen.py` (Hilfen für Chips, Sprechblasen, Sterne, Zahnräder, Fenster).
+
+## Figuren und Spuren (seit Reel 9, Version 2)
+Strichmännchen mit Gelenken (Ellbogen, Knie), weichen Übergängen und echten Handgriffen. Python-Helfer: `reels/figur.py`,
+Engine: `reels/engine/bewegung.js`. Vorlage mit allen Möglichkeiten: `projekte/09-ablauf/bauen.py`.
+- `figur(typ, boden, [k(t, …), …], s=1)` – Typen `monteur` (beige, Kappe), `kunde`, `kundin`, `arbeiter` (Hersteller, grau).
+  Keys: `x`, `b` (Blick 1/−1), `pose` (stehen zeigen erklaeren tippen telefon messen tragen heben hocken knien bohren schreiben
+  jubeln daumen sitzen winken haende), Winkel (`aV eV aH eH bV kV bH kH ru ko`), `gehen=True` (läuft zur neuen x-Position, auch rückwärts),
+  `zV`/`zH` = Griffziel der Hand (`[x, y]` oder `an('id', x, y)` = Punkt eines Elements mit Spur, die Hand folgt ihm; `None` = loslassen),
+  `pV`/`pH` = Werkzeug (handy laser klemmbrett stift bohrer kartusche tasse tablet daumen; `{'art': 'laser', 'w': 90}` = gedreht),
+  `osz=[osz('eV', 6, 3.5, dauer=1.2)]` = Schwingen (Tippen, Schreiben, Nicken `ko`, Händeschütteln `zyV`), `d` = Dauer, `e` = Kurve.
+- Zeiten wie überall: Sekunden, `"40%"` oder `"m3+0.5"`. Ankunft genau zu einem Wort: `k('m1-1.5', x=…, gehen=True, d=2.1)`.
+  Erster Key mit `t=-9` (Startzustand), sonst überschreibt er spätere Keys mit negativer Zeit.
+- Reichweite: Schulter ≈ `boden − 225·s`, Arm ≈ `108·s` px. Fenster und Griffpunkte so legen, dass die Hand hinkommt (Fensterhöhen realistisch).
+- `spur(inhalt, [k(t, x=, y=, r=, s=, sx=, sy=, o=, e=)], id=…, ursprung='460px 300px')` bewegt beliebige Elemente mit Keyframes.
+  Zwischen zwei Keys wird immer weich übergeblendet – für „bis m3 stehen, dann bewegen“ einen Halte-Key setzen (`k('m3', x=0)`).
+- `data-fallen="dx,dy,periode"` verschiebt wiederkehrend (Regen hinter Glas mit clipPath, Schallwellen).
+- Die alten Wackel-Figuren in `reels/figuren.py` nicht mehr verwenden.
+
+## Stimme von ElevenLabs (Standard)
+Die Cloud erreicht `api.elevenlabs.io` nicht (auch nicht Hugging Face und den Microsoft-Vorlesedienst). Die Ansagen holt deshalb der PC von Ramiz:
+1. Drehbuch: `"stimme": "elevenlabs"`, `"elevenlabs": {"voice_id": "5KvpaGteYkNayiswuX2h", "model_id": "eleven_multilingual_v2", "voice_settings": {…}}`.
+2. `python3 reels/elevenlabs.py skript <drehbuch.json> <ordner>` → `Stimme holen.cmd` + `stimme_holen.ps1`. Beides in den verbundenen
+   PC-Ordner legen (SendUserFile, dann device_commit_files). Daneben liegt `elevenlabs.txt` mit dem API-Schlüssel (nie in den Chat).
+3. Doppelklick auf „Stimme holen.cmd“ → `ton\s01.json …` (Ton + Zeitpunkt jedes Zeichens). Den Ordner `ton` zurückholen
+   (device_stage_files) nach `reels/projekte/<name>/ton/` und `python3 reels/elevenlabs.py pruefen <drehbuch.json>` ausführen.
+4. Rendern: `render.mjs` legt die Marken `|` exakt auf die Wörter. Der gesendete Text ist der Sprechertext ohne `|` mit `aussprache`.
+   Ändert sich danach nur die Lage der `|`, muss nichts neu erzeugt werden; ändert sich ein Wort, Szene neu holen.
+- Für Werbung braucht ElevenLabs ein bezahltes Abo (das kostenlose hat keine kommerzielle Lizenz).

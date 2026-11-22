@@ -1,40 +1,29 @@
-# Übergabe: KIMUTEC-Reels (Stand 22.11.2026)
+# Übergabe: KIMUTEC-Reels (Stand 22.11.2026, abends)
 
-Repo `kimutec/heimspiel`, Branch `claude/funny-pascal-o9fjc2`, Ordner `reels/`.
-Ich (Ramiz, KIMUTEC Fenstertechnik, Pforzheim) lasse hier animierte Instagram-Reels erstellen.
+Repo `kimutec/heimspiel`, Branch `claude/funny-pascal-o9fjc2`, Ordner `reels/`. Skill `/reel` enthält alle Regeln und den Ablauf –
+damit braucht ein neuer Chat keinen langen Übergabetext mehr: „/reel – mach Reel 9 fertig“ reicht.
 
-## Aktuelles Video: Reel 9 „So arbeiten wir – vom Kontakt bis zur Abnahme“
-- Projekt: `reels/projekte/09-ablauf/` – Generator `bauen.py` erzeugt `drehbuch.json`.
-- Länge 2:10 min, 1080×1920, 30 fps. 11 Szenen: Einstieg (Weg mit 8 Stationen, Lichtpunkt), Kontakt (Handy, Chat-Blasen),
-  Beratung (Haus, „KOSTENLOS“, Wärme/Sicherheit/Design/Budget), Aufmaß (Laser, Maße zählen hoch, „Kleinstes zählt“),
-  Angebot (Dokument, Stempel „FREIGEGEBEN“, Pfeil zum Hersteller), Produktion (Zahnräder, Fließband, „KW 12“),
-  Lieferung (KIMUTEC-Lkw fährt vors Haus), Montage (altes Fenster raus, neues rein, leuchtende Dichtung),
-  Abnahme (Häkchen, Unterschrift), Ergebnis (Karte „5,0 Kundenbewertung“, Sterne, Konfetti, Zitat), Abschluss (Logo, Kontakt).
-- Oben rechts Schritt-Anzeige „SCHRITT x / 8“.
-- Instagram-Text: `reels/projekte/09-ablauf/instagram.txt`, Sprechertext mit Zeiten: `sprechertext.txt`.
-- Noch offen/zu prüfen: „5,0“ und „KW 12“ sind Beispielwerte.
+## Aktuelles Video: Reel 9 „So arbeiten wir“ – Version 2
+- Projekt `reels/projekte/09-ablauf/`: Generator `bauen.py` → `drehbuch.json`. Freigegebener Sprechertext: `sprechertext.txt`.
+- 12 Szenen, erklärend und fachlich (ca. 2:50 min): Einstieg (Weg mit 8 Stationen, Handschlag), Kontakt, Beratung, Aufmaß
+  (Laser an drei Stellen, Höhe, kleinstes Maß, Fuge), Angebot (Positionen, Freigabe, Hersteller), Produktion (Rahmen, Glas, Beschläge),
+  Lieferung (Lkw, zwei Monteure tragen), Montage (alt raus, neu rein, Wasserwaage/Lot, bohren), Abdichtung in drei Ebenen (Schnitt),
+  Abnahme (öffnen/kippen/schließen, Protokoll, Handschlag), Ergebnis (5,0 – echt, laut Ramiz), Abschluss.
+- Neue Strichmännchen mit Gelenken: `reels/figur.py` + `reels/engine/bewegung.js` (siehe README „Figuren und Spuren“).
+- „KW 12“ wurde durch „Liefertermin ✓“ ersetzt (keine konkrete Woche versprechen).
 
-## So wird gerendert
-1. `bash reels/einrichten.sh` (installiert edge-tts, Piper, faster-whisper)
-2. `python3 reels/projekte/09-ablauf/bauen.py && node reels/render.mjs reels/projekte/09-ablauf/drehbuch.json`
-   (`--schnell` = nur Vorschaubild `vorschau.jpg`). Ergebnis: `reel.mp4`, `untertitel.srt`.
-3. Lange Läufe mit `setsid nohup … &` starten, sonst bricht die App sie ab.
-4. Prüfen: Einzelbilder mitten in Animationen ansehen, Ton mit faster-whisper „medium“ abhören.
-Anleitung und alle Bausteine/Effekte: `reels/README.md`. Skill: `/reel`.
+## Stimme
+- ElevenLabs, Stimme `5KvpaGteYkNayiswuX2h`, Eleven Multilingual v2, Stability 0,6 / Similarity 0,75 / Style 0 / Speed 1,0.
+- Die Cloud erreicht ElevenLabs nicht (Proxy 403 – das war auch die Ursache für „Schlüssel ungültig“). Weg über den PC (Windows) von Ramiz:
+  `reels/elevenlabs.py skript` → „Stimme holen.cmd“ in den verbundenen Ordner, `elevenlabs.txt` mit Schlüssel daneben, Doppelklick,
+  Ordner `ton` zurückholen. Der ElevenLabs-Connector ist mit seinem Konto verbunden, seine Werkzeuge waren im Chat aber noch nicht geladen.
+- Für Werbung braucht ElevenLabs ein bezahltes Abo (kommerzielle Lizenz).
 
-## Meine Wünsche (bitte immer beachten)
-- **Stil:** Original-KIMUTEC-Stil wie Reel 6: dunkler Hintergrund, Montserrat, beige Akzente (#D8B79C), echtes Logo `reels/marke/kimutec-logo.png`.
-- **Stimme:** ruhig, erklärend, Hochdeutsch, akzent- und dialektfrei. Aktuell `edge:de-DE-FlorianMultilingualNeural`, Tempo `-8%`.
-  Nicht Chatterbox (Akzent), nicht Piper (zu künstlich). Besser wäre ElevenLabs – der gespeicherte API-Schlüssel wurde
-  aber als ungültig abgelehnt; ich gebe bei Bedarf einen neuen (beginnt mit `sk_`).
-- **Synchron:** Schrift und Bild erscheinen genau beim passenden Wort (Marken `|` im Sprechertext, `data-t="m1"` …).
-- **Animation:** professionell und flüssig (Titel Wort für Wort, Lichtwischer, leuchtende Linien, Karten mit Verlauf/Schatten,
-  Konfetti). Keine Strichmännchen/Figuren – die sahen nicht professionell aus.
-- **Länge:** höchstens 3 Minuten (Instagram-Grenze).
-- **Inhalt:** fachlich korrekt, nichts erfinden; Unklares nachfragen.
-- **Instagram-Texte:** starke erste Zeile, 2–4 kurze Sätze, Sie-Form, 5–8 passende Hashtags, keine Telefonnummer/Adresse.
+## Offen
+- Ansagen von ElevenLabs holen, dann `node reels/render.mjs reels/projekte/09-ablauf/drehbuch.json` (mit `setsid nohup`).
+- Danach Ton mit `pruefe-ton.py` gegenlesen, Länge ≤ 3:00 prüfen (sonst Pausen kürzen), `instagram.txt` an Version 2 anpassen.
 
 ## Weitere Reels im Repo
-- `06-aufmass-montage` – Nachbau meines Reels 6 (Aufmaß und Montage).
-- `08-fensterglas` – Fensterglas im KIMUTEC-Stil (Isolierglas, Werte, ESG, VSG, Sonnenschutz, Checkliste).
-- `07-fensterglas` – nur Vertonung meines hellen Canva-Videos (veraltet).
+- `06-aufmass-montage` – Nachbau von Reel 6 (Aufmaß und Montage).
+- `08-fensterglas` – Fensterglas im KIMUTEC-Stil.
+- `07-fensterglas` – nur Vertonung des hellen Canva-Videos (veraltet).

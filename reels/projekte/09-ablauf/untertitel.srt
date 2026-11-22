@@ -1,43 +1,47 @@
 1
-00:00:00,300 --> 00:00:09,732
-Neue Fenster? Bei KIMUTEC bekommen Sie alles aus einer Hand. Vom ersten Kontakt bis zur fertigen Abnahme.
+00:00:00,300 --> 00:00:08,642
+Neue Fenster? Bei KIMUTEC bekommen Sie alles aus einer Hand. In acht Schritten, vom ersten Kontakt bis zur fertigen Abnahme.
 
 2
-00:00:10,632 --> 00:00:19,968
-Schritt eins: Sie melden sich, per Nachricht, E-Mail oder Telefon. Wir antworten schnell und machen einen Termin aus.
+00:00:09,942 --> 00:00:19,164
+Schritt eins: Sie melden sich, per Nachricht, E-Mail oder Telefon. Wir antworten schnell und vereinbaren einen Termin bei Ihnen vor Ort.
 
 3
-00:00:20,968 --> 00:00:32,728
-Schritt zwei: die kostenlose Beratung vor Ort. Wir schauen uns alles an und klären, was Ihnen wichtig ist: Wärme, Sicherheit, Design und Budget.
+00:00:20,464 --> 00:00:34,526
+Schritt zwei: die kostenlose Beratung vor Ort. Wir sehen uns Ihre Fenster und das Mauerwerk genau an und klären, was Ihnen wichtig ist: Wärmeschutz, Schallschutz, Sicherheit und Design, passend zu Ihrem Budget.
 
 4
-00:00:33,728 --> 00:00:46,664
-Schritt drei: das Aufmaß. Wir messen selbst, mit Laser und an mehreren Punkten. Das kleinste Maß zählt. So passt später jedes Fenster genau.
+00:00:35,726 --> 00:00:56,824
+Schritt drei: das Aufmaß. Wir messen selbst, mit dem Laser: die Breite oben, in der Mitte und unten, dann die Höhe. Mauerwerk ist selten ganz gerade, deshalb zählt das kleinste Maß. Davon ziehen wir die Fuge für Dämmung und Abdichtung ab. Wie breit sie sein muss, hängt von Größe, Material und Farbe des Fensters ab.
 
 5
-00:00:47,664 --> 00:00:57,696
-Schritt vier: Sie bekommen ein klares Angebot, ohne versteckte Kosten. Sie geben frei, und wir bestellen direkt beim Hersteller.
+00:00:58,124 --> 00:01:12,008
+Schritt vier: Sie bekommen ein klares Angebot. Jede Position steht einzeln drin, von den Fenstern bis zu Montage und Entsorgung, ohne versteckte Kosten. Sie geben frei, und wir bestellen direkt beim Hersteller.
 
 6
-00:00:58,696 --> 00:01:09,088
-Schritt fünf: die Produktion. Ihre Fenster werden millimetergenau für Sie gebaut. Den Liefertermin behalten wir für Sie im Blick.
+00:01:14,008 --> 00:01:25,068
+Schritt fünf: die Produktion. Ihre Fenster werden genau nach Ihren Maßen gefertigt: Rahmen, Glas und Beschläge. Den Liefertermin behalten wir für Sie im Blick.
 
 7
-00:01:10,088 --> 00:01:17,216
-Schritt sechs: die Lieferung. Ganz pünktlich zum Termin, direkt zu Ihnen nach Hause.
+00:01:26,368 --> 00:01:34,162
+Schritt sechs: die Lieferung. Pünktlich zum vereinbarten Termin bringen wir Ihre Fenster direkt zu Ihnen nach Hause.
 
 8
-00:01:18,216 --> 00:01:31,440
-Schritt sieben: die Montage. Das alte Fenster raus, das neue rein, fachgerecht abgedichtet: innen luftdicht und außen regendicht. Und wir hinterlassen alles sauber.
+00:01:36,662 --> 00:01:47,898
+Schritt sieben: die Montage. Zuerst bauen wir das alte Fenster aus. Dann setzen wir das neue ein, richten es lot- und waagerecht aus und befestigen es sicher im Mauerwerk.
 
 9
-00:01:32,440 --> 00:01:43,024
-Schritt acht: die Abnahme. Wir prüfen gemeinsam jedes Fenster, alle Anschlüsse, zeigen Ihnen die Bedienung und übergeben alles mit Protokoll.
+00:01:50,098 --> 00:02:09,340
+Dann kommt das Wichtigste: die Abdichtung. Hier gilt: innen dichter als außen. Innen luftdicht, damit keine feuchte Raumluft in die Fuge zieht. In der Mitte gedämmt, gegen Wärmeverlust und Lärm. Außen dicht gegen Schlagregen, aber offen für Dampf, damit Feuchtigkeit entweichen kann.
 
 10
-00:01:44,924 --> 00:01:57,404
-Und am Ende? Schön warm. Schön leise. Zufrieden. Und fast immer dieselbe Frage: Warum haben wir das nicht früher gemacht?
+00:02:11,040 --> 00:02:23,880
+Schritt acht: die Abnahme. Wir prüfen jedes Fenster gemeinsam mit Ihnen: öffnen, kippen, schließen. Wir zeigen Ihnen die Bedienung, räumen sauber auf und übergeben alles mit Protokoll.
 
 11
-00:01:58,704 --> 00:02:08,832
+00:02:27,480 --> 00:02:36,140
+Und am Ende? Schön warm. Schön leise. Zufrieden. Und oft dieselbe Frage: Warum haben wir das nicht früher gemacht?
+
+12
+00:02:37,840 --> 00:02:46,266
 KIMUTEC: alles aus einer Hand. Jetzt kostenlose Beratung vereinbaren, direkt hier per Nachricht oder über kimutec.com.

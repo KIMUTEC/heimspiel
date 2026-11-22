@@ -1,48 +1,40 @@
-SPRECHERTEXT – KIMUTEC: So arbeiten wir (Reel, 1:25 min)
+SPRECHERTEXT – KIMUTEC: So arbeiten wir (Reel 9, Version 2, freigegeben am 22.11.2026)
 
-Jede Szene einzeln in die Sprach-KI geben und an die Startzeit ins Video ohne Ton legen.
+Stimme: ElevenLabs, Stimme 5KvpaGteYkNayiswuX2h, Modell Eleven Multilingual v2.
 Aussprache: KIMUTEC = „Kimutek“, kimutec.com = „Kimutek Punkt com“.
 
 SZENE 1 – Neue Fenster? Alles aus einer Hand.
-Start 0:00.3 · Platz max. 5.5 s
-Neue Fenster? Bei KIMUTEC bekommen Sie alles aus einer Hand. Vom ersten Kontakt bis zur fertigen Abnahme.
+Neue Fenster? Bei KIMUTEC bekommen Sie alles aus einer Hand. In acht Schritten, vom ersten Kontakt bis zur fertigen Abnahme.
 
 SZENE 2 – Sie melden sich.
-Start 0:06.1 · Platz max. 6.8 s
-Schritt eins: Sie melden sich, per Nachricht, E-Mail oder Telefon. Wir antworten schnell und machen einen Termin aus.
+Schritt eins: Sie melden sich, per Nachricht, E-Mail oder Telefon. Wir antworten schnell und vereinbaren einen Termin bei Ihnen vor Ort.
 
 SZENE 3 – Beratung bei Ihnen zu Hause.
-Start 0:13.2 · Platz max. 7.3 s
-Schritt zwei: die kostenlose Beratung vor Ort. Wir schauen uns alles an und klären, was Ihnen wichtig ist: Wärme, Sicherheit, Design und Budget.
+Schritt zwei: die kostenlose Beratung vor Ort. Wir sehen uns Ihre Fenster und das Mauerwerk genau an und klären, was Ihnen wichtig ist: Wärmeschutz, Schallschutz, Sicherheit und Design, passend zu Ihrem Budget.
 
 SZENE 4 – Wir messen selbst.
-Start 0:20.8 · Platz max. 8.8 s
-Schritt drei: das Aufmaß. Wir messen selbst, mit Laser und an mehreren Punkten. Das kleinste Maß zählt. So passt später jedes Fenster genau.
+Schritt drei: das Aufmaß. Wir messen selbst, mit dem Laser: die Breite oben, in der Mitte und unten, dann die Höhe. Mauerwerk ist selten ganz gerade, deshalb zählt das kleinste Maß. Davon ziehen wir die Fuge für Dämmung und Abdichtung ab. Wie breit sie sein muss, hängt von Größe, Material und Farbe des Fensters ab.
 
 SZENE 5 – Klares Angebot.
-Start 0:29.9 · Platz max. 6.8 s
-Schritt vier: Sie bekommen ein klares Angebot, ohne versteckte Kosten. Sie geben frei, und wir bestellen direkt beim Hersteller.
+Schritt vier: Sie bekommen ein klares Angebot. Jede Position steht einzeln drin, von den Fenstern bis zu Montage und Entsorgung, ohne versteckte Kosten. Sie geben frei, und wir bestellen direkt beim Hersteller.
 
 SZENE 6 – Ihre Fenster entstehen.
-Start 0:37.0 · Platz max. 7.1 s
-Schritt fünf: die Produktion. Ihre Fenster werden millimetergenau für Sie gebaut. Den Liefertermin behalten wir für Sie im Blick.
+Schritt fünf: die Produktion. Ihre Fenster werden genau nach Ihren Maßen gefertigt: Rahmen, Glas und Beschläge. Den Liefertermin behalten wir für Sie im Blick.
 
 SZENE 7 – Pünktlich geliefert.
-Start 0:44.4 · Platz max. 5.3 s
-Schritt sechs: die Lieferung. Ganz pünktlich zum Termin, direkt zu Ihnen nach Hause.
+Schritt sechs: die Lieferung. Pünktlich zum vereinbarten Termin bringen wir Ihre Fenster direkt zu Ihnen nach Hause.
 
 SZENE 8 – Montage nach Plan.
-Start 0:50.1 · Platz max. 10.1 s
-Schritt sieben: die Montage. Das alte Fenster raus, das neue rein, fachgerecht abgedichtet: innen luftdicht und außen regendicht. Und wir hinterlassen alles sauber.
+Schritt sieben: die Montage. Zuerst bauen wir das alte Fenster aus. Dann setzen wir das neue ein, richten es lot- und waagerecht aus und befestigen es sicher im Mauerwerk.
 
-SZENE 9 – Gemeinsame Abnahme.
-Start 1:00.4 · Platz max. 8.2 s
-Schritt acht: die Abnahme. Wir prüfen gemeinsam jedes Fenster, alle Anschlüsse, zeigen Ihnen die Bedienung und übergeben alles mit Protokoll.
+SZENE 9 – Dicht in drei Ebenen.
+Dann kommt das Wichtigste: die Abdichtung. Hier gilt: innen dichter als außen. Innen luftdicht, damit keine feuchte Raumluft in die Fuge zieht. In der Mitte gedämmt, gegen Wärmeverlust und Lärm. Außen dicht gegen Schlagregen, aber offen für Dampf, damit Feuchtigkeit entweichen kann.
 
-SZENE 10 – Und am Ende?
-Start 1:09.0 · Platz max. 7.7 s
-Und am Ende? Schön warm. Schön leise. Zufrieden. Und fast immer dieselbe Frage: Warum haben wir das nicht früher gemacht?
+SZENE 10 – Gemeinsame Abnahme.
+Schritt acht: die Abnahme. Wir prüfen jedes Fenster gemeinsam mit Ihnen: öffnen, kippen, schließen. Wir zeigen Ihnen die Bedienung, räumen sauber auf und übergeben alles mit Protokoll.
 
-SZENE 11 – Jetzt Beratung vereinbaren.
-Start 1:16.9 · Platz max. 7.4 s
+SZENE 11 – Und am Ende?
+Und am Ende? Schön warm. Schön leise. Zufrieden. Und oft dieselbe Frage: Warum haben wir das nicht früher gemacht?
+
+SZENE 12 – Jetzt Beratung vereinbaren.
 KIMUTEC: alles aus einer Hand. Jetzt kostenlose Beratung vereinbaren, direkt hier per Nachricht oder über kimutec.com.

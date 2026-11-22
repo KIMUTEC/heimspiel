@@ -135,6 +135,7 @@ body{width:1080px;height:1920px;overflow:hidden;position:relative;font-family:"M
 <div id="wisch"></div>
 <img id="logo" src="../marke/kimutec-logo.png" alt="KIMUTEC Fenstertechnik">
 <div id="szenen"></div>
+<script src="bewegung.js"></script>
 <script>
 const NS='http://www.w3.org/2000/svg';
 let REEL=null;          // {szenen:[{el, start, dauer, sprechStart, sprechDauer, teile:[...]}]}
@@ -161,12 +162,14 @@ function teil(el, sz, art, tIn, dauer, tAus){
   if(el.dataset.wippen){const [w,f,ph]=el.dataset.wippen.split(',').map(Number);t.wippen={w,f:f||2,ph:ph||0}} // hin und her drehen: Grad, Schwünge/s, Versatz
   if(el.dataset.huepfen){const [h,f]=el.dataset.huepfen.split(',').map(Number);t.huepfen={h,f:f||2}}      // Hüpfen beim Laufen
   if(el.dataset.zahl){t.zahl=parseFloat(el.dataset.zahl);t.einheit=el.dataset.einheit||''}  // Zahl zählt hoch
+  if(el.dataset.fallen){const [dx,dy,p]=el.dataset.fallen.split(',').map(Number);t.fallen={dx,dy,p:p||1}} // wiederkehrend verschieben (Regen, Schallwellen)
   if(t.pop||t.drehen||t.wippen){const u=el.dataset.ursprung||'center';el.style.transformBox=u.includes('px')?'view-box':'fill-box';el.style.transformOrigin=u}
   if(el.dataset.bewegung){const [dx,dy,tb,db]=el.dataset.bewegung.split(',').map(s=>s.trim());t.bew={dx:+dx,dy:+dy,t:zeitWert(tb,sz,0),d:parseFloat(db||1)}}
   if(t.art==='zeichnen'){
     const formen=el.matches('path,line,rect,polyline,polygon,circle,ellipse')?[el]:[...el.querySelectorAll('path,line,rect,polyline,polygon,circle,ellipse')];
     t.formen=formen.map(f=>{const l=f.getTotalLength?f.getTotalLength():0;f.style.strokeDasharray=l;return{f,l}});
   }
+  if(el.dataset.spur)baueSpur(t,el,sz,zeitWert);   // Keyframe-Bewegung (bewegung.js)
   sz.teile.push(t);
 }
 
@@ -201,7 +204,7 @@ window.ladeReel=function(drehbuch, zeiten){
   REEL={szenen:[], gesamt:zeiten.gesamt};
   drehbuch.szenen.forEach((s,i)=>{
     const el=baueSzene(s,i), z=zeiten.szenen[i];
-    const sz={el, start:z.start, dauer:z.dauer, sprechStart:z.sprechStart, sprechDauer:z.sprechDauer, marken:z.marken||[], teile:[], letzte:i===drehbuch.szenen.length-1};
+    const sz={el, start:z.start, dauer:z.dauer, sprechStart:z.sprechStart, sprechDauer:z.sprechDauer, marken:z.marken||[], teile:[], figuren:[], letzte:i===drehbuch.szenen.length-1};
     if(s.art==='abschluss'){
       el.querySelectorAll('[data-t]').forEach(e=>teil(e,sz,'auf'));
     }else{
@@ -209,7 +212,9 @@ window.ladeReel=function(drehbuch, zeiten){
       el.querySelectorAll('.titel .wort').forEach((e,k)=>teil(e,sz,'wort',0.2+k*.09,.75));
       teil(el.querySelector('.strich'),sz,'breit',0.55,.6);
       // Bild-Elemente: nur direkte Kinder mit data-t werden animiert, Rest steht sofort
-      el.querySelectorAll('.bild [data-t], .bild .zeichnen, .html [data-t], .schritte [data-t]').forEach(e=>teil(e,sz,'auf',0.5,.7));
+      // Elemente nur mit data-spur stehen sofort (Deckkraft steuert dann die Spur)
+      el.querySelectorAll('.bild [data-t], .bild .zeichnen, .bild [data-spur], .html [data-t], .schritte [data-t]').forEach(e=>teil(e,sz,'auf',(e.dataset.spur&&e.dataset.t==null)?-10:0.5,.7));
+      el.querySelectorAll('.bild [data-figur]').forEach(e=>baueFigur(e,sz,zeitWert));
       const ps=[...el.querySelectorAll('.text p')];
       ps.forEach((e,k)=>teil(e,sz,'auf',zeitWert(null,sz,1.2+k*.5),.55));
     }
@@ -221,23 +226,28 @@ function wende(t, ts){
   let p=sanft((ts-t.tIn)/t.dauer);
   if(t.tAus!=null)p*=1-sanft((ts-t.tAus)/.4);
   const el=t.el;
+  let sw=null;
+  if(t.spur){sw=spurWert(t.spur,ts);if(el.id)SPUR[el.id]={tx:sw.x,ty:sw.y,r:sw.r,sx:sw.sx,sy:sw.sy,ox:t.ox,oy:t.oy}}
+  const oF=sw?sw.o:1;
   if(t.art==='zeichnen'){
     for(const {f,l} of t.formen)f.style.strokeDashoffset=l*(1-p);
-    el.style.opacity=p>0?1:0;
-    if(t.tAus!=null)el.style.opacity=1-sanft((ts-t.tAus)/.4);
+    el.style.opacity=(p>0?1:0)*oF;
+    if(t.tAus!=null)el.style.opacity=(1-sanft((ts-t.tAus)/.4))*oF;
   }else if(t.art==='wort'){
     const q=1-Math.pow(2,-10*klemm((ts-t.tIn)/t.dauer));   // easeOutExpo
     el.style.transform=`translateY(${(1-q)*112}%)`;el.style.opacity=ts>=t.tIn?1:0;return;
   }else if(t.art==='breit'){
     el.style.clipPath=`inset(0 ${100-p*100}% 0 0)`;
   }else{
-    el.style.opacity=p;
+    el.style.opacity=p*oF;
   }
   // Transformationen zusammensetzen
   const tf=[];
+  if(sw)tf.push(`translate(${sw.x.toFixed(2)}px,${sw.y.toFixed(2)}px) rotate(${sw.r.toFixed(2)}deg) scale(${sw.sx.toFixed(4)},${sw.sy.toFixed(4)})`);
   if(t.art!=='zeichnen'&&t.art!=='breit'&&!t.pop&&!(el instanceof SVGElement))tf.push(`translateY(${(1-p)*26}px)`);
   if(t.bew){const q=sanft((ts-t.bew.t)/t.bew.d);tf.push(`translate(${t.bew.dx*q}px,${t.bew.dy*q}px)`)}
   if(t.schweben)tf.push(`translateY(${Math.sin(ts*2.2)*t.schweben}px)`);
+  if(t.fallen){const q=((ts/t.fallen.p)%1+1)%1;tf.push(`translate(${(t.fallen.dx*q).toFixed(1)}px,${(t.fallen.dy*q).toFixed(1)}px)`)}
   if(t.pop){const x=klemm((ts-t.tIn)/t.dauer),c=1.9;const k=x>=1?1:1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2);tf.push(`scale(${Math.max(0,k)})`)}
   if(t.drehen)tf.push(`rotate(${Math.max(0,ts-t.tIn)*t.drehen}deg)`);
   if(t.wippen)tf.push(`rotate(${Math.sin((ts*t.wippen.f+t.wippen.ph)*Math.PI*2)*t.wippen.w}deg)`);
@@ -260,6 +270,7 @@ window.zeige=function(sek){
     sz.el.style.transform=`translateY(${rein*50-raus*40}px) scale(${1+raus*.02})`;
     sz.el.style.filter=(rein+raus)>.01?`blur(${(rein+raus)*10}px)`:'none';
     for(const t of sz.teile)wende(t,ts);
+    for(const f of sz.figuren)zeichneFigur(f,ts);   // Figuren nach den Spuren (Griffpunkte)
     if(sz.el.classList.contains('abschluss'))logoSicht=Math.min(logoSicht,1-sicht);
   }
   logo.style.opacity=logoSicht;
