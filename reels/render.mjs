@@ -2,7 +2,8 @@
 // Aufruf: node reels/render.mjs reels/projekte/<name>/drehbuch.json [--schnell]
 //   --schnell  nur Vorschaubilder und Ton, kein Video (zum Prüfen)
 // Ergebnis im Projektordner: reel.mp4, vorschau.jpg, untertitel.srt, sprecher.wav
-import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync, copyFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { execFileSync, spawn } from 'node:child_process';
 import { dirname, join, resolve } from 'node:path';
 import { createRequire } from 'node:module';
@@ -36,11 +37,21 @@ if (CB && !db.tonspur) {
   const texte = db.szenen.map(s => { let t = s.sprecher || ''; for (const [a, b] of Object.entries(db.aussprache || {})) t = t.replaceAll(a, b); return t; });
   const nur = texte.map((t, i) => [t, i]).filter(([t]) => t);
   const ref = STIMME.includes(':') ? resolve(ordner, STIMME.split(':')[1]) : null;
-  writeFileSync(join(tmp, 'cb_auftrag.json'), JSON.stringify({ texte: nur.map(([t]) => t), ordner: tmp, referenz: ref }));
-  const py = process.env.CHATTERBOX_PY || join(process.env.HOME, '.venv-chatterbox/bin/python');
-  execFileSync(py, [join(import.meta.dirname, 'stimme_chatterbox.py'), join(tmp, 'cb_auftrag.json'), join(tmp, 'cb_erg.json')], { stdio: ['ignore', 'inherit', 'ignore'] });
-  const erg = JSON.parse(readFileSync(join(tmp, 'cb_erg.json'), 'utf8'));
-  cbErg = {}; nur.forEach(([, i], k) => { cbErg[i] = erg[k]; });
+  // Fertige Ansagen werden in reels/.cache/stimme gemerkt (Schlüssel: Text + Referenzstimme)
+  const cache = join(import.meta.dirname, '.cache/stimme'); mkdirSync(cache, { recursive: true });
+  const schluessel = t => createHash('sha1').update(t + '|' + (ref || '')).digest('hex').slice(0, 16);
+  const fehlt = nur.filter(([t]) => !existsSync(join(cache, schluessel(t) + '.json')));
+  if (fehlt.length) {
+    writeFileSync(join(tmp, 'cb_auftrag.json'), JSON.stringify({ texte: fehlt.map(([t]) => t), ordner: tmp, referenz: ref }));
+    const py = process.env.CHATTERBOX_PY || join(process.env.HOME, '.venv-chatterbox/bin/python');
+    execFileSync(py, [join(import.meta.dirname, 'stimme_chatterbox.py'), join(tmp, 'cb_auftrag.json'), join(tmp, 'cb_erg.json')], { stdio: ['ignore', 'inherit', 'ignore'] });
+    const erg = JSON.parse(readFileSync(join(tmp, 'cb_erg.json'), 'utf8'));
+    fehlt.forEach(([t], k) => {
+      const h = schluessel(t); copyFileSync(erg[k].wav, join(cache, h + '.wav'));
+      writeFileSync(join(cache, h + '.json'), JSON.stringify({ ...erg[k], wav: join(cache, h + '.wav'), text: t }));
+    });
+  }
+  cbErg = {}; nur.forEach(([t, i]) => { cbErg[i] = JSON.parse(readFileSync(join(cache, schluessel(t) + '.json'), 'utf8')); });
 }
 const zeiten = { szenen: [], gesamt: 0 };
 let t = 0;

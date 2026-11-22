@@ -157,15 +157,19 @@ bild3 += (mann(150, 520, 0.72, 'm1', kunde=True, arm_r=-30, wipp_r=(14, 1.4), bl
 bild4 += mann(130, 515, 0.9, 'm2', arm_r=-90, werkzeug_r='laser', wipp_r=(12, 0.45), blick=1)
 bild6 += (mann(380, 410, 0.85, 'm1', arm_r=150, werkzeug_r='hammer', wipp_r=(32, 2.4), arm_l=-25, blick=-1)
           + mann(872, 410, 0.7, 'm2+0.5', arm_l=40, werkzeug_l='tablet', blick=-1))
-kiste = f"<rect x='586' y='300' width='54' height='44' rx='4' fill='{AKZ}'/>"
+kiste = f"<rect x='573' y='318' width='54' height='44' rx='4' fill='{AKZ}'/>"
 bild7 += f"<g data-t='m2' data-bewegung='120,0,m2,1.6'>{mann(600, 412, 0.6, 'm2', laufen=True, arm_l=-30, arm_r=30, extra=kiste)}</g>"
+bild8 += (mann(150, 515, 0.85, '0.4', arm_r=-60, werkzeug_r='brecheisen', wipp_r=(14, 2.2), klasse='pop', extra='').replace("data-t='0.4' data-d='0.5'", "data-t='0.4' data-d='0.5' data-aus='m1'")
+          + f"<g data-t='0.6' data-aus='m1+1.1' data-bewegung='-700,0,m1,1.0'>"
+          f"{mann(262, 500, 0.85, '0.6', laufen=True, arm_r=-100, arm_l=-70)}{mann(658, 500, 0.85, '0.6', laufen=True, arm_l=100, arm_r=70)}</g>")
 bild8 += (f"<g data-t='m2' data-aus='m3' data-bewegung='-700,0,m2,1.0'>"
           f"{mann(960, 500, 0.85, 'm2', laufen=True, arm_r=-100, arm_l=-60)}{mann(1360, 500, 0.85, 'm2', laufen=True, arm_l=100, arm_r=60)}</g>"
           + mann(150, 515, 0.85, 'm3', arm_r=-78, werkzeug_r='bohrer', wipp_r=(3, 9), blick=1))
 html9 += (f"<svg viewBox='0 0 920 300' style='width:920px;height:300px;margin-top:10px;overflow:visible'>"
           + mann(370, 290, 0.9, 'm5+2', arm_r=-62, wipp_r=(6, 2), blick=1)
           + mann(550, 290, 0.9, 'm5+2', kunde=True, arm_l=62, wipp_l=(6, 2, 0.5), blick=-1) + "</svg>")
-bild10 += f"<g data-t='m5' data-huepfen='18,1.4'>{mann(880, 300, 0.55, 'm5', kunde=True, arm_l=160, arm_r=-160, wipp_l=(15, 2.8), wipp_r=(15, 2.8, 0.5))}</g>"
+bild10 += (f"<g data-t='m5' data-huepfen='18,1.4'>{mann(835, 300, 0.55, 'm5', kunde=True, arm_l=150, arm_r=-150, wipp_l=(15, 2.8), wipp_r=(15, 2.8, 0.5))}</g>"
+           f"<g data-t='m5+0.3' data-huepfen='18,1.4'>{mann(900, 300, 0.55, 'm5+0.3', arm_l=150, arm_r=-150, wipp_l=(15, 2.8, 0.25), wipp_r=(15, 2.8, 0.75))}</g>")
 
 db = {
     "titel": "KIMUTEC – So arbeiten wir: vom Kontakt bis zur Abnahme",

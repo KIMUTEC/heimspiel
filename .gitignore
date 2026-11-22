@@ -3,3 +3,4 @@ reels/projekte/*/*.mp4
 reels/projekte/*/*.wav
 reels/projekte/*/*.mp3
 __pycache__/
+reels/.cache/
