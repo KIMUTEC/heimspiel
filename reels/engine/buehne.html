@@ -65,6 +65,13 @@ body{width:1080px;height:1920px;overflow:hidden;position:relative;font-family:"M
 .nummern i{font-style:normal;color:var(--akzent);font-weight:700;font-size:28px;padding-top:4px}
 .nummern b{font-size:36px;font-weight:700}
 .nummern small{display:block;font-size:25px;color:var(--muted);font-weight:500;margin-top:6px}
+
+.schritte{position:absolute;right:80px;top:206px;text-align:right}
+.schritte small{display:block;font-size:22px;letter-spacing:.16em;font-weight:700;color:var(--muted);margin-bottom:14px}
+.schritte small b{color:var(--akzent)}
+.schritte span{display:inline-block;width:20px;height:20px;border-radius:50%;border:2px solid #4A4F4D;margin-left:10px;vertical-align:middle}
+.schritte span.an{background:var(--akzent);border-color:var(--akzent)}
+.schritte span.jetzt{width:28px;height:28px;background:var(--akzent);border-color:var(--akzent);box-shadow:0 0 0 8px rgba(216,183,156,.18)}
 /* Abschluss-Szene */
 .abschluss{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:560px}
 .abschluss .logo-gross{height:180px}
@@ -131,6 +138,11 @@ function zeitWert(v, sz, standard){
 function teil(el, sz, art, tIn, dauer, tAus){
   const t={el, art, tIn:zeitWert(el.dataset.t??tIn,sz,0), dauer:parseFloat(el.dataset.d??dauer??.6), tAus:zeitWert(el.dataset.aus??tAus,sz,null)};
   if(el.classList.contains('zeichnen'))t.art='zeichnen';
+  t.pop=el.classList.contains('pop');                       // aufploppen mit leichtem Überschwingen
+  if(el.dataset.drehen)t.drehen=parseFloat(el.dataset.drehen); // Grad pro Sekunde, dreht ab Einblenden
+  if(el.dataset.schweben)t.schweben=parseFloat(el.dataset.schweben); // sanftes Auf und Ab (Pixel)
+  if(el.dataset.zahl){t.zahl=parseFloat(el.dataset.zahl);t.einheit=el.dataset.einheit||''}  // Zahl zählt hoch
+  if(t.pop||t.drehen){el.style.transformBox='fill-box';el.style.transformOrigin=el.dataset.ursprung||'center'}
   if(el.dataset.bewegung){const [dx,dy,tb,db]=el.dataset.bewegung.split(',').map(s=>s.trim());t.bew={dx:+dx,dy:+dy,t:zeitWert(tb,sz,0),d:parseFloat(db||1)}}
   if(t.art==='zeichnen'){
     const formen=el.matches('path,line,rect,polyline,polygon,circle,ellipse')?[el]:[...el.querySelectorAll('path,line,rect,polyline,polygon,circle,ellipse')];
@@ -155,6 +167,7 @@ function baueSzene(s, i){
       <h1 class="titel">${(s.titel||'').split('\n').map(z=>`<span>${z}</span>`).join('')}</h1>
       <svg class="strich" viewBox="0 0 246 4"><rect width="246" height="4" fill="#EEEAE2"/><rect x="82" width="82" height="4" fill="#D8B79C"/></svg>
       ${s.bild?`<svg class="bild" viewBox="0 0 920 ${s.bildHoehe||560}" style="height:${(s.bildHoehe||560)}px">${s.bild}</svg>`:''}
+      ${s.schritt?`<div class="schritte"><small>SCHRITT <b>${s.schritt}</b> / ${s.schrittVon||8}</small>${Array.from({length:s.schrittVon||8},(_,k)=>`<span class="${k+1<s.schritt?'an':k+1===s.schritt?'jetzt pop':''}" ${k+1===s.schritt?'data-t="0.5" data-d="0.7"':''}></span>`).join('')}</div>`:''}
       ${s.html?`<div class="html">${s.html}</div>`:''}
       <div class="text">${(s.text||[]).map(x=>{const o=typeof x==='string'?{s:x}:x;
         if(o.hinweis)return `<p class="hinweis" ${o.t!=null?`data-t="${o.t}"`:''}><small>${o.hinweis}</small>${o.s}</p>`;
@@ -177,7 +190,7 @@ window.ladeReel=function(drehbuch, zeiten){
       el.querySelectorAll('.titel span').forEach((e,k)=>teil(e,sz,'auf',0.15+k*.12,.6));
       teil(el.querySelector('.strich'),sz,'breit',0.55,.6);
       // Bild-Elemente: nur direkte Kinder mit data-t werden animiert, Rest steht sofort
-      el.querySelectorAll('.bild [data-t], .bild .zeichnen, .html [data-t]').forEach(e=>teil(e,sz,'auf',0.5,.7));
+      el.querySelectorAll('.bild [data-t], .bild .zeichnen, .html [data-t], .schritte [data-t]').forEach(e=>teil(e,sz,'auf',0.5,.7));
       const ps=[...el.querySelectorAll('.text p')];
       ps.forEach((e,k)=>teil(e,sz,'auf',zeitWert(null,sz,1.2+k*.5),.55));
     }
@@ -197,9 +210,16 @@ function wende(t, ts){
     el.style.clipPath=`inset(0 ${100-p*100}% 0 0)`;
   }else{
     el.style.opacity=p;
-    if(!(el instanceof SVGElement))el.style.transform=`translateY(${(1-p)*26}px)`;
   }
-  if(t.bew){const q=sanft((ts-t.bew.t)/t.bew.d);el.style.transform=`translate(${t.bew.dx*q}px,${t.bew.dy*q}px)`}
+  // Transformationen zusammensetzen
+  const tf=[];
+  if(t.art!=='zeichnen'&&t.art!=='breit'&&!t.pop&&!(el instanceof SVGElement))tf.push(`translateY(${(1-p)*26}px)`);
+  if(t.bew){const q=sanft((ts-t.bew.t)/t.bew.d);tf.push(`translate(${t.bew.dx*q}px,${t.bew.dy*q}px)`)}
+  if(t.schweben)tf.push(`translateY(${Math.sin(ts*2.2)*t.schweben}px)`);
+  if(t.pop){const x=klemm((ts-t.tIn)/t.dauer),c=1.9;const k=x>=1?1:1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2);tf.push(`scale(${Math.max(0,k)})`)}
+  if(t.drehen)tf.push(`rotate(${Math.max(0,ts-t.tIn)*t.drehen}deg)`);
+  if(tf.length)el.style.transform=tf.join(' ');
+  if(t.zahl!=null){const v=Math.round(t.zahl*sanft((ts-t.tIn)/Math.max(t.dauer,1.2)));el.textContent=v.toLocaleString('de-DE')+t.einheit}
 }
 
 window.zeige=function(sek){

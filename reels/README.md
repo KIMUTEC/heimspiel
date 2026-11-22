@@ -61,3 +61,12 @@ Für Videos, die schon fertig animiert sind (z. B. aus Canva), aber noch keinen 
 - Logo: `marke/kimutec-logo.png` (aus dem Original-Reel ausgeschnitten, transparent).
 - Hinweis: Die edge-Stimmen kommen vom Vorlesedienst des Edge-Browsers. Für bezahlte Werbung ist der Azure-Sprachdienst mit denselben Stimmen die lizenzrechtlich saubere Variante.
 - Instagram-Reels dürfen höchstens 3 Minuten lang sein.
+
+## Effekte (seit Reel 9)
+- `class='pop'`: Element ploppt mit leichtem Überschwingen auf (auch für SVG-Gruppen; dann kein `transform`-Attribut an derselben Gruppe, sondern eine innere `<g transform=…>`).
+- `data-drehen="90"`: dreht sich ab dem Einblenden mit 90 °/s (Zahnräder, Räder).
+- `data-schweben="4"`: schwebt sanft auf und ab (z. B. Handy).
+- `data-zahl="1012" data-einheit=" mm"`: Zahl zählt beim Einblenden hoch.
+- `data-ursprung="left bottom"`: Drehpunkt für pop/drehen.
+- Szene mit `"schritt": 3` (und optional `"schrittVon": 8`) zeigt oben rechts „SCHRITT 3 / 8“ mit Punkten.
+- Größere Reels mit eigenem Generator bauen: Vorlage `projekte/09-ablauf/bauen.py` (Hilfen für Chips, Sprechblasen, Sterne, Zahnräder, Fenster).
