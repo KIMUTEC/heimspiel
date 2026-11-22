@@ -118,7 +118,7 @@ db.szenen.forEach((s, i) => {
       sp = dauer(wav); mitTon = true;
     }
   }
-  const sprechStart = s.sprechStart ?? 0.3;
+  const sprechStart = s.sprechStart ?? db.sprechStart ?? 0.3;
   const d = s.dauer || Math.max(2.5, sprechStart + sp + (s.pause ?? 0.7));
   zeiten.szenen.push({ start: t, dauer: d, sprechStart, sprechDauer: sp, marken, wav: mitTon ? wav : null });
   console.log(`Szene ${i + 1}: ${d.toFixed(1)} s  ${s.titel?.replace(/\n/g, ' ').replace(/<\/?em>/g, '') || ''}`);

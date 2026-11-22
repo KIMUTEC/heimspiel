@@ -19,13 +19,12 @@ damit braucht ein neuer Chat keinen langen Übergabetext mehr: „/reel – mach
   Ordner `ton` zurückholen. Der ElevenLabs-Connector ist mit seinem Konto verbunden, seine Werkzeuge waren im Chat aber noch nicht geladen.
 - Für Werbung braucht ElevenLabs ein bezahltes Abo (kommerzielle Lizenz).
 
-## Offen
-- Die Stimme ist schon erzeugt: 2 Takes im ElevenLabs-Flow `7PpyR7Fh4dWC6YQZNVoa` (über den Connector, je 2.169 Zeichen).
-  **Nicht neu erzeugen.** Der Download von elevenlabsusercontent.com ist in der Cloud gesperrt: Ramiz schickt den besseren Take als MP3
-  oder erlaubt die Domain auf claude.ai unter Einstellungen > Capabilities.
-- Dann: `python3 reels/elevenlabs.py zerlegen <take.mp3> reels/projekte/09-ablauf/drehbuch.json` und
-  `node reels/render.mjs reels/projekte/09-ablauf/drehbuch.json` (mit `setsid nohup`, ca. 10–15 min).
-- Danach Ton mit `pruefe-ton.py` gegenlesen, Länge ≤ 3:00 prüfen (sonst Pausen kürzen), `instagram.txt` an Version 2 anpassen.
+## Stand
+- Reel 9 Version 2 ist fertig gerendert (2:57 min) mit dem ElevenLabs-Take „content_2.mp3“ (Flow `7PpyR7Fh4dWC6YQZNVoa`, 4 Takes,
+  zusammen 8.676 Zeichen verbraucht). Der Take wurde mit `elevenlabs.py zerlegen` in Szenen geschnitten (330 von 336 Wörtern zugeordnet).
+- Pausen zwischen den Szenen wurden gekürzt (`sprechStart` 0,2 s), damit das Reel unter 3:00 bleibt.
+- Tonprüfung: Text stimmt; „Kimutek“ hört die Spracherkennung als „Chemotec“ (macht sie bei jeder Stimme), „Montage“ in Szene 5 weich wie „Garage“.
+- Download von elevenlabsusercontent.com ist in der Cloud gesperrt – Ramiz schickt Takes als MP3 oder gibt die Domain frei.
 
 ## Weitere Reels im Repo
 - `06-aufmass-montage` – Nachbau von Reel 6 (Aufmaß und Montage).
