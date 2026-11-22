@@ -301,8 +301,8 @@ b8 += figur('monteur', B8, [k(-9, x=630, b=-1),
 
 # ============ Szene 9: Abdichtung in drei Ebenen (Schnitt durch die Fuge, außen oben)
 b9 = (chip(150, 0, 'INNEN DICHTER ALS AUSSEN', 'm2', voll=True, breite=620, h=60, size=26)
-      + T(40, 104, 'AUSSEN', 22, 800, BLAU, ls=3) + f"<path d='M150 96 v-26 M140 80 l10 -10 l10 10' fill='none' stroke='{BLAU}' stroke-width='3'/>"
-      + T(40, 640, 'INNEN', 22, 800, AKZ, ls=3) + f"<path d='M140 612 v26 M130 628 l10 10 l10 -10' fill='none' stroke='{AKZ}' stroke-width='3'/>"
+      + T(40, 104, 'AUSSEN', 22, 800, BLAU, ls=3) + f"<path d='M172 100 v-26 M162 84 l10 -10 l10 10' fill='none' stroke='{BLAU}' stroke-width='3'/>"
+      + T(40, 640, 'INNEN', 22, 800, AKZ, ls=3) + f"<path d='M152 616 v26 M142 632 l10 10 l10 -10' fill='none' stroke='{AKZ}' stroke-width='3'/>"
       + f"<rect class='wand' x='40' y='130' width='260' height='460'/>" + T(170, 366, 'Mauerwerk', 22, 600, MUT, 'middle')
       + f"<rect x='300' y='160' width='70' height='400' fill='#0B0C0C'/>"
       + T(335, 146, 'FUGE', 20, 800, AKZ, 'middle', 3, attr=" data-t='m1'")
@@ -357,7 +357,7 @@ b10 = (wand(120, B10, B10) + "<rect class='offen' x='330' y='230' width='240' he
        f"<path d='M330 230 h240 v260 h-240z M352 252 v216 h196 v-216z' fill='#F2EFE8' fill-rule='evenodd'/>")
 b10 += spur(fl, [k(-9, sx=1, sy=1), k('m3', sx=1), k('m3+0.5', sx=.8, e='w'), k('m4-0.3', sx=1, e='w'), k('m4', sy=1), k('m4+0.35', sy=.93, e='w'), k('m5', sy=.93), k('m5+0.35', sy=1, e='w')],
             id='s10-fluegel', ursprung='352px 468px')
-b10 += (f"<g class='pop' data-t='m3+0.2'><path d='M590 300 a70 70 0 0 1 0 110' fill='none' stroke='{AKZ}' stroke-width='4' marker-end='url(#pfeil)'/></g>"
+b10 += (f"<g class='pop' data-t='m3+0.2' data-aus='m6'><path d='M590 300 a70 70 0 0 1 0 110' fill='none' stroke='{AKZ}' stroke-width='4' marker-end='url(#pfeil)'/></g>"
         + T(600, 446, 'öffnen', 24, 700, AKZ, attr=" data-t='m3+0.2' data-aus='m4'")
         + T(600, 446, 'kippen', 24, 700, AKZ, attr=" data-t='m4+0.2' data-aus='m5'")
         + T(600, 446, 'schließen', 24, 700, AKZ, attr=" data-t='m5+0.2' data-aus='m6'"))

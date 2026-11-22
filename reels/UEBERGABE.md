@@ -20,7 +20,11 @@ damit braucht ein neuer Chat keinen langen Übergabetext mehr: „/reel – mach
 - Für Werbung braucht ElevenLabs ein bezahltes Abo (kommerzielle Lizenz).
 
 ## Offen
-- Ansagen von ElevenLabs holen, dann `node reels/render.mjs reels/projekte/09-ablauf/drehbuch.json` (mit `setsid nohup`).
+- Die Stimme ist schon erzeugt: 2 Takes im ElevenLabs-Flow `7PpyR7Fh4dWC6YQZNVoa` (über den Connector, je 2.169 Zeichen).
+  **Nicht neu erzeugen.** Der Download von elevenlabsusercontent.com ist in der Cloud gesperrt: Ramiz schickt den besseren Take als MP3
+  oder erlaubt die Domain auf claude.ai unter Einstellungen > Capabilities.
+- Dann: `python3 reels/elevenlabs.py zerlegen <take.mp3> reels/projekte/09-ablauf/drehbuch.json` und
+  `node reels/render.mjs reels/projekte/09-ablauf/drehbuch.json` (mit `setsid nohup`, ca. 10–15 min).
 - Danach Ton mit `pruefe-ton.py` gegenlesen, Länge ≤ 3:00 prüfen (sonst Pausen kürzen), `instagram.txt` an Version 2 anpassen.
 
 ## Weitere Reels im Repo
