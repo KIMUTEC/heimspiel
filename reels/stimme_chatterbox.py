@@ -13,7 +13,10 @@ from faster_whisper import WhisperModel
 
 auftrag, ziel = sys.argv[1:3]
 a = json.load(open(auftrag))
-norm = lambda w: re.sub(r'[^0-9a-zäöüß]', '', w.lower())
+ZAHL = {'1': 'eins', '2': 'zwei', '3': 'drei', '4': 'vier', '5': 'fünf', '6': 'sechs', '7': 'sieben', '8': 'acht', '9': 'neun', '10': 'zehn'}
+def norm(w):
+    w = re.sub(r'[^0-9a-zäöüß]', '', w.lower())
+    return ZAHL.get(w, w)
 
 tts = ChatterboxMultilingualTTS.from_pretrained(device='cpu')
 asr = WhisperModel('small', device='cpu', compute_type='int8')
@@ -68,7 +71,10 @@ for i, roh in enumerate(a['texte']):
     stueck = wav[:, : int(ende * sr)]
     # weich ausblenden
     f = min(stueck.shape[-1], int(0.08 * sr)); stueck[:, -f:] *= torch.linspace(1, 0, f)
-    pfad = f"{a['ordner']}/cb_{i}.wav"
+    pfad = a['ziele'][i] + '.wav' if a.get('ziele') else f"{a['ordner']}/cb_{i}.wav"
     ta.save(pfad, stueck, sr)
-    ergebnis.append({'wav': pfad, 'marken': marken, 'treffer': round(treffer, 3)})
+    erg = {'wav': pfad, 'marken': marken, 'treffer': round(treffer, 3), 'text': roh}
+    if a.get('ziele'):   # sofort speichern: ein Abbruch verliert keine fertigen Ansagen
+        json.dump(erg, open(a['ziele'][i] + '.json', 'w'))
+    ergebnis.append(erg)
 json.dump(ergebnis, open(ziel, 'w'))

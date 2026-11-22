@@ -42,14 +42,10 @@ if (CB && !db.tonspur) {
   const schluessel = t => createHash('sha1').update(t + '|' + (ref || '')).digest('hex').slice(0, 16);
   const fehlt = nur.filter(([t]) => !existsSync(join(cache, schluessel(t) + '.json')));
   if (fehlt.length) {
-    writeFileSync(join(tmp, 'cb_auftrag.json'), JSON.stringify({ texte: fehlt.map(([t]) => t), ordner: tmp, referenz: ref }));
+    writeFileSync(join(tmp, 'cb_auftrag.json'), JSON.stringify({ texte: fehlt.map(([t]) => t), ordner: tmp, referenz: ref, ziele: fehlt.map(([t]) => join(cache, schluessel(t))) }));
     const py = process.env.CHATTERBOX_PY || join(process.env.HOME, '.venv-chatterbox/bin/python');
+    console.log(`Stimme: ${fehlt.length} von ${nur.length} Ansagen werden erzeugt (Rest aus dem Zwischenspeicher)`);
     execFileSync(py, [join(import.meta.dirname, 'stimme_chatterbox.py'), join(tmp, 'cb_auftrag.json'), join(tmp, 'cb_erg.json')], { stdio: ['ignore', 'inherit', 'ignore'] });
-    const erg = JSON.parse(readFileSync(join(tmp, 'cb_erg.json'), 'utf8'));
-    fehlt.forEach(([t], k) => {
-      const h = schluessel(t); copyFileSync(erg[k].wav, join(cache, h + '.wav'));
-      writeFileSync(join(cache, h + '.json'), JSON.stringify({ ...erg[k], wav: join(cache, h + '.wav'), text: t }));
-    });
   }
   cbErg = {}; nur.forEach(([t, i]) => { cbErg[i] = JSON.parse(readFileSync(join(cache, schluessel(t) + '.json'), 'utf8')); });
 }
