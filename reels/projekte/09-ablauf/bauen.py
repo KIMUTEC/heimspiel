@@ -1,8 +1,6 @@
 # Erzeugt drehbuch.json für das Reel „So arbeiten wir“ (Kontakt bis Abnahme).
 # Aufruf: python3 reels/projekte/09-ablauf/bauen.py && node reels/render.mjs reels/projekte/09-ablauf/drehbuch.json
 import json, math, os, sys
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
-from figuren import mann
 
 INK, AKZ, MUT, LIN, GLAS, GLASR = '#EEEAE2', '#D8B79C', '#A3A09A', '#3A3E3C', '#1F2A30', '#9FB3BC'
 
@@ -20,6 +18,21 @@ def stern(cx, cy, r):
     p = ' '.join(f'{cx + (r if k % 2 == 0 else r * .45) * math.cos(-math.pi / 2 + k * math.pi / 5):.1f},{cy + (r if k % 2 == 0 else r * .45) * math.sin(-math.pi / 2 + k * math.pi / 5):.1f}' for k in range(10))
     return f"<polygon points='{p}' fill='{AKZ}'/>"
 
+import random
+random.seed(9)
+def konfetti(cx, cy, t, n=34):
+    farben = [AKZ, INK, '#9FB3BC', '#C49A78']
+    out = ''
+    for k in range(n):
+        w = random.uniform(-1, 1) * math.pi; r = random.uniform(180, 460)
+        dx, dy = r * math.cos(w), r * math.sin(w) * 0.8 - 60
+        form = (f"<rect x='{cx-7}' y='{cy-3}' width='14' height='6' rx='2' fill='{random.choice(farben)}'/>" if k % 2
+                else f"<circle cx='{cx}' cy='{cy}' r='5' fill='{random.choice(farben)}'/>")
+        tt = f"{t}+{random.uniform(0, .25):.2f}"
+        out += (f"<g data-t='{tt}' data-d='0.2' data-aus='{t}+{2.4+random.uniform(0,.6):.1f}' data-bewegung='{dx:.0f},{dy:.0f},{tt},1.4'>"
+                f"<g data-t='{tt}' data-drehen='{random.choice([-1,1])*random.uniform(200,520):.0f}'>{form}</g></g>")
+    return out
+
 def fenster(x, y, w, h, alt=False):
     rahmen = '#8A8F8C' if alt else '#F2EFE8'
     s = f"<rect x='{x}' y='{y}' width='{w}' height='{h}' rx='4' fill='{rahmen}'/><rect x='{x+22}' y='{y+22}' width='{w-44}' height='{h-44}' fill='{GLAS}'/>"
@@ -31,21 +44,21 @@ def fenster(x, y, w, h, alt=False):
 
 def chip(x, y, text, t, voll=False, breite=None):
     b = breite or 34 + len(text) * 19
-    fill, farbe = (AKZ, '#111312') if voll else ('#1A1D1C', INK)
-    return (f"<g class='pop' data-t='{t}' data-d='0.5'><rect x='{x}' y='{y}' width='{b}' height='64' rx='32' fill='{fill}' stroke='{AKZ}' stroke-width='2'/>"
+    fill, farbe = ('url(#verlauf-akzent)', '#111312') if voll else ('url(#verlauf-karte)', INK)
+    return (f"<g class='pop' data-t='{t}' data-d='0.5'><rect x='{x}' y='{y}' width='{b}' height='64' rx='32' fill='{fill}' stroke='{AKZ}' stroke-opacity='.55' stroke-width='2' filter='url(#schatten)'/>"
             f"<text x='{x + b/2}' y='{y + 42}' text-anchor='middle' style='font-family:Montserrat;font-weight:700;font-size:29px;fill:{farbe}'>{text}</text></g>")
 
 def blase(x, y, w, zeilen, t, kunde=True):
     h = 30 + 42 * len(zeilen)
-    fill, farbe = ('#2A2E2D', INK) if kunde else (AKZ, '#111312')
+    fill, farbe = ('url(#verlauf-karte)', INK) if kunde else ('url(#verlauf-akzent)', '#111312')
     spitze = f"M{x+30} {y+h} l0 26 l30 -26z" if kunde else f"M{x+w-30} {y+h} l0 26 l-30 -26z"
     txt = ''.join(f"<text x='{x+28}' y='{y+48+42*k}' style='font-family:Montserrat;font-weight:600;font-size:30px;fill:{farbe}'>{z}</text>" for k, z in enumerate(zeilen))
-    return f"<g class='pop' data-t='{t}' data-d='0.55' data-ursprung='{'left bottom' if kunde else 'right bottom'}'><rect x='{x}' y='{y}' width='{w}' height='{h}' rx='26' fill='{fill}'/><path d='{spitze}' fill='{fill}'/>{txt}</g>"
+    return f"<g class='pop' data-t='{t}' data-d='0.55' data-ursprung='{'left bottom' if kunde else 'right bottom'}'><rect x='{x}' y='{y}' width='{w}' height='{h}' rx='26' fill='{fill}' filter='url(#schatten)'/><path d='{spitze}' fill='{fill}'/>{txt}</g>"
 
 # ---------- Szene 1: Der Weg in 8 Schritten
 schritte = ['Kontakt', 'Beratung', 'Aufmaß', 'Angebot', 'Produktion', 'Lieferung', 'Montage', 'Abnahme']
 pkt = [(60 + k * 114, 430 - k * 44) for k in range(8)]
-weg = f"<path class='zeichnen' data-t='m1' data-d='2.4' d='M{' L'.join(f'{x} {y}' for x, y in pkt)}' fill='none' stroke='{AKZ}' stroke-width='5'/>"
+weg = f"<path class='zeichnen leuchten' data-t='m1' data-d='2.6' d='M{' L'.join(f'{x} {y}' for x, y in pkt)}' fill='none' stroke='{AKZ}' stroke-width='5'/>"
 punkte = ''
 for k, (x, y) in enumerate(pkt):
     ty = y + 66 if (k % 2 == 0 or k == 7) else y - 40
@@ -77,7 +90,7 @@ def laser(y, m, plus, wert, klein=False):
     t = f'{m}+{plus:.1f}' if plus else m
     t2 = f'{m}+{plus+0.3:.1f}'
     return (f"<line class='zeichnen' data-t='{t}' data-d='0.5' x1='272' y1='{y}' x2='648' y2='{y}' stroke='{AKZ}' stroke-width='10' stroke-opacity='.25'/>"
-            f"<line class='zeichnen' data-t='{t}' data-d='0.5' x1='272' y1='{y}' x2='648' y2='{y}' stroke='{AKZ}' stroke-width='3'/>"
+            f"<line class='zeichnen leuchten' data-t='{t}' data-d='0.5' x1='272' y1='{y}' x2='648' y2='{y}' stroke='#F6E3D2' stroke-width='3'/>"
             f"<g data-t='{t2}'><rect x='370' y='{y-52}' width='180' height='40' rx='6' fill='#111312'/>"
             f"<text x='460' y='{y-22}' text-anchor='middle' data-t='{t2}' data-d='1.2' data-zahl='{wert}' data-einheit=' mm' style='font-family:Montserrat;font-weight:700;font-size:28px;fill:{farbe}'>0 mm</text></g>")
 bild4 = (f"<rect class='wand' x='0' y='0' width='920' height='520'/><rect class='offen' x='260' y='40' width='400' height='440'/>"
@@ -124,7 +137,7 @@ bild7 = (f"<line x1='0' y1='412' x2='920' y2='412' stroke='{INK}' stroke-width='
 bild8 = (f"<rect class='wand' x='0' y='0' width='920' height='520'/><rect class='offen' x='290' y='40' width='340' height='440'/>"
          f"<g data-t='0.1' data-aus='m1+1.1' data-bewegung='-700,0,m1,1.0'><g>{fenster(290, 40, 340, 440, alt=True)}</g></g>"
          f"<g data-t='m2' data-d='0.3' data-bewegung='-700,0,m2,1.0'><g>{fenster(990, 40, 340, 440)}</g></g>"
-         f"<g data-t='m3'><rect x='282' y='32' width='356' height='456' fill='none' stroke='{AKZ}' stroke-width='8'/></g>"
+         f"<rect class='zeichnen leuchten' data-t='m3' data-d='1.0' x='282' y='32' width='356' height='456' fill='none' stroke='{AKZ}' stroke-width='8'/>"
          f"<g data-t='m3+1.2'><rect x='272' y='22' width='376' height='476' fill='none' stroke='#6E5A48' stroke-width='10' stroke-dasharray='14 8'/></g>"
          + chip(20, 120, 'innen luftdicht', 'm3+0.4', breite=250) + chip(652, 380, 'außen regendicht', 'm3+1.6', breite=262)
          + ''.join(f"<g class='pop' data-t='m4+{k*0.2:.1f}'>{stern(x, y, r)}</g>" for k, (x, y, r) in enumerate([(250, 60, 22), (680, 120, 16), (210, 470, 18), (700, 300, 24)])))
@@ -139,41 +152,20 @@ html9 = (pruef('Funktion geprüft', 'm2') + pruef('Anschlüsse dicht und sauber'
            f"<line x1='40' y1='130' x2='560' y2='130' stroke='{LIN}' stroke-width='3' data-t='m5'/><text x='600' y='110' data-t='m5' style='font-family:Montserrat;font-weight:600;font-size:24px;fill:{MUT}'>Unterschrift Kunde</text></svg>")
 
 # ---------- Szene 10: Zufrieden (mit Augenzwinkern)
-gesicht = (f"<g data-t='0.4'>{fenster(80, 20, 340, 420)}</g>"
-           f"<g class='pop' data-t='m4'><circle cx='190' cy='170' r='22' fill='{INK}'/></g>"
-           f"<g class='pop' data-t='m4+0.2'><path d='M290 170 q22 -22 44 0' fill='none' stroke='{INK}' stroke-width='8' stroke-linecap='round'/></g>"
-           f"<path class='zeichnen' data-t='m4+0.3' data-d='0.6' d='M170 290 Q250 370 330 290' fill='none' stroke='{AKZ}' stroke-width='10' stroke-linecap='round'/>")
-woerter = chip(480, 40, 'WARM', 'm1', breite=200, voll=True) + chip(480, 130, 'LEISE', 'm2', breite=200, voll=True) + chip(480, 220, 'ZUFRIEDEN', 'm3', breite=300, voll=True)
-sterne = ''.join(f"<g class='pop' data-t='m4+{0.5+k*0.15:.2f}'>{stern(500 + k*76, 345, 30)}</g>" for k in range(5))
-bild10 = gesicht + woerter + sterne + blase(60, 470, 840, ['„Warum haben wir das', 'nicht früher gemacht?“'], 'm6')
+bewertung = (f"<g class='pop' data-t='0.4' data-d='0.6'><rect x='40' y='20' width='420' height='330' rx='28' fill='url(#verlauf-karte)' stroke='{AKZ}' stroke-opacity='.5' stroke-width='2' filter='url(#schatten)'/>"
+             f"<text x='250' y='190' text-anchor='middle' style='font-family:Montserrat;font-weight:800;font-size:130px;fill:{AKZ}'>5,0</text>"
+             f"<text x='250' y='300' text-anchor='middle' style='font-family:Montserrat;font-weight:600;font-size:24px;letter-spacing:4px;fill:{MUT}'>KUNDENBEWERTUNG</text></g>"
+             + ''.join(f"<g class='pop' data-t='m4+{0.3+k*0.12:.2f}'>{stern(110 + k*70, 240, 24)}</g>" for k in range(5)))
+woerter = chip(520, 40, 'WARM', 'm1', breite=360, voll=True) + chip(520, 140, 'LEISE', 'm2', breite=360, voll=True) + chip(520, 240, 'ZUFRIEDEN', 'm3', breite=360, voll=True)
+bild10 = bewertung + woerter + blase(40, 420, 860, ['„Warum haben wir das', 'nicht früher gemacht?“'], 'm6') + konfetti(250, 170, 'm4')
 
-# ---------- Männchen
-LAUF = dict(laufen=True, arm_l=20, arm_r=-20, wipp_l=(25, 1.6, 0.5), wipp_r=(25, 1.6))
-bild1 += f"<g data-t='m1' data-bewegung='798,-308,m1,2.6'>{mann(60, 402, 0.42, 'm1', **LAUF)}</g>"
-bild3 += (mann(150, 520, 0.72, 'm1', kunde=True, arm_r=-30, wipp_r=(14, 1.4), blick=1)
-          + mann(330, 520, 0.75, 'm1+0.3', arm_r=-40, werkzeug_r='tablet', wipp_l=(12, 1.2), blick=-1)
-          + f"<g class='pop' data-t='m2'><rect x='372' y='250' width='96' height='54' rx='27' fill='#2A2E2D'/>"
-          + ''.join(f"<circle cx='{396+k*24}' cy='277' r='6' fill='{INK}'/>" for k in range(3)) + "</g>")
-bild4 += mann(130, 515, 0.9, 'm2', arm_r=-90, werkzeug_r='laser', wipp_r=(12, 0.45), blick=1)
-bild6 += (mann(380, 410, 0.85, 'm1', arm_r=150, werkzeug_r='hammer', wipp_r=(32, 2.4), arm_l=-25, blick=-1)
-          + mann(872, 410, 0.7, 'm2+0.5', arm_l=40, werkzeug_l='tablet', blick=-1))
-kiste = f"<rect x='573' y='318' width='54' height='44' rx='4' fill='{AKZ}'/>"
-bild7 += f"<g data-t='m2' data-bewegung='120,0,m2,1.6'>{mann(600, 412, 0.6, 'm2', laufen=True, arm_l=-30, arm_r=30, extra=kiste)}</g>"
-bild8 += (mann(150, 515, 0.85, '0.4', arm_r=-60, werkzeug_r='brecheisen', wipp_r=(14, 2.2), klasse='pop', extra='').replace("data-t='0.4' data-d='0.5'", "data-t='0.4' data-d='0.5' data-aus='m1'")
-          + f"<g data-t='0.6' data-aus='m1+1.1' data-bewegung='-700,0,m1,1.0'>"
-          f"{mann(262, 500, 0.85, '0.6', laufen=True, arm_r=-100, arm_l=-70)}{mann(658, 500, 0.85, '0.6', laufen=True, arm_l=100, arm_r=70)}</g>")
-bild8 += (f"<g data-t='m2' data-aus='m3' data-bewegung='-700,0,m2,1.0'>"
-          f"{mann(960, 500, 0.85, 'm2', laufen=True, arm_r=-100, arm_l=-60)}{mann(1360, 500, 0.85, 'm2', laufen=True, arm_l=100, arm_r=60)}</g>"
-          + mann(150, 515, 0.85, 'm3', arm_r=-78, werkzeug_r='bohrer', wipp_r=(3, 9), blick=1))
-html9 += (f"<svg viewBox='0 0 920 300' style='width:920px;height:300px;margin-top:10px;overflow:visible'>"
-          + mann(370, 290, 0.9, 'm3+0.4', arm_r=-62, wipp_r=(6, 2), blick=1)
-          + mann(550, 290, 0.9, 'm3+0.6', kunde=True, arm_l=62, wipp_l=(6, 2, 0.5), blick=-1) + "</svg>")
-bild10 += (f"<g data-t='m5' data-huepfen='18,1.4'>{mann(835, 300, 0.55, 'm5', kunde=True, arm_l=150, arm_r=-150, wipp_l=(15, 2.8), wipp_r=(15, 2.8, 0.5))}</g>"
-           f"<g data-t='m5+0.3' data-huepfen='18,1.4'>{mann(900, 300, 0.55, 'm5+0.3', arm_l=150, arm_r=-150, wipp_l=(15, 2.8, 0.25), wipp_r=(15, 2.8, 0.75))}</g>")
+# ---------- Effekte
+# Lichtpunkt fährt den Weg entlang
+bild1 += (f"<g data-t='m1' data-d='0.3' data-bewegung='798,-308,m1,2.6'><circle cx='60' cy='430' r='15' fill='#F6E3D2' class='leuchten'/></g>")
 
 db = {
     "titel": "KIMUTEC – So arbeiten wir: vom Kontakt bis zur Abnahme",
-    "fps": 30, "stimme": "chatterbox",
+    "fps": 30, "stimme": "edge:de-DE-FlorianMultilingualNeural", "tempo": "-8%",
     "aussprache": {"kimutec.com": "Kimutek Punkt com", "KIMUTEC": "Kimutek"},
     "szenen": [
         {"label": "KIMUTEC | So arbeiten wir", "titel": "Neue Fenster?\nAlles aus\n<em>einer Hand.</em>", "bildHoehe": 500, "bild": bild1,
