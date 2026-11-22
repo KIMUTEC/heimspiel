@@ -20,16 +20,16 @@ def stern(cx, cy, r):
 
 import random
 random.seed(9)
-def konfetti(cx, cy, t, n=34):
+def konfetti(cx, cy, t, n=70):
     farben = [AKZ, INK, '#9FB3BC', '#C49A78']
     out = ''
     for k in range(n):
-        w = random.uniform(-1, 1) * math.pi; r = random.uniform(180, 460)
+        w = random.uniform(-1, 1) * math.pi; r = random.uniform(220, 620)
         dx, dy = r * math.cos(w), r * math.sin(w) * 0.8 - 60
-        form = (f"<rect x='{cx-7}' y='{cy-3}' width='14' height='6' rx='2' fill='{random.choice(farben)}'/>" if k % 2
-                else f"<circle cx='{cx}' cy='{cy}' r='5' fill='{random.choice(farben)}'/>")
+        form = (f"<rect x='{cx-13}' y='{cy-6}' width='26' height='12' rx='3' fill='{random.choice(farben)}'/>" if k % 2
+                else f"<circle cx='{cx}' cy='{cy}' r='9' fill='{random.choice(farben)}'/>")
         tt = f"{t}+{random.uniform(0, .25):.2f}"
-        out += (f"<g data-t='{tt}' data-d='0.2' data-aus='{t}+{2.4+random.uniform(0,.6):.1f}' data-bewegung='{dx:.0f},{dy:.0f},{tt},1.4'>"
+        out += (f"<g data-t='{tt}' data-d='0.2' data-aus='{t}+{3.0+random.uniform(0,.8):.1f}' data-bewegung='{dx:.0f},{dy:.0f},{tt},1.8'>"
                 f"<g data-t='{tt}' data-drehen='{random.choice([-1,1])*random.uniform(200,520):.0f}'>{form}</g></g>")
     return out
 
@@ -166,7 +166,7 @@ bild1 += (f"<g data-t='m1' data-d='0.3' data-bewegung='798,-308,m1,2.6'><circle 
 db = {
     "titel": "KIMUTEC – So arbeiten wir: vom Kontakt bis zur Abnahme",
     "fps": 30, "stimme": "edge:de-DE-FlorianMultilingualNeural", "tempo": "-8%",
-    "aussprache": {"kimutec.com": "Kimutek Punkt com", "KIMUTEC": "Kimutek"},
+    "aussprache": {"kimutec.com": "Kimutek Punkt com", "KIMUTEC": "Kimutek", "Laser": "Lahser"},
     "szenen": [
         {"label": "KIMUTEC | So arbeiten wir", "titel": "Neue Fenster?\nAlles aus\n<em>einer Hand.</em>", "bildHoehe": 500, "bild": bild1,
          "sprecher": "Neue Fenster? Bei KIMUTEC bekommen Sie alles aus einer Hand. |Vom ersten Kontakt |bis zur fertigen Abnahme.", "pause": 0.6},
