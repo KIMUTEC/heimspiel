@@ -1,6 +1,8 @@
 # Erzeugt drehbuch.json für das Reel „So arbeiten wir“ (Kontakt bis Abnahme).
 # Aufruf: python3 reels/projekte/09-ablauf/bauen.py && node reels/render.mjs reels/projekte/09-ablauf/drehbuch.json
-import json, math, os
+import json, math, os, sys
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
+from figuren import mann
 
 INK, AKZ, MUT, LIN, GLAS, GLASR = '#EEEAE2', '#D8B79C', '#A3A09A', '#3A3E3C', '#1F2A30', '#9FB3BC'
 
@@ -51,7 +53,7 @@ for k, (x, y) in enumerate(pkt):
                f"<text x='{x}' y='{y+10}' text-anchor='middle' style='font-family:Montserrat;font-weight:800;font-size:26px;fill:{INK}'>{k+1}</text>"
                f"<text x='{x}' y='{ty}' text-anchor='middle' style='font-family:Montserrat;font-weight:600;font-size:21px;fill:{MUT}'>{schritte[k]}</text></g>")
 haken = f"<g class='pop' data-t='m2+0.6'><circle cx='858' cy='40' r='40' fill='{AKZ}'/><path d='M838 40 l14 14 l26 -28' fill='none' stroke='#111312' stroke-width='7' stroke-linecap='round'/></g>"
-bild1 = weg + punkte + haken
+bild1 = weg + punkte
 
 # ---------- Szene 2: Kontakt
 handy = (f"<g data-t='0.5' data-schweben='4'><rect x='30' y='40' width='230' height='440' rx='36' fill='#161918' stroke='{INK}' stroke-width='5'/>"
@@ -79,7 +81,6 @@ def laser(y, m, plus, wert, klein=False):
             f"<g data-t='{t2}'><rect x='370' y='{y-52}' width='180' height='40' rx='6' fill='#111312'/>"
             f"<text x='460' y='{y-22}' text-anchor='middle' data-t='{t2}' data-d='1.2' data-zahl='{wert}' data-einheit=' mm' style='font-family:Montserrat;font-weight:700;font-size:28px;fill:{farbe}'>0 mm</text></g>")
 bild4 = (f"<rect class='wand' x='0' y='0' width='920' height='520'/><rect class='offen' x='260' y='40' width='400' height='440'/>"
-         f"<g class='pop' data-t='m2'><rect x='180' y='446' width='64' height='40' rx='8' fill='{AKZ}'/><circle cx='232' cy='466' r='8' fill='#111312'/></g>"
          + laser(90, 'm2', 0.4, 1012) + laser(260, 'm3', 0, 1008) + laser(430, 'm3', 0.6, 960, True)
          + f"<g class='pop' data-t='m4'><rect x='640' y='470' width='260' height='60' rx='30' fill='{AKZ}'/><text x='770' y='510' text-anchor='middle' style='font-family:Montserrat;font-weight:800;font-size:26px;fill:#111312'>KLEINSTES ZÄHLT</text></g>")
 
@@ -146,9 +147,29 @@ woerter = chip(480, 40, 'WARM', 'm1', breite=200, voll=True) + chip(480, 130, 'L
 sterne = ''.join(f"<g class='pop' data-t='m4+{0.5+k*0.15:.2f}'>{stern(500 + k*76, 345, 30)}</g>" for k in range(5))
 bild10 = gesicht + woerter + sterne + blase(60, 470, 840, ['„Warum haben wir das', 'nicht früher gemacht?“'], 'm6')
 
+# ---------- Männchen
+LAUF = dict(laufen=True, arm_l=20, arm_r=-20, wipp_l=(25, 1.6, 0.5), wipp_r=(25, 1.6))
+bild1 += f"<g data-t='m1' data-bewegung='798,-308,m1,2.6'>{mann(60, 402, 0.42, 'm1', **LAUF)}</g>"
+bild3 += (mann(150, 520, 0.72, 'm1', kunde=True, arm_r=-30, wipp_r=(14, 1.4), blick=1)
+          + mann(330, 520, 0.75, 'm1+0.3', arm_r=-40, werkzeug_r='tablet', wipp_l=(12, 1.2), blick=-1)
+          + f"<g class='pop' data-t='m2'><rect x='372' y='250' width='96' height='54' rx='27' fill='#2A2E2D'/>"
+          + ''.join(f"<circle cx='{396+k*24}' cy='277' r='6' fill='{INK}'/>" for k in range(3)) + "</g>")
+bild4 += mann(130, 515, 0.9, 'm2', arm_r=-90, werkzeug_r='laser', wipp_r=(12, 0.45), blick=1)
+bild6 += (mann(380, 410, 0.85, 'm1', arm_r=150, werkzeug_r='hammer', wipp_r=(32, 2.4), arm_l=-25, blick=-1)
+          + mann(872, 410, 0.7, 'm2+0.5', arm_l=40, werkzeug_l='tablet', blick=-1))
+kiste = f"<rect x='586' y='300' width='54' height='44' rx='4' fill='{AKZ}'/>"
+bild7 += f"<g data-t='m2' data-bewegung='120,0,m2,1.6'>{mann(600, 412, 0.6, 'm2', laufen=True, arm_l=-30, arm_r=30, extra=kiste)}</g>"
+bild8 += (f"<g data-t='m2' data-aus='m3' data-bewegung='-700,0,m2,1.0'>"
+          f"{mann(960, 500, 0.85, 'm2', laufen=True, arm_r=-100, arm_l=-60)}{mann(1360, 500, 0.85, 'm2', laufen=True, arm_l=100, arm_r=60)}</g>"
+          + mann(150, 515, 0.85, 'm3', arm_r=-78, werkzeug_r='bohrer', wipp_r=(3, 9), blick=1))
+html9 += (f"<svg viewBox='0 0 920 300' style='width:920px;height:300px;margin-top:10px;overflow:visible'>"
+          + mann(370, 290, 0.9, 'm5+2', arm_r=-62, wipp_r=(6, 2), blick=1)
+          + mann(550, 290, 0.9, 'm5+2', kunde=True, arm_l=62, wipp_l=(6, 2, 0.5), blick=-1) + "</svg>")
+bild10 += f"<g data-t='m5' data-huepfen='18,1.4'>{mann(880, 300, 0.55, 'm5', kunde=True, arm_l=160, arm_r=-160, wipp_l=(15, 2.8), wipp_r=(15, 2.8, 0.5))}</g>"
+
 db = {
     "titel": "KIMUTEC – So arbeiten wir: vom Kontakt bis zur Abnahme",
-    "fps": 30, "stimme": "edge:de-DE-ConradNeural", "tempo": "+0%",
+    "fps": 30, "stimme": "chatterbox",
     "aussprache": {"kimutec.com": "Kimutek Punkt com", "KIMUTEC": "Kimutek"},
     "szenen": [
         {"label": "KIMUTEC | So arbeiten wir", "titel": "Neue Fenster?\nAlles aus\n<em>einer Hand.</em>", "bildHoehe": 500, "bild": bild1,

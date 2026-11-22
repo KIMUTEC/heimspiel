@@ -25,8 +25,22 @@ const dauer = f => parseFloat(execFileSync('ffprobe', ['-v', 'error', '-show_ent
 // "stimme": "edge:de-DE-ConradNeural" = Microsoft-Neural-Stimme (online, flüssiger), sonst Piper-Stimme (lokal).
 // Bei edge-Stimmen markiert "|" im Sprechertext Stellen, auf die sich Elemente mit data-t="m1", "m2" … beziehen.
 const EDGE = STIMME.startsWith('edge:');
-if (!db.tonspur && !EDGE && !existsSync(stimmPfad)) {
+if (!db.tonspur && !EDGE && !STIMME.startsWith('chatterbox') && !existsSync(stimmPfad)) {
   console.error(`Stimme fehlt: ${stimmPfad}\nEinrichten: bash reels/einrichten.sh`); process.exit(1);
+}
+// "stimme": "chatterbox" = natürliche KI-Stimme, lokal (Umgebung: ~/.venv-chatterbox, siehe README).
+// "chatterbox:datei.wav" klont die Stimme aus einer kurzen Aufnahme (Pfad relativ zum Drehbuch).
+const CB = STIMME.startsWith('chatterbox');
+let cbErg = null;
+if (CB && !db.tonspur) {
+  const texte = db.szenen.map(s => { let t = s.sprecher || ''; for (const [a, b] of Object.entries(db.aussprache || {})) t = t.replaceAll(a, b); return t; });
+  const nur = texte.map((t, i) => [t, i]).filter(([t]) => t);
+  const ref = STIMME.includes(':') ? resolve(ordner, STIMME.split(':')[1]) : null;
+  writeFileSync(join(tmp, 'cb_auftrag.json'), JSON.stringify({ texte: nur.map(([t]) => t), ordner: tmp, referenz: ref }));
+  const py = process.env.CHATTERBOX_PY || join(process.env.HOME, '.venv-chatterbox/bin/python');
+  execFileSync(py, [join(import.meta.dirname, 'stimme_chatterbox.py'), join(tmp, 'cb_auftrag.json'), join(tmp, 'cb_erg.json')], { stdio: ['ignore', 'inherit', 'ignore'] });
+  const erg = JSON.parse(readFileSync(join(tmp, 'cb_erg.json'), 'utf8'));
+  cbErg = {}; nur.forEach(([, i], k) => { cbErg[i] = erg[k]; });
 }
 const zeiten = { szenen: [], gesamt: 0 };
 let t = 0;
@@ -36,7 +50,10 @@ db.szenen.forEach((s, i) => {
   if (s.sprecher && !db.tonspur) {
     let txt = s.sprecher;
     for (const [a, b] of Object.entries(db.aussprache || {})) txt = txt.replaceAll(a, b);
-    if (EDGE) {
+    if (cbErg) {
+      marken = cbErg[i].marken;
+      execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', cbErg[i].wav, '-ar', '48000', '-ac', '1', wav]);
+    } else if (EDGE) {
       const mp3 = join(tmp, `s${i}.mp3`);
       const aus = execFileSync('python3', ['-I', join(import.meta.dirname, 'stimme.py'), STIMME.slice(5), db.tempo ?? '-5%', mp3], { input: txt }).toString();
       marken = JSON.parse(aus).marken;
