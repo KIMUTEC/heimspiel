@@ -135,8 +135,8 @@ def pruef(text, t):
             f"<svg width='52' height='52' viewBox='0 0 52 52' class='pop' data-t='{t}+0.2'><circle cx='26' cy='26' r='24' fill='{AKZ}'/><path d='M14 27 l8 8 l17 -18' fill='none' stroke='#111312' stroke-width='5' stroke-linecap='round'/></svg>"
             f"<b style='font-size:38px'>{text}</b></div>")
 html9 = (pruef('Funktion geprüft', 'm2') + pruef('Anschlüsse dicht und sauber', 'm3') + pruef('Bedienung erklärt', 'm4') + pruef('Übergabe mit Protokoll', 'm5')
-         + f"<svg viewBox='0 0 920 150' style='width:920px;height:150px;margin-top:30px;overflow:visible'><path class='zeichnen' data-t='m5+1' data-d='1.4' d='M60 100 C 100 20 140 20 150 90 S 210 40 240 80 S 300 120 330 60 C 350 30 380 110 420 70 L 520 80' fill='none' stroke='{AKZ}' stroke-width='5' stroke-linecap='round'/>"
-           f"<line x1='40' y1='130' x2='560' y2='130' stroke='{LIN}' stroke-width='3' data-t='m5+0.8'/><text x='600' y='110' data-t='m5+0.8' style='font-family:Montserrat;font-weight:600;font-size:24px;fill:{MUT}'>Unterschrift Kunde</text></svg>")
+         + f"<svg viewBox='0 0 920 150' style='width:920px;height:150px;margin-top:30px;overflow:visible'><path class='zeichnen' data-t='m5+0.2' data-d='1.2' d='M60 100 C 100 20 140 20 150 90 S 210 40 240 80 S 300 120 330 60 C 350 30 380 110 420 70 L 520 80' fill='none' stroke='{AKZ}' stroke-width='5' stroke-linecap='round'/>"
+           f"<line x1='40' y1='130' x2='560' y2='130' stroke='{LIN}' stroke-width='3' data-t='m5'/><text x='600' y='110' data-t='m5' style='font-family:Montserrat;font-weight:600;font-size:24px;fill:{MUT}'>Unterschrift Kunde</text></svg>")
 
 # ---------- Szene 10: Zufrieden (mit Augenzwinkern)
 gesicht = (f"<g data-t='0.4'>{fenster(80, 20, 340, 420)}</g>"
@@ -166,8 +166,8 @@ bild8 += (f"<g data-t='m2' data-aus='m3' data-bewegung='-700,0,m2,1.0'>"
           f"{mann(960, 500, 0.85, 'm2', laufen=True, arm_r=-100, arm_l=-60)}{mann(1360, 500, 0.85, 'm2', laufen=True, arm_l=100, arm_r=60)}</g>"
           + mann(150, 515, 0.85, 'm3', arm_r=-78, werkzeug_r='bohrer', wipp_r=(3, 9), blick=1))
 html9 += (f"<svg viewBox='0 0 920 300' style='width:920px;height:300px;margin-top:10px;overflow:visible'>"
-          + mann(370, 290, 0.9, 'm5+2', arm_r=-62, wipp_r=(6, 2), blick=1)
-          + mann(550, 290, 0.9, 'm5+2', kunde=True, arm_l=62, wipp_l=(6, 2, 0.5), blick=-1) + "</svg>")
+          + mann(370, 290, 0.9, 'm3+0.4', arm_r=-62, wipp_r=(6, 2), blick=1)
+          + mann(550, 290, 0.9, 'm3+0.6', kunde=True, arm_l=62, wipp_l=(6, 2, 0.5), blick=-1) + "</svg>")
 bild10 += (f"<g data-t='m5' data-huepfen='18,1.4'>{mann(835, 300, 0.55, 'm5', kunde=True, arm_l=150, arm_r=-150, wipp_l=(15, 2.8), wipp_r=(15, 2.8, 0.5))}</g>"
            f"<g data-t='m5+0.3' data-huepfen='18,1.4'>{mann(900, 300, 0.55, 'm5+0.3', arm_l=150, arm_r=-150, wipp_l=(15, 2.8, 0.25), wipp_r=(15, 2.8, 0.75))}</g>")
 
@@ -193,6 +193,7 @@ db = {
         {"label": "07 | Montage", "titel": "Montage\nnach Plan.", "schritt": 7, "bildHoehe": 520, "bild": bild8,
          "sprecher": "Schritt sieben: die Montage. |Das alte Fenster raus, |das neue rein, |fachgerecht abgedichtet: innen luftdicht und außen regendicht. |Und wir hinterlassen alles sauber."},
         {"label": "08 | Abnahme", "titel": "Gemeinsame\nAbnahme.", "schritt": 8, "html": html9,
+         "pause": 1.6,
          "sprecher": "Schritt acht: |die Abnahme. |Wir prüfen gemeinsam jedes Fenster, |alle Anschlüsse, |zeigen Ihnen die Bedienung |und übergeben alles mit Protokoll."},
         {"label": "Das Ergebnis", "titel": "Und am\nEnde?", "bildHoehe": 640, "bild": bild10,
          "sprecher": "Und am Ende? |Schön warm. |Schön leise. |Zufrieden. |Und fast immer |dieselbe Frage: Warum haben wir das nicht früher gemacht?", "pause": 1.0},
