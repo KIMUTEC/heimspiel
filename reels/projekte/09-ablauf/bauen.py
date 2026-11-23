@@ -403,7 +403,7 @@ b11 += blase(40, 320, 520, ['„Warum haben wir das', 'nicht früher gemacht?“
 b11 += konfetti(210, 150, 'm3')
 
 # Aussprache-Entscheidungen (Test vom 23.11.2026)
-BIS_ZU = 'bis zur'         # gewählt: Variante 5 (statt 'bis zu')
+# Das Wort „Montage“ spricht die Stimme unsauber – im Sprechertext „Einbau“ (Wunsch vom 23.11.2026), auf dem Bildschirm bleibt „Montage“.
 KIMUTEC_SPRICH = 'Kimu-Tek' # gewählt: Variante 2
 
 TEXT = {
@@ -411,10 +411,10 @@ TEXT = {
  2: "Schritt eins: |Sie melden sich, |per Nachricht, |E-Mail |oder Telefon. |Wir antworten schnell |und vereinbaren einen Termin bei Ihnen vor Ort.",
  3: "Schritt zwei: |die kostenlose Beratung vor Ort. |Wir sehen uns Ihre Fenster und das Mauerwerk genau an |und klären, was Ihnen wichtig ist: |Wärmeschutz, |Schallschutz, |Sicherheit |und Design, |passend zu Ihrem Budget.",
  4: "Schritt drei: das Aufmaß. |Wir messen selbst, mit dem Laser: |die Breite oben, |in der Mitte |und unten, |dann die Höhe. |Mauerwerk ist selten ganz gerade, |deshalb zählt das kleinste Maß. |Davon ziehen wir die Fuge für Dämmung und Abdichtung ab. |Wie breit sie sein muss, hängt von |Größe, |Material |und Farbe des Fensters ab.",
- 5: "Schritt vier: |Sie bekommen ein klares Angebot. |Jede Position steht einzeln drin, von den |Fenstern " + BIS_ZU + " |Montage und |Entsorgung, |ohne versteckte Kosten. |Sie geben frei, |und wir bestellen direkt beim Hersteller.",
+ 5: "Schritt vier: |Sie bekommen ein klares Angebot. |Jede Position steht einzeln drin, von den |Fenstern über den |Einbau bis zur |Entsorgung, |ohne versteckte Kosten. |Sie geben frei, |und wir bestellen direkt beim Hersteller.",
  6: "Schritt fünf: |die Produktion. |Ihre Fenster werden genau nach Ihren Maßen gefertigt: |Rahmen, |Glas |und Beschläge. |Den Liefertermin behalten wir für Sie im Blick.",
  7: "Schritt sechs: |die Lieferung. |Pünktlich zum vereinbarten Termin |bringen wir Ihre Fenster direkt zu Ihnen nach Hause.",
- 8: "Schritt sieben: |die Montage. |Zuerst bauen wir das alte Fenster aus. |Dann setzen wir das neue ein, |richten es lot- und waagerecht aus |und befestigen es sicher im Mauerwerk.",
+ 8: "Schritt sieben: |der Einbau der Elemente. |Zuerst bauen wir das alte Fenster aus. |Dann setzen wir das neue ein, |richten es lot- und waagerecht aus |und befestigen es sicher im Mauerwerk.",
  9: "Dann kommt das Wichtigste: |die Abdichtung. |Hier gilt: innen dichter als außen. |Innen luftdicht, |damit keine feuchte Raumluft in die Fuge zieht. |In der Mitte gedämmt, |gegen Wärmeverlust und Lärm. |Außen dicht gegen Schlagregen, |aber offen für Dampf, |damit Feuchtigkeit entweichen kann.",
  10: "Schritt acht: |die Abnahme. |Wir prüfen jedes Fenster gemeinsam mit Ihnen: |öffnen, |kippen, |schließen. |Wir zeigen Ihnen die Bedienung, |räumen sauber auf |und übergeben alles mit Protokoll.",
  11: "Und am Ende? |Schön warm. |Schön leise. |Zufrieden. |Und oft dieselbe Frage: |Warum haben wir das nicht früher gemacht?",
