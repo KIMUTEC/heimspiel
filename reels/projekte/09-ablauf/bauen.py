@@ -403,8 +403,8 @@ b11 += blase(40, 320, 520, ['„Warum haben wir das', 'nicht früher gemacht?“
 b11 += konfetti(210, 150, 'm3')
 
 # Aussprache-Entscheidungen (Test vom 23.11.2026)
-BIS_ZU = 'bis zu'          # Variante 5: 'bis zur'
-KIMUTEC_SPRICH = 'Kimutek'  # Variante 1–4
+BIS_ZU = 'bis zur'         # gewählt: Variante 5 (statt 'bis zu')
+KIMUTEC_SPRICH = 'Kimu-Tek' # gewählt: Variante 2
 
 TEXT = {
  1: "Neue Fenster? |Bei KIMUTEC bekommen Sie alles aus einer Hand. |In acht Schritten, |vom ersten Kontakt |bis zur fertigen Abnahme.",
