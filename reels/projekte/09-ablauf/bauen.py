@@ -195,7 +195,7 @@ B5 = 660
 doc = (f"<rect x='330' y='10' width='560' height='550' rx='14' fill='{KARTE}' stroke='{INK}' stroke-opacity='.7' stroke-width='3' filter='url(#schatten)'/>"
        + T(362, 74, 'ANGEBOT', 36, 800) + f"<image href='../marke/kimutec-logo.png' x='690' y='34' width='170' height='52'/>"
        f"<line x1='362' y1='104' x2='858' y2='104' stroke='{LIN}' stroke-width='3'/>")
-for i, (w, m) in enumerate([('Fenster nach Maß', 'm3'), ('Demontage', 'm4'), ('Montage', 'm4+0.35'), ('Entsorgung', 'm5')]):
+for i, (w, m) in enumerate([('Fenster nach Maß', 'm3'), ('Demontage', 'm4'), ('Montage', 'm4+0.15'), ('Entsorgung', 'm5')]):
     y = 150 + i * 64
     doc += f"<g class='pop' data-t='{m}' data-d='0.4'><circle cx='346' cy='{y-9}' r='7' fill='{AKZ}'/></g>"
     doc += (f"<g data-t='m2+{i*0.2:.1f}' data-d='0.45'>" + T(362, y, w, 29, 600) + f"<rect x='730' y='{y-17}' width='128' height='16' rx='8' fill='{LIN}'/>"
@@ -402,19 +402,23 @@ b11 += figur('kunde', B11, [k(-9, x=330, b=1, pose='sitzen', pV='tasse', ru=-10,
 b11 += blase(40, 320, 520, ['„Warum haben wir das', 'nicht früher gemacht?“'], 'm5', spitze=330)
 b11 += konfetti(210, 150, 'm3')
 
+# Aussprache-Entscheidungen (Test vom 23.11.2026)
+BIS_ZU = 'bis zu'          # Variante 5: 'bis zur'
+KIMUTEC_SPRICH = 'Kimutek'  # Variante 1–4
+
 TEXT = {
  1: "Neue Fenster? |Bei KIMUTEC bekommen Sie alles aus einer Hand. |In acht Schritten, |vom ersten Kontakt |bis zur fertigen Abnahme.",
  2: "Schritt eins: |Sie melden sich, |per Nachricht, |E-Mail |oder Telefon. |Wir antworten schnell |und vereinbaren einen Termin bei Ihnen vor Ort.",
  3: "Schritt zwei: |die kostenlose Beratung vor Ort. |Wir sehen uns Ihre Fenster und das Mauerwerk genau an |und klären, was Ihnen wichtig ist: |Wärmeschutz, |Schallschutz, |Sicherheit |und Design, |passend zu Ihrem Budget.",
  4: "Schritt drei: das Aufmaß. |Wir messen selbst, mit dem Laser: |die Breite oben, |in der Mitte |und unten, |dann die Höhe. |Mauerwerk ist selten ganz gerade, |deshalb zählt das kleinste Maß. |Davon ziehen wir die Fuge für Dämmung und Abdichtung ab. |Wie breit sie sein muss, hängt von |Größe, |Material |und Farbe des Fensters ab.",
- 5: "Schritt vier: |Sie bekommen ein klares Angebot. |Jede Position steht einzeln drin, |von den Fenstern |bis zu Montage |und Entsorgung, |ohne versteckte Kosten. |Sie geben frei, |und wir bestellen direkt beim Hersteller.",
+ 5: "Schritt vier: |Sie bekommen ein klares Angebot. |Jede Position steht einzeln drin, von den |Fenstern " + BIS_ZU + " |Montage und |Entsorgung, |ohne versteckte Kosten. |Sie geben frei, |und wir bestellen direkt beim Hersteller.",
  6: "Schritt fünf: |die Produktion. |Ihre Fenster werden genau nach Ihren Maßen gefertigt: |Rahmen, |Glas |und Beschläge. |Den Liefertermin behalten wir für Sie im Blick.",
  7: "Schritt sechs: |die Lieferung. |Pünktlich zum vereinbarten Termin |bringen wir Ihre Fenster direkt zu Ihnen nach Hause.",
  8: "Schritt sieben: |die Montage. |Zuerst bauen wir das alte Fenster aus. |Dann setzen wir das neue ein, |richten es lot- und waagerecht aus |und befestigen es sicher im Mauerwerk.",
  9: "Dann kommt das Wichtigste: |die Abdichtung. |Hier gilt: innen dichter als außen. |Innen luftdicht, |damit keine feuchte Raumluft in die Fuge zieht. |In der Mitte gedämmt, |gegen Wärmeverlust und Lärm. |Außen dicht gegen Schlagregen, |aber offen für Dampf, |damit Feuchtigkeit entweichen kann.",
  10: "Schritt acht: |die Abnahme. |Wir prüfen jedes Fenster gemeinsam mit Ihnen: |öffnen, |kippen, |schließen. |Wir zeigen Ihnen die Bedienung, |räumen sauber auf |und übergeben alles mit Protokoll.",
  11: "Und am Ende? |Schön warm. |Schön leise. |Zufrieden. |Und oft dieselbe Frage: |Warum haben wir das nicht früher gemacht?",
- 12: "KIMUTEC: alles aus einer Hand. Jetzt kostenlose Beratung vereinbaren, direkt hier per Nachricht oder über kimutec.com.",
+ 12: "KIMUTEC: |alles aus einer Hand. |Jetzt kostenlose Beratung vereinbaren, |direkt hier per Nachricht oder über |kimutec.com.",
 }
 
 db = {
@@ -423,7 +427,7 @@ db = {
     "stimme": "elevenlabs", "tonOrdner": "ton", "sprechStart": 0.2,
     "elevenlabs": {"voice_id": "5KvpaGteYkNayiswuX2h", "model_id": "eleven_multilingual_v2",
                    "voice_settings": {"stability": 0.6, "similarity_boost": 0.75, "style": 0.0, "use_speaker_boost": True, "speed": 1.0}},
-    "aussprache": {"kimutec.com": "Kimutek Punkt com", "KIMUTEC": "Kimutek"},
+    "aussprache": {"kimutec.com": KIMUTEC_SPRICH + " Punkt com", "KIMUTEC": KIMUTEC_SPRICH},
     "szenen": [
         {"label": "KIMUTEC | So arbeiten wir", "titel": "Neue Fenster?\nAlles aus\n<em>einer Hand.</em>", "bildHoehe": 600, "bild": b1, "sprecher": TEXT[1], "pause": 0.5},
         {"label": "01 | Kontakt", "titel": "Sie melden\nsich.", "schritt": 1, "bildHoehe": 640, "bild": b2, "sprecher": TEXT[2], "pause": 0.5},
@@ -438,7 +442,8 @@ db = {
         {"label": "Das Ergebnis", "titel": "Und am\nEnde?", "bildHoehe": 700, "bild": b11, "sprecher": TEXT[11], "pause": 0.9},
         {"art": "abschluss", "label": "Alles aus einer Hand", "titel": "Jetzt Beratung\nvereinbaren.", "unter": "Kostenlose Erstberatung vor Ort\nin Pforzheim und Umgebung.",
          "kontakt": {"zeilen": [["NACHRICHT", "Direkt hier auf Instagram"], ["E-MAIL", "sales@kimutec.com"], ["WEB", "www.kimutec.com"]]},
-         "motto": "QUALITÄT. WERTE. ZUHAUSE.", "sprecher": TEXT[12], "pause": 1.2},
+         "motto": "QUALITÄT. WERTE. ZUHAUSE.", "sprecher": TEXT[12], "pause": 1.2,
+         "zeiten": {"logo": 0.1, "label": "m1", "titel": "m2", "unter": "m2+0.7", "kontakt": "m3", "motto": "m4+0.4"}},
     ]}
 
 # Kontrolle: Sprechertext ohne Marken muss dem freigegebenen Text entsprechen (Ansagen wurden damit erzeugt)

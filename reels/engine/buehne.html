@@ -139,6 +139,8 @@ body{width:1080px;height:1920px;overflow:hidden;position:relative;font-family:"M
 <script>
 const NS='http://www.w3.org/2000/svg';
 let REEL=null;          // {szenen:[{el, start, dauer, sprechStart, sprechDauer, teile:[...]}]}
+// Szenenwechsel: Stärke des Lichtwischers (0–1), Unschärfe (px), Versatz (px). Im Drehbuch über "uebergang" änderbar.
+let UEB={wisch:.3, unschaerfe:3, versatz:18};
 const klemm=x=>Math.max(0,Math.min(1,x));
 const sanft=x=>1-Math.pow(1-klemm(x),3);
 
@@ -178,12 +180,13 @@ function baueSzene(s, i){
   d.className='szene'+(s.art==='abschluss'?' abschluss':'');
   if(s.art==='abschluss'){
     const k=s.kontakt||{};
-    d.innerHTML=`<img class="logo-gross" data-t="0.1" src="../marke/kimutec-logo.png" alt="KIMUTEC">
-      <p class="label" data-t="0.4">${s.label||''}</p>
-      <h1 class="titel" data-t="0.6">${(s.titel||'').split('\n').map(z=>`<span>${z}</span>`).join('')}</h1>
-      ${s.unter?`<p class="unter" data-t="1.0">${s.unter.replace(/\n/g,'<br>')}</p>`:''}
-      <div class="kontakt" data-t="1.4">${(k.zeilen||[]).map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join('')}</div>
-      ${s.motto?`<p class="motto" data-t="1.9">${s.motto}<i></i></p>`:''}`;
+    const zt=Object.assign({logo:0.1,label:0.4,titel:0.6,unter:1.0,kontakt:1.4,motto:1.9}, s.zeiten||{});   // Einblendzeiten, auch "m1" usw.
+    d.innerHTML=`<img class="logo-gross" data-t="${zt.logo}" src="../marke/kimutec-logo.png" alt="KIMUTEC">
+      <p class="label" data-t="${zt.label}">${s.label||''}</p>
+      <h1 class="titel" data-t="${zt.titel}">${(s.titel||'').split('\n').map(z=>`<span>${z}</span>`).join('')}</h1>
+      ${s.unter?`<p class="unter" data-t="${zt.unter}">${s.unter.replace(/\n/g,'<br>')}</p>`:''}
+      <div class="kontakt" data-t="${zt.kontakt}">${(k.zeilen||[]).map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join('')}</div>
+      ${s.motto?`<p class="motto" data-t="${zt.motto}">${s.motto}<i></i></p>`:''}`;
   }else{
     d.innerHTML=`<p class="label">${s.label||''}</p>
       <h1 class="titel">${(s.titel||'').split('\n').map(z=>`<span class="zeile">${z.replace(/(<em>.*?<\/em>|[^\s<]+)/g,w=>`<i class="wort">${w}</i>`)}</span>`).join('')}</h1>
@@ -202,6 +205,8 @@ function baueSzene(s, i){
 window.ladeReel=function(drehbuch, zeiten){
   document.getElementById('szenen').innerHTML='';
   REEL={szenen:[], gesamt:zeiten.gesamt};
+  UEB=Object.assign({wisch:.3, unschaerfe:3, versatz:18}, drehbuch.uebergang||{});
+  document.getElementById('wisch').style.opacity=UEB.wisch;
   drehbuch.szenen.forEach((s,i)=>{
     const el=baueSzene(s,i), z=zeiten.szenen[i];
     const sz={el, start:z.start, dauer:z.dauer, sprechStart:z.sprechStart, sprechDauer:z.sprechDauer, marken:z.marken||[], teile:[], figuren:[], letzte:i===drehbuch.szenen.length-1};
@@ -267,8 +272,8 @@ window.zeige=function(sek){
     if(sicht<=0)continue;
     sz.el.style.opacity=sicht;
     const rein=1-sanft(ts/.55), raus=sz.letzte?0:sanft((ts-(sz.dauer-.35))/.35);
-    sz.el.style.transform=`translateY(${rein*50-raus*40}px) scale(${1+raus*.02})`;
-    sz.el.style.filter=(rein+raus)>.01?`blur(${(rein+raus)*10}px)`:'none';
+    sz.el.style.transform=`translateY(${rein*UEB.versatz-raus*UEB.versatz*.8}px) scale(${1+raus*.01})`;
+    sz.el.style.filter=(rein+raus)>.01&&UEB.unschaerfe>0?`blur(${(rein+raus)*UEB.unschaerfe}px)`:'none';
     for(const t of sz.teile)wende(t,ts);
     for(const f of sz.figuren)zeichneFigur(f,ts);   // Figuren nach den Spuren (Griffpunkte)
     if(sz.el.classList.contains('abschluss'))logoSicht=Math.min(logoSicht,1-sicht);

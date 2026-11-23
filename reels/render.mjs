@@ -208,6 +208,14 @@ if (opt('bild')) {
   await ende(); process.exit(0);
 }
 
+// --von=8.5 --bis=11 → kurzes Video nur dieses Ausschnitts (ausschnitt.mp4), z. B. um Übergänge zu prüfen
+if (opt('von')) {
+  const von = +opt('von'), bis = +(opt('bis') || von + 3), aus = join(ordner, 'ausschnitt.mp4');
+  await bilderInsVideo(aus, von, bis - von);
+  console.log(`\rVideo: ${aus}`);
+  await ende(); process.exit(0);
+}
+
 if (nurSzene) {
   const z = zeiten.szenen[nurSzene - 1];
   if (!z) { console.error('Diese Szene gibt es nicht.'); await ende(); process.exit(1); }

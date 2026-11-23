@@ -3,6 +3,7 @@ reels/projekte/*/ton/
 reels/projekte/*/bild-*.png
 reels/projekte/*/vorschau-szene*.jpg
 reels/projekte/*/szene*.mp4
+reels/projekte/*/ausschnitt.mp4
 reels/projekte/*/zeiten.json
 reels/projekte/*/*.mp4
 reels/projekte/*/*.wav

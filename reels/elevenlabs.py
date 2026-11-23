@@ -178,10 +178,11 @@ def _ausrichten(skript, erkannt):
         else: j -= 1
     return paar
 
-def zerlegen(mp3, db_pfad):
+def zerlegen(mp3, db_pfad, nur=None):
+    """nur = Liste von Szenennummern (1-basiert): die MP3 enthält nur diese Szenen, die übrigen Ansagen bleiben unverändert."""
     import numpy as np
     db = json.load(open(db_pfad, encoding='utf-8'))
-    tx = texte(db)
+    tx = [x for x in texte(db) if not nur or x[0] + 1 in nur]
     roh = subprocess.run(['ffmpeg', '-v', 'error', '-i', mp3, '-ac', '1', '-ar', '16000', '-f', 's16le', '-'], capture_output=True, check=True).stdout
     ton = np.frombuffer(roh, np.int16).astype(np.float32) / 32768
     erkannt, pegel = _woerter(ton)
@@ -236,6 +237,7 @@ if __name__ == '__main__':
     elif len(sys.argv) >= 3 and sys.argv[1] == 'pruefen':
         sys.exit(0 if pruefen(sys.argv[2]) else 1)
     elif len(sys.argv) >= 4 and sys.argv[1] == 'zerlegen':
-        zerlegen(sys.argv[2], sys.argv[3])
+        nur = [int(x) for a in sys.argv[4:] if a.startswith('--szenen=') for x in a[9:].split(',')]
+        zerlegen(sys.argv[2], sys.argv[3], nur or None)
     else:
-        print('Aufruf: elevenlabs.py skript <drehbuch> <ordner> | pruefen <drehbuch> | zerlegen <ganz.mp3> <drehbuch>')
+        print('Aufruf: elevenlabs.py skript <drehbuch> <ordner> | pruefen <drehbuch> | zerlegen <mp3> <drehbuch> [--szenen=1,5]')
