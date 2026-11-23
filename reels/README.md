@@ -21,7 +21,7 @@ Videos und Ton werden nicht ins Repo eingecheckt.
 ```json
 {
   "stimme": "de_DE-thorsten-high", "tempo": 1.0,
-  "aussprache": { "KIMUTEC": "Kimutek" },
+  "aussprache": { "KIMUTEC": "Kimu-Tek" },
   "tonspur": "eigene-aufnahme.mp3",
   "szenen": [ { "label": "…", "titel": "Zeile 1\nZeile 2", "sprecher": "…", "bild": "<svg-Inhalt>", "text": […] } ]
 }
@@ -74,6 +74,8 @@ Für Videos, die schon fertig animiert sind (z. B. aus Canva), aber noch keinen 
 - `data-ursprung="left bottom"`: Drehpunkt für pop/drehen.
 - Szene mit `"schritt": 3` (und optional `"schrittVon": 8`) zeigt oben rechts „SCHRITT 3 / 8“ mit Punkten.
 - Größere Reels mit eigenem Generator bauen: Vorlage `projekte/09-ablauf/bauen.py` (Hilfen für Chips, Sprechblasen, Sterne, Zahnräder, Fenster).
+- Szenenwechsel sind bewusst dezent (Wunsch von Ramiz): Wischer 0,3, Unschärfe 3 px, Versatz 18 px. Anpassen nur auf Wunsch mit
+  `"uebergang": {"wisch": 0.3, "unschaerfe": 3, "versatz": 18}` im Drehbuch (`"unschaerfe": 0` schaltet die Unschärfe ab).
 
 ## Figuren und Spuren (seit Reel 9, Version 2)
 Strichmännchen mit Gelenken (Ellbogen, Knie), weichen Übergängen und echten Handgriffen. Python-Helfer: `reels/figur.py`,
@@ -84,7 +86,8 @@ Engine: `reels/engine/bewegung.js`. Vorlage mit allen Möglichkeiten: `projekte/
   `zV`/`zH` = Griffziel der Hand (`[x, y]` oder `an('id', x, y)` = Punkt eines Elements mit Spur, die Hand folgt ihm; `None` = loslassen),
   `pV`/`pH` = Werkzeug (handy laser klemmbrett stift bohrer kartusche tasse tablet daumen; `{'art': 'laser', 'w': 90}` = gedreht),
   `osz=[osz('eV', 6, 3.5, dauer=1.2)]` = Schwingen (Tippen, Schreiben, Nicken `ko`, Händeschütteln `zyV`), `d` = Dauer, `e` = Kurve.
-- Zeiten wie überall: Sekunden, `"40%"` oder `"m3+0.5"`. Ankunft genau zu einem Wort: `k('m1-1.5', x=…, gehen=True, d=2.1)`.
+- Zeiten wie überall: Sekunden, `"40%"` oder `"m3+0.5"`. Ein Key läuft von `t` bis `t + d`.
+  Ankunft genau zu einem Wort: `k('m1-2.1', x=…, gehen=True, d=2.1)`. Hereinlaufen von außen: Start bei `x=-130` (links) oder `x=1050` (rechts).
   Erster Key mit `t=-9` (Startzustand), sonst überschreibt er spätere Keys mit negativer Zeit.
 - Reichweite: Schulter ≈ `boden − 225·s`, Arm ≈ `108·s` px. Fenster und Griffpunkte so legen, dass die Hand hinkommt (Fensterhöhen realistisch).
 - `spur(inhalt, [k(t, x=, y=, r=, s=, sx=, sy=, o=, e=)], id=…, ursprung='460px 300px')` bewegt beliebige Elemente mit Keyframes.
@@ -93,7 +96,20 @@ Engine: `reels/engine/bewegung.js`. Vorlage mit allen Möglichkeiten: `projekte/
 - Die alten Wackel-Figuren in `reels/figuren.py` nicht mehr verwenden.
 
 ## Stimme von ElevenLabs (Standard)
-Die Cloud erreicht `api.elevenlabs.io` nicht (auch nicht Hugging Face und den Microsoft-Vorlesedienst). Die Ansagen holt deshalb der PC von Ramiz:
+Die Cloud erreicht `api.elevenlabs.io` nicht (auch nicht Hugging Face und den Microsoft-Vorlesedienst). Zwei Wege:
+
+### Weg A: ElevenLabs-Connector + MP3 hochladen (bei Reel 9 genutzt)
+1. Den ganzen Sprechertext als eine Ansage erzeugen (Connector-Werkzeug `creative_generate_speech`, Stimme `5KvpaGteYkNayiswuX2h`,
+   Modell `eleven_multilingual_v2`). Text: je Szene ein Absatz, ohne `|`, mit eingesetzter `aussprache` (z. B. „Kimu-Tek“).
+   Jede Erzeugung kostet Guthaben – nicht „zur Sicherheit“ wiederholen.
+2. Die Audio-Links (elevenlabsusercontent.com) sperrt der Cloud-Proxy. Ramiz lädt die gewählte Variante herunter und schickt die MP3 in den Chat.
+3. `python3 reels/elevenlabs.py zerlegen <take.mp3> <drehbuch.json>`: Parakeet (sherpa-onnx, Modell von GitHub) erkennt jedes Wort mit
+   Zeitpunkt, die Wörter werden am Sprechertext ausgerichtet und je Szene als `ton/sNN.json` (gleiches Format wie Weg B) und `sNN.mp3`
+   gespeichert. Ausgabe: Treffer je Szene und erkannter Text – bei wenigen Treffern Text und Take vergleichen.
+4. Nur einige Szenen neu (z. B. andere Aussprache): nur diese Absätze als eine Ansage erzeugen und
+   `python3 reels/elevenlabs.py zerlegen <take.mp3> <drehbuch.json> --szenen=1,5,8,12`. Die anderen Dateien in `ton/` bleiben.
+
+### Weg B: Ansagen über den PC von Ramiz (Zeitstempel direkt von ElevenLabs)
 1. Drehbuch: `"stimme": "elevenlabs"`, `"elevenlabs": {"voice_id": "5KvpaGteYkNayiswuX2h", "model_id": "eleven_multilingual_v2", "voice_settings": {…}}`.
 2. `python3 reels/elevenlabs.py skript <drehbuch.json> <ordner>` → `Stimme holen.cmd` + `stimme_holen.ps1`. Beides in den verbundenen
    PC-Ordner legen (SendUserFile, dann device_commit_files). Daneben liegt `elevenlabs.txt` mit dem API-Schlüssel (nie in den Chat).

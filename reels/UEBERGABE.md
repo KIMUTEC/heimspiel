@@ -1,9 +1,9 @@
-# Übergabe: KIMUTEC-Reels (Stand 22.11.2026, abends)
+# Übergabe: KIMUTEC-Reels (Stand 23.11.2026)
 
 Repo `kimutec/heimspiel`, Branch `claude/funny-pascal-o9fjc2`, Ordner `reels/`. Skill `/reel` enthält alle Regeln und den Ablauf –
 damit braucht ein neuer Chat keinen langen Übergabetext mehr: „/reel – mach Reel 9 fertig“ reicht.
 
-## Aktuelles Video: Reel 9 „So arbeiten wir“ – Version 2
+## Aktuelles Video: Reel 9 „So arbeiten wir“ – Version 3
 - Projekt `reels/projekte/09-ablauf/`: Generator `bauen.py` → `drehbuch.json`. Freigegebener Sprechertext: `sprechertext.txt`.
 - 12 Szenen, erklärend und fachlich (ca. 2:50 min): Einstieg (Weg mit 8 Stationen, Handschlag), Kontakt, Beratung, Aufmaß
   (Laser an drei Stellen, Höhe, kleinstes Maß, Fuge), Angebot (Positionen, Freigabe, Hersteller), Produktion (Rahmen, Glas, Beschläge),
@@ -14,17 +14,20 @@ damit braucht ein neuer Chat keinen langen Übergabetext mehr: „/reel – mach
 
 ## Stimme
 - ElevenLabs, Stimme `5KvpaGteYkNayiswuX2h`, Eleven Multilingual v2, Stability 0,6 / Similarity 0,75 / Style 0 / Speed 1,0.
-- Die Cloud erreicht ElevenLabs nicht (Proxy 403 – das war auch die Ursache für „Schlüssel ungültig“). Weg über den PC (Windows) von Ramiz:
-  `reels/elevenlabs.py skript` → „Stimme holen.cmd“ in den verbundenen Ordner, `elevenlabs.txt` mit Schlüssel daneben, Doppelklick,
-  Ordner `ton` zurückholen. Der ElevenLabs-Connector ist mit seinem Konto verbunden, seine Werkzeuge waren im Chat aber noch nicht geladen.
-- Für Werbung braucht ElevenLabs ein bezahltes Abo (kommerzielle Lizenz).
+- Aussprache (von Ramiz gewählt): KIMUTEC = „Kimu-Tek“. „Montage“ wird nicht mehr gesprochen (klang falsch) – im Text steht
+  „Einbau“ bzw. „der Einbau der Elemente“. Auf dem Bild bleibt „Montage“.
+- Bewährter Weg: ElevenLabs-Connector im Chat erzeugt die Ansage (Flow `7PpyR7Fh4dWC6YQZNVoa`), Ramiz lädt die MP3 herunter und schickt sie,
+  `elevenlabs.py zerlegen` schneidet sie in Szenen. Die Cloud erreicht ElevenLabs selbst nicht (Proxy 403), auch keine Audio-Links.
+  Alternativ über den PC (Windows) von Ramiz: `reels/elevenlabs.py skript` → „Stimme holen.cmd“ (siehe README).
+- Für Werbung braucht ElevenLabs ein bezahltes Abo (kommerzielle Lizenz, ab Starter).
 
 ## Stand
-- Reel 9 Version 2 ist fertig gerendert (2:57 min) mit dem ElevenLabs-Take „content_2.mp3“ (Flow `7PpyR7Fh4dWC6YQZNVoa`, 4 Takes,
-  zusammen 8.676 Zeichen verbraucht). Der Take wurde mit `elevenlabs.py zerlegen` in Szenen geschnitten (330 von 336 Wörtern zugeordnet).
-- Pausen zwischen den Szenen wurden gekürzt (`sprechStart` 0,2 s), damit das Reel unter 3:00 bleibt.
-- Tonprüfung: Text stimmt; „Kimutek“ hört die Spracherkennung als „Chemotec“ (macht sie bei jeder Stimme), „Montage“ in Szene 5 weich wie „Garage“.
-- Download von elevenlabsusercontent.com ist in der Cloud gesperrt – Ramiz schickt Takes als MP3 oder gibt die Domain frei.
+- Version 3 (23.11.): Szenen 1, 5, 8 und 12 neu vertont (Take „content_3.mp3“, mit `zerlegen --szenen=1,5,8,12` eingesetzt),
+  übrige Szenen aus „content_2.mp3“. Szenenwechsel dezenter (Wischer 0,3, Unschärfe 3 px, Versatz 18 px).
+  Szene 8: Monteure laufen jetzt zu Beginn herein, statt 4 s zu stehen. Abschluss-Szene blendet Logo, Titel und Kontakt wortgenau ein.
+- Länge 2:58 (178,4 s): Pausen je Szene gekürzt, `sprechStart` 0,1 s – die Stimme selbst ist nicht beschleunigt.
+- `zerlegen` schnitt früher bei der ersten Sprechpause nach dem letzten erkannten Wort ab – dadurch fehlte „Punkt com“ am Ende.
+  Jetzt endet jede Szene beim letzten hörbaren Laut vor der nächsten Szene. Nach `zerlegen` immer `pruefe-ton.py` auf das fertige Reel laufen lassen.
 
 ## Weitere Reels im Repo
 - `06-aufmass-montage` – Nachbau von Reel 6 (Aufmaß und Montage).

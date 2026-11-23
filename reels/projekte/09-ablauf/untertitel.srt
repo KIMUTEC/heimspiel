@@ -1,47 +1,47 @@
 1
-00:00:00,200 --> 00:00:09,420
+00:00:00,100 --> 00:00:09,479
 Neue Fenster? Bei KIMUTEC bekommen Sie alles aus einer Hand. In acht Schritten, vom ersten Kontakt bis zur fertigen Abnahme.
 
 2
-00:00:10,120 --> 00:00:20,658
+00:00:10,079 --> 00:00:20,617
 Schritt eins: Sie melden sich, per Nachricht, E-Mail oder Telefon. Wir antworten schnell und vereinbaren einen Termin bei Ihnen vor Ort.
 
 3
-00:00:21,358 --> 00:00:37,323
+00:00:21,217 --> 00:00:37,182
 Schritt zwei: die kostenlose Beratung vor Ort. Wir sehen uns Ihre Fenster und das Mauerwerk genau an und klären, was Ihnen wichtig ist: Wärmeschutz, Schallschutz, Sicherheit und Design, passend zu Ihrem Budget.
 
 4
-00:00:38,023 --> 00:01:01,668
+00:00:37,782 --> 00:01:01,427
 Schritt drei: das Aufmaß. Wir messen selbst, mit dem Laser: die Breite oben, in der Mitte und unten, dann die Höhe. Mauerwerk ist selten ganz gerade, deshalb zählt das kleinste Maß. Davon ziehen wir die Fuge für Dämmung und Abdichtung ab. Wie breit sie sein muss, hängt von Größe, Material und Farbe des Fensters ab.
 
 5
-00:01:02,468 --> 00:01:17,994
-Schritt vier: Sie bekommen ein klares Angebot. Jede Position steht einzeln drin, von den Fenstern bis zu Montage und Entsorgung, ohne versteckte Kosten. Sie geben frei, und wir bestellen direkt beim Hersteller.
+00:01:02,127 --> 00:01:18,761
+Schritt vier: Sie bekommen ein klares Angebot. Jede Position steht einzeln drin, von den Fenstern über den Einbau bis zur Entsorgung, ohne versteckte Kosten. Sie geben frei, und wir bestellen direkt beim Hersteller.
 
 6
-00:01:19,494 --> 00:01:31,159
+00:01:19,861 --> 00:01:31,526
 Schritt fünf: die Produktion. Ihre Fenster werden genau nach Ihren Maßen gefertigt: Rahmen, Glas und Beschläge. Den Liefertermin behalten wir für Sie im Blick.
 
 7
-00:01:31,959 --> 00:01:39,819
+00:01:32,226 --> 00:01:40,086
 Schritt sechs: die Lieferung. Pünktlich zum vereinbarten Termin bringen wir Ihre Fenster direkt zu Ihnen nach Hause.
 
 8
-00:01:41,619 --> 00:01:54,985
-Schritt sieben: die Montage. Zuerst bauen wir das alte Fenster aus. Dann setzen wir das neue ein, richten es lot- und waagerecht aus und befestigen es sicher im Mauerwerk.
+00:01:41,486 --> 00:01:55,891
+Schritt sieben: der Einbau der Elemente. Zuerst bauen wir das alte Fenster aus. Dann setzen wir das neue ein, richten es lot- und waagerecht aus und befestigen es sicher im Mauerwerk.
 
 9
-00:01:56,585 --> 00:02:19,174
+00:01:57,091 --> 00:02:19,680
 Dann kommt das Wichtigste: die Abdichtung. Hier gilt: innen dichter als außen. Innen luftdicht, damit keine feuchte Raumluft in die Fuge zieht. In der Mitte gedämmt, gegen Wärmeverlust und Lärm. Außen dicht gegen Schlagregen, aber offen für Dampf, damit Feuchtigkeit entweichen kann.
 
 10
-00:02:20,174 --> 00:02:33,808
+00:02:20,580 --> 00:02:34,214
 Schritt acht: die Abnahme. Wir prüfen jedes Fenster gemeinsam mit Ihnen: öffnen, kippen, schließen. Wir zeigen Ihnen die Bedienung, räumen sauber auf und übergeben alles mit Protokoll.
 
 11
-00:02:36,608 --> 00:02:46,308
+00:02:36,614 --> 00:02:46,314
 Und am Ende? Schön warm. Schön leise. Zufrieden. Und oft dieselbe Frage: Warum haben wir das nicht früher gemacht?
 
 12
-00:02:47,408 --> 00:02:55,851
+00:02:47,214 --> 00:02:57,301
 KIMUTEC: alles aus einer Hand. Jetzt kostenlose Beratung vereinbaren, direkt hier per Nachricht oder über kimutec.com.

@@ -209,12 +209,13 @@ def zerlegen(mp3, db_pfad, nur=None):
         idx = [x for x, (kk, _) in enumerate(wo) if kk == k]
         a = max(0.0, start[idx[0]] - .12)
         naechster = start[idx[-1] + 1] - .08 if idx[-1] + 1 < len(start) else gesamt
-        # Ende der Stimme nach dem letzten Wort suchen (Pegel bleibt 0,25 s leise)
-        p0, ende = int(start[idx[-1]] * 16000), naechster
+        # Ende der Stimme: letzter lauter Abschnitt vor dem Anfang der nächsten Szene. Nicht die erste Pause nach dem
+        # letzten erkannten Wort nehmen – Sätze haben Pausen (z. B. „Kimu-Tek … Punkt com“), sonst fehlt das Satzende.
+        p0 = int(start[idx[-1]] * 16000)
+        grenze = int(min(naechster - (.15 if idx[-1] + 1 < len(start) else 0), gesamt) * 16000)
         leise = pegel < max(.012, float(np.percentile(pegel, 30)) * 1.5)
-        for s in range(p0, min(int(naechster * 16000), len(pegel)) - 4000, 800):
-            if leise[s:s + 4000].all():
-                ende = min(naechster, s / 16000 + .18); break
+        laut = np.nonzero(~leise[p0:grenze])[0] if grenze > p0 else []
+        ende = min(naechster, (p0 + int(laut[-1])) / 16000 + .18) if len(laut) else min(naechster, start[idx[-1]] + .6)
         seg = os.path.join(ordner, f's{i+1:02d}.mp3')
         subprocess.run(['ffmpeg', '-v', 'error', '-y', '-ss', f'{a:.3f}', '-to', f'{ende:.3f}', '-i', mp3, '-c:a', 'libmp3lame', '-b:a', '192k', seg], check=True)
         # Zeichen-Zeitleiste: jedes Zeichen bekommt den Start seines Wortes (Leerzeichen den des nächsten)
